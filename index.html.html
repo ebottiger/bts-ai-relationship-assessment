@@ -1,0 +1,1740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Readiness Assessment | BTS Enablement</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{--ch:#2D2D2D;--mg:#E8197D;--em:#00A878;--bl:#0057A8;--lg:#F5F5F5;--mg2:#E0E0E0;--tg:#6B6B6B;--wh:#fff}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:#F4F4F4;color:var(--ch);min-height:100vh}
+.screen{display:none;min-height:100vh}
+.screen.active{display:block}
+
+/* HEADER */
+.hdr{background:var(--ch);padding:14px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.2)}
+.hdr-logo{font-family:'DM Serif Display',serif;color:#fff;font-size:20px}.hdr-logo span{color:var(--mg)}
+.hdr-tag{font-size:10px;color:#888;letter-spacing:2px;text-transform:uppercase;margin-top:2px}
+.hdr-nav{display:flex;gap:8px}
+.nav-btn{background:none;border:1px solid #555;color:#ccc;padding:6px 14px;border-radius:4px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
+.nav-btn:hover,.nav-btn.active{border-color:var(--mg);color:var(--mg)}
+.nav-btn.active{background:var(--mg);color:#fff}
+
+/* WRAP */
+.wrap{max-width:860px;margin:0 auto;padding:48px 24px 80px}
+.wrap-wide{max-width:1020px;margin:0 auto;padding:40px 24px 80px}
+.wrap-narrow{max-width:480px;margin:0 auto;padding:60px 24px 80px}
+
+/* LANDING */
+.badge{display:inline-flex;align-items:center;background:var(--mg);color:#fff;padding:5px 14px;border-radius:20px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;font-weight:600;margin-bottom:24px}
+h1.hero{font-family:'DM Serif Display',serif;font-size:50px;line-height:1.08;letter-spacing:-1.5px;margin-bottom:18px}
+h1.hero em{font-style:italic;color:var(--mg)}
+.hero-sub{font-size:17px;color:var(--tg);line-height:1.75;max-width:560px;margin-bottom:40px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:40px}
+.card{background:#fff;border-radius:12px;padding:22px;border:1px solid var(--mg2)}
+.card .icon{font-size:24px;margin-bottom:10px}
+.card h3{font-size:14px;font-weight:700;margin-bottom:6px}
+.card p{font-size:13px;color:var(--tg);line-height:1.55}
+.time-badge{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--tg);background:#fff;padding:7px 15px;border-radius:6px;border:1px solid var(--mg2);margin-bottom:28px}
+.cta-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.persona-strip{display:flex;gap:8px;margin-top:48px;flex-wrap:wrap}
+.persona-chip{padding:7px 15px;border-radius:20px;font-size:12px;font-weight:600}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;border:none}
+.btn-primary{background:var(--mg);color:#fff}.btn-primary:hover{background:#c9136a;transform:translateY(-1px)}
+.btn-secondary{background:none;color:var(--ch);border:1px solid var(--ch)}.btn-secondary:hover{border-color:var(--mg);color:var(--mg)}
+.btn-ghost{background:none;border:1px solid var(--mg2);color:var(--tg);padding:11px 22px}.btn-ghost:hover{border-color:var(--ch);color:var(--ch)}
+.btn-dark{background:var(--ch);color:#fff}.btn-dark:hover{background:var(--mg)}
+.btn-green{background:var(--em);color:#fff}.btn-green:hover{background:#008f65}
+.btn:disabled{opacity:.35;cursor:not-allowed}
+
+/* FORMS */
+.login-card{background:#fff;border-radius:16px;padding:44px;border:1px solid var(--mg2);box-shadow:0 4px 24px rgba(0,0,0,.06)}
+.login-card h2{font-family:'DM Serif Display',serif;font-size:28px;margin-bottom:6px}
+.login-card .sub{color:var(--tg);font-size:14px;margin-bottom:24px;line-height:1.6}
+.form-group{margin-bottom:18px}
+.form-group label{display:block;font-size:13px;font-weight:600;margin-bottom:6px}
+.form-group input,.form-group select{width:100%;padding:11px 14px;border:1.5px solid var(--mg2);border-radius:8px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;background:#fff}
+.form-group input:focus,.form-group select:focus{border-color:var(--mg)}
+.err{color:#e53e3e;font-size:12px;margin-top:4px}
+.info-bar{background:#E8F7F2;border:1px solid #B3E5D4;border-radius:8px;padding:10px 14px;font-size:13px;color:#1a7a58;margin-bottom:20px}
+.warn-bar{background:#FFF8EC;border:1px solid #F5A623;border-radius:8px;padding:10px 14px;font-size:13px;color:#7a4a00;margin-bottom:20px}
+
+/* ASSESSMENT */
+.progress-outer{background:var(--mg2);border-radius:4px;height:5px;margin-bottom:6px;overflow:hidden}
+.progress-inner{height:100%;background:var(--mg);border-radius:4px;transition:width .5s ease}
+.prog-meta{display:flex;justify-content:space-between;font-size:12px;color:var(--tg);margin-bottom:28px}
+.sec-label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--mg);margin-bottom:10px}
+.q-card{background:#fff;border-radius:16px;padding:32px;border:1px solid var(--mg2);box-shadow:0 2px 16px rgba(0,0,0,.04);margin-bottom:18px}
+.q-num{font-size:12px;color:var(--tg);margin-bottom:12px;font-weight:500}
+.q-scene{background:#FFF8EC;border-left:3px solid #F5A623;padding:11px 15px;border-radius:0 8px 8px 0;font-size:13px;color:#4A3B1A;line-height:1.6;margin-bottom:16px;font-style:italic}
+.q-text{font-size:18px;font-weight:600;line-height:1.45;margin-bottom:20px;letter-spacing:-.3px}
+.options{display:flex;flex-direction:column;gap:8px}
+.opt{display:flex;align-items:flex-start;gap:12px;padding:13px 16px;border:1.5px solid var(--mg2);border-radius:10px;background:#fff;cursor:pointer;text-align:left;transition:all .15s;width:100%;font-family:'DM Sans',sans-serif}
+.opt:hover{border-color:var(--mg);background:#FFF5F9}
+.opt.sel{border-color:var(--mg);background:#FFF0F7}
+.opt-letter{width:26px;height:26px;min-width:26px;border-radius:50%;background:var(--lg);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--tg);transition:all .15s;flex-shrink:0}
+.opt.sel .opt-letter{background:var(--mg);color:#fff}
+.opt-text{font-size:14px;line-height:1.5;color:var(--ch);padding-top:2px}
+.conf-section{background:#F9F5FF;border:1.5px solid #E0D0F5;border-radius:12px;padding:16px 18px;margin-top:14px}
+.conf-label{font-size:13px;font-weight:600;margin-bottom:10px}
+.conf-label span{color:var(--tg);font-weight:400;font-size:12px}
+.conf-btns{display:flex;gap:8px}
+.conf-btn{flex:1;padding:10px 8px;border:1.5px solid var(--mg2);border-radius:8px;background:#fff;cursor:pointer;font-size:12px;font-weight:600;text-align:center;transition:all .15s;font-family:'DM Sans',sans-serif;color:var(--ch)}
+.conf-btn:hover{border-color:#9B72CF}
+.conf-btn.sel{border-color:#7B4FBF;background:#F0E8FF;color:#7B4FBF}
+.conf-icon{font-size:15px;display:block;margin-bottom:2px}
+.q-nav{display:flex;justify-content:space-between;margin-top:8px}
+
+/* SPINNER */
+.spinner-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;text-align:center;padding:40px}
+.spinner{width:44px;height:44px;border:4px solid var(--mg2);border-top-color:var(--mg);border-radius:50%;animation:spin .8s linear infinite;margin-bottom:24px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinner-screen h2{font-family:'DM Serif Display',serif;font-size:28px;margin-bottom:8px}
+.spinner-screen p{color:var(--tg);font-size:15px}
+
+/* RESULTS */
+.result-hero{background:var(--ch);border-radius:20px;padding:40px 44px;color:#fff;margin-bottom:24px;position:relative;overflow:hidden}
+.result-hero::before{content:'';position:absolute;top:-80px;right:-80px;width:260px;height:260px;border-radius:50%;opacity:.07;background:var(--mg)}
+.r-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#999;margin-bottom:8px}
+.r-persona{font-family:'DM Serif Display',serif;font-size:38px;letter-spacing:-.5px;margin-bottom:4px}
+.r-tagline{font-size:16px;color:#ccc;font-style:italic;margin-bottom:20px}
+.r-summary{font-size:14px;line-height:1.8;color:#ddd;max-width:540px;position:relative;z-index:1}
+.r-meta{display:flex;gap:16px;margin-top:16px;flex-wrap:wrap}
+.r-meta span{font-size:12px;color:#888}.r-meta strong{color:#bbb}
+.sec-pill{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:600;margin-top:12px}
+
+.score-section{background:#fff;border-radius:16px;padding:26px 30px;border:1px solid var(--mg2);margin-bottom:20px}
+.score-section h3{font-size:14px;font-weight:700;margin-bottom:18px}
+.score-row{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.score-lbl{width:160px;font-size:13px;font-weight:600;flex-shrink:0}
+.score-track{flex:1;background:var(--lg);border-radius:4px;height:10px;overflow:hidden}
+.score-fill{height:100%;border-radius:4px;transition:width 1.2s ease}
+.score-pct{width:38px;font-size:12px;font-weight:700;text-align:right}
+.conf-note{font-size:12px;color:var(--tg);margin-top:10px;font-style:italic}
+
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:20px}
+.r-card{background:#fff;border-radius:14px;padding:22px;border:1px solid var(--mg2)}
+.r-card h3{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--mg2)}
+.r-card ul{list-style:none;display:flex;flex-direction:column;gap:7px}
+.r-card ul li{font-size:13px;line-height:1.5;padding-left:18px;position:relative}
+.r-card ul li::before{content:'→';position:absolute;left:0;color:var(--mg);font-size:11px;top:3px}
+
+.goal-card{background:linear-gradient(135deg,#F9F3FF,#FFF0F7);border-radius:16px;padding:26px 30px;border:1px solid #E8D5F0;margin-bottom:20px}
+.goal-card h3{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px}
+.goal-tier{display:flex;gap:12px}
+.goal-box{flex:1;background:#fff;border-radius:10px;padding:14px;border:1px solid var(--mg2)}
+.goal-box .tier-lbl{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:7px}
+.goal-box p{font-size:13px;line-height:1.55}
+.mindshift-box{margin-top:14px;background:#fff;border-radius:10px;padding:15px 16px;border:1px solid var(--mg2)}
+.mindshift-box .ms-lbl{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--ch);margin-bottom:7px}
+.mindshift-box p{font-size:14px;line-height:1.6}
+
+.manager-card{background:#EEF9F5;border:1.5px solid #A0DEC9;border-radius:14px;padding:22px 26px;margin-bottom:20px}
+.manager-card h3{font-size:13px;font-weight:700;color:var(--em);margin-bottom:8px}
+.manager-card p{font-size:14px;line-height:1.65}
+.pq-list{margin-top:12px;display:flex;flex-direction:column;gap:7px}
+.pq{font-size:13px;padding-left:18px;position:relative}
+.pq::before{content:'→';position:absolute;left:0;color:var(--em);font-size:11px;top:3px}
+
+.pulse-card{background:#EEF4FF;border:1.5px solid #B3CFEE;border-radius:14px;padding:22px 26px;margin-bottom:20px}
+.pulse-card h3{font-size:13px;font-weight:700;color:var(--bl);margin-bottom:8px}
+.pulse-card p{font-size:14px;line-height:1.65}
+
+.result-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:4px}
+
+/* DASHBOARD */
+.dash-hdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:26px}
+.dash-title{font-family:'DM Serif Display',serif;font-size:32px}
+.dash-sub{color:var(--tg);font-size:14px;margin-top:4px}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
+.stat{background:#fff;border-radius:12px;padding:18px 20px;border:1px solid var(--mg2)}
+.stat-num{font-family:'DM Serif Display',serif;font-size:34px;line-height:1;margin-bottom:4px}
+.stat-lbl{font-size:12px;color:var(--tg)}
+.panel{background:#fff;border-radius:16px;padding:22px 26px;border:1px solid var(--mg2);margin-bottom:18px}
+.panel h3{font-size:15px;font-weight:700;margin-bottom:16px}
+.panel-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.panel-hdr h3{margin-bottom:0}
+.breakdown-row{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.b-name{width:180px;font-size:13px;font-weight:600;flex-shrink:0}
+.b-track{flex:1;height:11px;background:var(--lg);border-radius:5px;overflow:hidden}
+.b-fill{height:100%;border-radius:5px}
+.b-count{font-size:12px;color:var(--tg);width:70px;text-align:right}
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{text-align:left;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--tg);padding:7px 10px;border-bottom:1px solid var(--mg2)}
+.tbl td{padding:10px;font-size:14px;border-bottom:1px solid #F0F0F0;vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:12px;font-weight:600}
+.toggle-wrap{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--tg)}
+.toggle{width:40px;height:22px;border-radius:11px;position:relative;cursor:pointer;border:none;transition:background .2s;background:var(--mg2)}
+.toggle.on{background:var(--em)}
+.toggle::after{content:'';width:16px;height:16px;background:#fff;border-radius:50%;position:absolute;top:3px;left:3px;transition:left .2s}
+.toggle.on::after{left:21px}
+.cohort-input-row{display:flex;gap:10px;margin-bottom:12px}
+.cohort-input{flex:1;padding:9px 13px;border:1.5px solid var(--mg2);border-radius:8px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none}
+.cohort-input:focus{border-color:var(--mg)}
+.tags{display:flex;gap:8px;flex-wrap:wrap}
+.tag{background:var(--lg);border:1px solid var(--mg2);padding:5px 12px;border-radius:20px;font-size:13px;display:flex;align-items:center;gap:7px}
+.tag button{background:none;border:none;color:var(--tg);cursor:pointer;font-size:14px;padding:0;line-height:1}
+.tag button:hover{color:var(--mg)}
+.sel-wrap{padding:7px 12px;border:1.5px solid var(--mg2);border-radius:8px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;cursor:pointer;background:#fff}
+.insight-box{background:var(--lg);border-radius:12px;padding:16px 20px;border:1px solid var(--mg2);font-size:13px;line-height:1.65;margin-bottom:18px}
+.tab-bar{display:flex;gap:8px;margin-bottom:22px;flex-wrap:wrap}
+.tab{padding:9px 18px;border:1px solid var(--mg2);border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;background:#fff;color:var(--ch);font-family:'DM Sans',sans-serif;transition:all .15s}
+.tab.active{background:var(--ch);color:#fff;border-color:var(--ch)}
+.codes-table{font-family:monospace;font-size:13px;background:var(--lg);padding:3px 9px;border-radius:4px}
+
+@media(max-width:640px){
+  h1.hero{font-size:34px}
+  .cards{grid-template-columns:1fr}
+  .two-col{grid-template-columns:1fr}
+  .goal-tier{flex-direction:column}
+  .stats-grid{grid-template-columns:1fr 1fr}
+  .hdr{padding:12px 16px}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div>
+    <div class="hdr-logo">BTS <span>×</span> AI Readiness</div>
+    <div class="hdr-tag">Leading AI Conversations</div>
+  </div>
+  <div class="hdr-nav">
+    <button class="nav-btn active" id="navAssess" onclick="showScreen('landing')">Assessment</button>
+    <button class="nav-btn" id="navManager" onclick="showScreen('mgr-login')">Manager View</button>
+  </div>
+</div>
+
+<!-- SCREENS -->
+<div id="s-landing" class="screen active">
+<div class="wrap">
+  <div class="badge">⚡ BTS Enablement · AI Readiness Series</div>
+  <h1 class="hero">What's your <em>AI readiness</em><br>persona right now?</h1>
+  <p class="hero-sub">A 10–12 minute assessment to understand how you relate to AI at work today — and what your most useful next step looks like. No wrong answers. No judgment.</p>
+  <div class="cards">
+    <div class="card"><div class="icon">🎯</div><h3>Situational, not fixed</h3><p>Your AI readiness is shaped by context, workload, and confidence — not personality. This reflects where you are right now.</p></div>
+    <div class="card"><div class="icon">🔒</div><h3>Private by default</h3><p>Your individual results are yours. Team data is only shared with managers in aggregate, unless you choose otherwise.</p></div>
+    <div class="card"><div class="icon">📈</div><h3>Built to grow with you</h3><p>Retake the 5-question pulse quarterly to see how your persona shifts over time as your confidence grows.</p></div>
+  </div>
+  <div style="background:#FFF8EC;border:1px solid #F5A623;border-radius:12px;padding:20px 24px;margin-bottom:36px">
+    <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#8B5E00;margin-bottom:8px">A note for leaders and managers</div>
+    <p style="font-size:14px;color:#4A3B1A;line-height:1.7">The most powerful signal you can send your team is going first. If you are a manager or leader, consider taking this assessment before your team does — and sharing your result openly. That single act of honesty creates more safety for everyone else than any policy or training ever could.</p>
+  </div>
+  <div class="time-badge">⏱ 10–12 minutes &nbsp;·&nbsp; 15 questions &nbsp;·&nbsp; Downloadable results</div>
+  <div class="cta-row">
+    <button class="btn btn-primary" onclick="showScreen('login')">Begin Assessment →</button>
+    <button class="btn btn-secondary" onclick="showScreen('mgr-login')">Manager View</button>
+  </div>
+  <div class="persona-strip" id="personaStrip"></div>
+</div>
+</div>
+
+<div id="s-login" class="screen">
+<div class="wrap-narrow">
+  <div style="background:var(--ch);border-radius:16px;padding:28px 32px;margin-bottom:20px;color:#fff">
+    <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--mg);margin-bottom:10px">Before you begin</div>
+    <p style="font-size:15px;line-height:1.75;color:#ddd">If you feel any uncertainty, skepticism, or even quiet dread when AI comes up at work — that is not a flaw in your character. It is a completely human response to real change. This assessment is designed to meet you exactly where you are.</p>
+    <p style="font-size:14px;line-height:1.7;color:#aaa;margin-top:10px">There are no right answers. Honest answers are the only ones that help.</p>
+  </div>
+  <div class="login-card">
+    <h2>Let's get started</h2>
+    <p class="sub">Your answers are private. Results are yours to keep and share if you choose to.</p>
+    <div class="warn-bar" style="background:#FFF0F7;border-color:#FBAFD4;color:#8B1050">🔒 This assessment is optional and self-directed. Complete it in your own time.</div>
+    <div class="form-group">
+      <label>Your Name</label>
+      <input id="loginName" placeholder="First Last">
+      <div class="err" id="errName"></div>
+    </div>
+    <div class="form-group">
+      <label>Your Role</label>
+      <select id="loginRole">
+        <option value="">Select your role...</option>
+        <option>Individual Contributor</option>
+        <option>Manager / Team Lead</option>
+        <option>Senior Manager / Director</option>
+        <option>VP / Executive</option>
+      </select>
+      <div class="err" id="errRole"></div>
+    </div>
+    <div class="form-group">
+      <label>Team <span style="font-weight:400;color:#999">(optional)</span></label>
+      <select id="loginTeam">
+        <option value="">Select your team...</option>
+      </select>
+    </div>
+    <button class="btn btn-primary" style="width:100%" onclick="startAssessment()">Start Assessment →</button>
+  </div>
+</div>
+</div>
+
+<div id="s-assessment" class="screen">
+<div class="wrap" style="max-width:760px">
+  <div class="progress-outer"><div class="progress-inner" id="progressBar"></div></div>
+  <div class="prog-meta"><span id="qCounter">Question 1 of 15</span><span id="qPct">0%</span></div>
+  <div id="secLabel" class="sec-label"></div>
+  <div class="q-card">
+    <div class="q-num" id="qNum"></div>
+    <div class="q-scene" id="qScene"></div>
+    <div class="q-text" id="qText"></div>
+    <div class="options" id="optionsList"></div>
+    <div class="conf-section" id="confSection" style="display:none">
+      <div class="conf-label">How well does that reflect you right now? <span>(This helps weight your results)</span></div>
+      <div class="conf-btns">
+        <button class="conf-btn" id="conf3" onclick="selectConf(3)"><span class="conf-icon">💯</span>Very me</button>
+        <button class="conf-btn" id="conf2" onclick="selectConf(2)"><span class="conf-icon">✓</span>Partially True</button>
+        <button class="conf-btn" id="conf1" onclick="selectConf(1)"><span class="conf-icon">≈</span>More or Less</button>
+      </div>
+    </div>
+  </div>
+  <div class="q-nav">
+    <button class="btn btn-ghost" id="btnBack" onclick="prevQ()">← Back</button>
+    <button class="btn btn-dark" id="btnNext" onclick="nextQ()" disabled>Next →</button>
+  </div>
+</div>
+</div>
+
+<div id="s-scoring" class="screen">
+<div class="spinner-screen">
+  <div class="spinner"></div>
+  <h2>Building your profile...</h2>
+  <p>Analyzing your responses and confidence signals.</p>
+</div>
+</div>
+
+<div id="s-results" class="screen">
+<div class="wrap">
+  <div id="resultHero" class="result-hero"></div>
+  <div class="score-section">
+    <h3>Your Full Persona Profile — Confidence-Weighted</h3>
+    <div id="scoreBars"></div>
+    <div id="pctBreakdown" style="margin-top:18px;padding-top:16px;border-top:1px solid var(--mg2)"></div>
+    <p class="conf-note">Scores are weighted by how strongly each answer reflected you — not just by count. This gives a more accurate picture of your dominant patterns.</p>
+    <p style="font-size:12px;color:var(--tg);margin-top:6px">No one is purely one persona — these scores reflect tendencies across situations today.</p>
+  </div>
+
+  <div class="two-col">
+    <div class="r-card" id="strengthsCard"></div>
+    <div class="r-card" id="leadershipCard"></div>
+  </div>
+  <div class="goal-card">
+    <h3>Your 30-Day AI Goal — Choose Your Level</h3>
+    <div class="goal-tier" id="goalTier"></div>
+    <div class="mindshift-box" id="mindshiftBox"></div>
+  </div>
+  <div class="manager-card">
+    <h3>💬 Bring This to Your Next 1:1</h3>
+    <p style="margin-bottom:12px">Your persona is not a performance review. It is a starting point for a curious conversation. Your manager's job in this 1:1 is not to fix the pattern — it is to understand the story underneath it. <strong>You get to decide how much you share and when.</strong></p>
+    <p style="font-size:13px;color:var(--tg);margin-bottom:14px">If you choose to share, here are three questions worth bringing:</p>
+    <div class="pq-list">
+      <div class="pq">What does this result tell you about where I should focus my AI development right now?</div>
+      <div class="pq">What support or resources can you offer me from here?</div>
+      <div class="pq">How does my persona fit with what you are seeing across the team?</div>
+    </div>
+    <p style="font-size:12px;color:var(--tg);margin-top:14px;font-style:italic">You do not have to share this report. But if you do, know that the goal of that conversation is understanding — not correction.</p>
+  </div>
+  <div class="pulse-card">
+    <h3>📊 Take the Quarterly Pulse</h3>
+    <p style="margin-bottom:10px">In 90 days, retake this assessment to see how your persona has shifted. Personas change as confidence, capacity, and context evolve — and watching that movement over time is often more valuable than any single result.</p>
+    <p style="font-size:13px;color:#3a5a8a">The personas in this assessment are meant to become shared language on your team — not labels, but a shorthand for conversations that might otherwise be hard to start. The more fluently your team can say <em>"I am feeling pretty Overwhelmed Operator on this one"</em> — the more honest and productive those conversations become.</p>
+  </div>
+
+  <div id="submitEmailCard" style="background:#fff;border:1.5px solid var(--em);border-radius:14px;padding:22px 26px;margin-bottom:20px">
+    <h3 style="font-size:13px;font-weight:700;color:var(--em);margin-bottom:8px">✉️ Submit Your Result to Your AI Champion</h3>
+    <p style="font-size:14px;line-height:1.65;margin-bottom:6px">Your result stays private — only your AI Champion sees the data. Click below to send your result. Your email will open with everything pre-filled. Just hit send.</p>
+    <p style="font-size:12px;color:var(--tg);margin-bottom:14px">Your individual result is never shared with your manager or team without your consent.</p>
+    <button class="btn btn-green" id="submitEmailBtn" onclick="submitByEmail()" style="font-size:14px">✉️ Send My Result to AI Champion</button>
+    <p id="emailConfirm" style="font-size:12px;color:var(--em);margin-top:10px;display:none">✓ Your email client has opened with your result pre-filled. Just click Send!</p>
+  </div>
+  <div class="result-actions">
+    <button class="btn btn-primary" onclick="downloadPDF()">⬇ Download My Results PDF</button>
+    <button class="btn btn-ghost" onclick="showScreen('landing')">Retake Assessment</button>
+  </div>
+</div>
+</div>
+
+<div id="s-mgr-login" class="screen">
+<div class="wrap-narrow">
+  <div class="login-card">
+    <h2>Manager Dashboard</h2>
+    <p class="sub">Enter your team access code to view your cohort's results.</p>
+    <div class="info-bar">🔒 Results are anonymized by default. Toggle to named view once inside.</div>
+    <div class="form-group">
+      <label>Team Access Code</label>
+      <input id="mgrCode" placeholder="e.g. BTS-PMO" style="font-family:monospace;letter-spacing:1px" onkeydown="if(event.key==='Enter')mgrLogin()">
+      <div class="err" id="mgrErr"></div>
+    </div>
+    <button class="btn btn-primary" style="width:100%;margin-bottom:14px" onclick="mgrLogin()">Access My Team Dashboard →</button>
+    <div style="text-align:center;font-size:13px;color:var(--tg)">PM / Admin access? <button onclick="showScreen('pm-login')" style="background:none;border:none;color:var(--bl);cursor:pointer;font-size:13px;text-decoration:underline">Sign in here</button></div>
+  </div>
+</div>
+</div>
+
+<div id="s-mgr-dashboard" class="screen">
+<div class="wrap-wide">
+  <div class="dash-hdr">
+    <div>
+      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--mg);margin-bottom:4px">Team Dashboard</div>
+      <div class="dash-title" id="mgrTeamName">Team</div>
+      <div class="dash-sub" id="mgrDate"></div>
+    </div>
+    <div class="toggle-wrap">
+      <span>Anonymous</span>
+      <button class="toggle" id="anonToggle" onclick="toggleAnon()"></button>
+      <span>Named</span>
+    </div>
+  </div>
+  <div class="info-bar" id="anonBar">🔒 Showing anonymized results. Toggle above to show participant names.</div>
+  <div class="stats-grid" id="mgrStats"></div>
+  <div class="insight-box" id="mgrInsight" style="display:none"></div>
+  <div class="panel" id="mgrBreakdownPanel">
+    <h3>Persona Distribution</h3>
+    <div id="mgrBreakdown"></div>
+  </div>
+  <div class="panel" id="mgrTablePanel">
+    <div class="panel-hdr"><h3>Participant Results</h3></div>
+    <table class="tbl"><thead id="mgrThead"></thead><tbody id="mgrTbody"></tbody></table>
+  </div>
+  <div class="insight-box">
+    <strong>How to use this data: </strong>Use these results as a starting point for individual 1:1 conversations. The <em>Leading AI Conversations</em> manager field guide is designed to pair with each persona. Low confidence scores warrant a follow-up conversation before setting AI goals.
+  </div>
+</div>
+</div>
+
+<div id="s-pm-login" class="screen">
+<div class="wrap-narrow">
+  <div class="login-card">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px"><span style="font-size:28px">🔑</span><div><h2 style="margin-bottom:2px">PM Admin View</h2><p class="sub" style="margin:0">Full access · All teams · Code management</p></div></div>
+    <div class="form-group">
+      <label>PM Password</label>
+      <input type="password" id="pmPass" placeholder="Enter PM password" onkeydown="if(event.key==='Enter')pmLogin()">
+      <div class="err" id="pmErr"></div>
+    </div>
+    <button class="btn btn-primary" style="width:100%;margin-bottom:12px" onclick="pmLogin()">Access PM Dashboard →</button>
+    <div style="text-align:center"><button onclick="showScreen('mgr-login')" style="background:none;border:none;color:var(--tg);cursor:pointer;font-size:13px">← Back to team login</button></div>
+  </div>
+</div>
+</div>
+
+<div id="s-pm-dashboard" class="screen">
+<div class="wrap-wide">
+  <div class="dash-hdr">
+    <div>
+      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--mg);margin-bottom:4px">PM Admin</div>
+      <div class="dash-title">All Teams Overview</div>
+      <div class="dash-sub" id="pmSubtitle"></div>
+    </div>
+    <button class="btn btn-ghost" onclick="showScreen('landing')">← Sign Out</button>
+  </div>
+  <div class="tab-bar">
+    <button class="tab active" onclick="pmTab('overview',this)">📊 Overview</button>
+    <button class="tab" onclick="pmTab('teams',this)">🔑 Teams &amp; Codes</button>
+    <button class="tab" onclick="pmTab('participants',this)">👥 All Participants</button>
+  </div>
+  <div id="pmOverview"></div>
+  <div id="pmTeams" style="display:none"></div>
+  <div id="pmParticipants" style="display:none"></div>
+</div>
+</div>
+
+<script>
+// ================================================================
+// DATA
+// ================================================================
+var PERSONAS = {
+  identity: {
+    id:"identity", name:"Identity Defender", emoji:"🛡",
+    tagline:"If AI can do this, what makes me valuable?",
+    color:"#E8197D", bg:"#FFF0F7", border:"#FBAFD4",
+    summary:"You bring deep expertise, strong ownership, and genuine investment in quality outcomes. When AI enters the picture, your instinct is to protect what makes your work meaningful — and that instinct is worth protecting. Sometimes what looks like resistance to AI is actually grief — mourning a version of expertise that felt irreplaceable. That grief is valid. And it is also the beginning of something new. The opportunity ahead is to use AI to amplify your judgment, not bypass it.",
+    strengths:["Deep craft expertise and institutional memory","High standards and quality ownership","Emotional investment in outcomes that shows","Translates AI output into real business impact","Distinguishes meaningful work from mechanical work"],
+    leadership:["Protects the quality of human judgment in AI-assisted work","Elevates AI output to client-ready standards","Ensures AI enhances intelligence — not replaces it","Builds trust between human expertise and new tools"],
+    good:"Use AI to draft or summarize one recurring task this week. Reinvest the saved time into analysis, relationships, or decision framing.",
+    better:"Redesign one workflow: AI handles first draft, you provide judgment, synthesis, and final impact.",
+    stretch:"Track time saved over 30 days. Define one higher-level capability to build with that time.",
+    mindshift:"From protecting familiar tasks to elevating your impact with AI-accelerated capacity"
+  },
+  skeptic: {
+    id:"skeptic", name:"Responsible Skeptic", emoji:"🔍",
+    tagline:"I need to know this is being used responsibly.",
+    color:"#0057A8", bg:"#EEF4FF", border:"#B3CFEE",
+    summary:"You ask the questions others skip. Your concerns about data integrity, ethics, and reputational risk are not obstacles — they are the foundation of trustworthy AI adoption. When supported well, you become the team's governance anchor and a trusted voice with clients and stakeholders.",
+    strengths:["Critical thinking and risk awareness","Governance sensitivity and long-term perspective","Courage to question what others accept","Commitment to professional standards","Client trust and reputation protection"],
+    leadership:["Internal ethics translator for the team","Guardrail designer for AI use cases","Quality controller of AI outputs","Strengthens client trust through principled adoption"],
+    good:"Use AI within clearly defined guardrails — internal drafts, non-sensitive data — and reflect on where it supports quality without compromising values.",
+    better:"Identify one process where AI reduces repetitive work while maintaining human oversight for judgment and ethics.",
+    stretch:"Draft a Responsible Use Checklist for your function. Pilot one workflow using it.",
+    mindshift:"From opting out until every concern is resolved to informed participation within guardrails you help define"
+  },
+  purist: {
+    id:"purist", name:"Skill Purist", emoji:"⚙",
+    tagline:"I do not want AI thinking for me.",
+    color:"#7B4FBF", bg:"#F5F0FF", border:"#D4C0F0",
+    summary:"Your investment in craft and expertise is what makes your work stand out. You are asking a legitimate question: what happens to expertise when we stop exercising it? The answer is: you become the standard-setter for what AI-assisted work can be — at its best.",
+    strengths:["Depth of expertise and analytical rigor","High standards and craft discipline","Commitment to quality over speed","Ability to elevate and critique AI output","Sets the bar for what excellent looks like"],
+    leadership:["Raises the standard for AI-assisted work across the team","Human judgment amplifier and refinement expert","Defines quality criteria others can follow","Mentors the team on what AI-assisted excellence means"],
+    good:"Use AI to generate multiple first-draft options — then critique, refine, and elevate them using your expertise.",
+    better:"Use AI to pressure-test reasoning: ask it to challenge assumptions or present counterarguments before finalizing work.",
+    stretch:"Define a personal standard for AI-assisted excellence in your function. Build a workflow where AI accelerates iteration and your judgment determines final output.",
+    mindshift:"From avoiding AI on serious tasks to using AI as a thinking partner that sharpens your reasoning"
+  },
+  overwhelmed: {
+    id:"overwhelmed", name:"Overwhelmed Operator", emoji:"⏳",
+    tagline:"I barely have time to do my job — I do not have time to learn this.",
+    color:"#E85B19", bg:"#FFF5EE", border:"#F5C4A8",
+    summary:"You are not resistant to AI — you are operating at full capacity. Your reliability, consistency, and execution under pressure are genuine assets. The right AI adoption path for you starts with relief, not more to learn. One small swap now can build toward real breathing room.",
+    strengths:["Reliability and consistency under pressure","Strong execution and institutional continuity","Accountability and follow-through","Process stability during change","Practical, results-focused mindset"],
+    leadership:["Models steady, sustainable AI adoption","Identifies highest-impact places to simplify first","Efficiency multiplier once capacity is freed","Makes adoption look achievable — not overwhelming"],
+    good:"Use AI to draft or summarize one recurring email, report, or meeting recap this week. One task. This week.",
+    better:"Replace one manual workflow step with AI and measure time saved over two weeks.",
+    stretch:"Redesign one recurring process so AI handles preparation and first draft — freeing 30 to 60 minutes per week.",
+    mindshift:"From postponing until things slow down to one small swap that creates immediate relief right now"
+  },
+  accelerator: {
+    id:"accelerator", name:"Accelerator", emoji:"⚡",
+    tagline:"Why are we not doing more of this?",
+    color:"#00A878", bg:"#EEF9F5", border:"#A0DEC9",
+    summary:"You see possibility everywhere and you move fast. Your energy and technical fluency are a team accelerant — when channeled well. The next frontier for you is not building faster; it is building in ways that bring others with you and demonstrate measurable impact.",
+    strengths:["Speed and technical fluency","Creative experimentation and early pattern recognition","Energy that elevates team momentum","Comfort with ambiguity and iteration","Vision for what AI can unlock"],
+    leadership:["Pilot designer and internal trainer","Capability multiplier for the whole team","System optimizer across workflows","Connects AI experimentation to business outcomes"],
+    good:"Document one workflow improvement and share it with the team in a brief walkthrough. Submit it via the AI in Action Smartsheet Form.",
+    better:"Measure time saved or quality improvement over 30 days and present findings to the team.",
+    stretch:"Partner with someone earlier in the AI journey and co-design a workflow that is accessible and replicable across the team.",
+    mindshift:"From building fast in isolation to creating measurable, shareable impact that others can adopt"
+  }
+};
+
+var TEAMS = [
+  {id:"finance",    name:"Finance",                         code:"BTS-FIN"},
+  {id:"design",     name:"Graphic Design",                  code:"BTS-GFX"},
+  {id:"pmo",        name:"PMO",                             code:"BTS-PMO"},
+  {id:"prod",       name:"Prod",                            code:"BTS-PRD"},
+  {id:"pro",        name:"PRO",                             code:"BTS-PRO"},
+  {id:"virtualops", name:"Virtual Operators",               code:"BTS-VOP"},
+  {id:"logistics",  name:"Logistics",                       code:"BTS-LOG"},
+  {id:"helpdesk",   name:"Help Desk",                       code:"BTS-HLP"},
+  {id:"digital",    name:"Digital",                         code:"BTS-DIG"},
+  {id:"momenta",    name:"Momenta",                         code:"BTS-MOM"},
+  {id:"act",        name:"ACT",                             code:"BTS-ACT"},
+  {id:"talent",     name:"Talent Acquisition",              code:"BTS-TAL"},
+  {id:"marketing",  name:"Marketing",                       code:"BTS-MKT"},
+  {id:"cwm",        name:"Contingent Workforce Management", code:"BTS-CWM"},
+  {id:"set",        name:"SET",                             code:"BTS-SET"},
+  {id:"test",       name:"Test",                            code:"BTS-TST"},
+  {id:"demo",       name:"Demo",                            code:"BTS-DMO"}
+];
+
+// ================================================================
+// STORAGE — localStorage persistence for real participant data
+// ================================================================
+var STORAGE_KEY = "bts_ai_assessment_results";
+
+function saveResult(user, result) {
+  var existing = loadAllResults();
+  var idx = existing.length;
+  var conf = scoreToConfidenceLabel(result.weighted, result.primary);
+  var pct = result.pct || {};
+  var entry = {
+    id: Date.now().toString(),
+    timestamp: new Date().toISOString(),
+    date: new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}),
+    name: user.name || "Anonymous",
+    role: user.role || "",
+    cohort: user.cohort || "",
+    primary: result.primary,
+    secondary: result.secondary || null,
+    pct: pct,
+    weighted: result.weighted,
+    confidence: conf,
+    anon: "Participant " + String.fromCharCode(65 + (idx % 26))
+  };
+  existing.push(entry);
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(existing)); } catch(e) { console.warn("localStorage unavailable:", e); }
+
+  // Build CSV row for Box submission
+  var PERSONAS_ORDER = ['identity','skeptic','purist','overwhelmed','accelerator'];
+  var csvRow = [
+    new Date().toLocaleString(),
+    entry.name,
+    entry.role,
+    entry.cohort,
+    PERSONAS[entry.primary] ? PERSONAS[entry.primary].name : entry.primary,
+    entry.secondary && PERSONAS[entry.secondary] ? PERSONAS[entry.secondary].name : (entry.secondary || ''),
+    entry.confidence
+  ];
+  PERSONAS_ORDER.forEach(function(k){ csvRow.push((pct[k]||0)+'%'); });
+  state.pendingCSVRow = csvRow.map(function(v){
+    var s = String(v);
+    if(s.indexOf(',')>=0 || s.indexOf('"')>=0) s = '"'+s.replace(/"/g,'""')+'"';
+    return s;
+  }).join(',');
+
+  return entry;
+}
+
+function loadAllResults() {
+  try {
+    var raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch(e) { return []; }
+}
+
+function deleteResult(id) {
+  var updated = loadAllResults().filter(function(r){ return r.id !== id; });
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(updated)); } catch(e) {}
+}
+
+function scoreToConfidenceLabel(weighted, primary) {
+  var score = weighted[primary] || 0;
+  if (score >= 12) return "high";
+  if (score >= 7)  return "medium";
+  return "low";
+}
+
+
+var PM_PASSWORD = "ElyaBottiger";
+
+var QUESTIONS = [
+  {id:1,section:"How You Work Today",
+   scene:"Your organization announces AI is a top strategic priority and all teams are expected to use it in their daily work.",
+   q:"Your honest first thought is:",
+   opts:[
+     {text:"I want to understand which parts of my role are uniquely mine before I commit to any of this.",p:"identity"},
+     {text:"I hope this comes with real governance — clear guidelines on data, environmental impact, and ethics — not just a push to move fast.",p:"skeptic"},
+     {text:"I support it, but I am already stretched. I am not sure how to add this without dropping something else.",p:"overwhelmed"},
+     {text:"Finally. I have been waiting for permission to move faster on this.",p:"accelerator"},
+     {text:"I am on board, but I want to make sure speed does not come at the cost of quality and human judgment.",p:"purist"}
+   ]},
+  {id:2,section:"How You Work Today",
+   scene:"A colleague sends you an AI-generated draft and says: This took me 8 minutes — want to use it as our starting point?",
+   q:"You:",
+   opts:[
+     {text:"Feel quietly unsettled — 8 minutes for something you would have spent two hours on shifts how your contribution feels.",p:"identity"},
+     {text:"Ask what data they used, whether it is something we are allowed to share with AI tools, and whether anyone has thought about what biases might be embedded in the output.",p:"skeptic"},
+     {text:"Are relieved — if that saves time, you will take it. You just cannot closely evaluate it right now.",p:"overwhelmed"},
+     {text:"Appreciate the speed and immediately think about how to build on or improve it even further.",p:"accelerator"},
+     {text:"Look at it critically — not because you distrust AI, but because you want the thinking to actually hold up.",p:"purist"}
+   ]},
+  {id:3,section:"How You Work Today",
+   scene:"You have 30 minutes before an important internal meeting and need to prep a summary of a lengthy document.",
+   q:"What do you do?",
+   opts:[
+     {text:"Read through the key sections yourself — how you frame the summary is part of what you bring.",p:"identity"},
+     {text:"Think through whether the document contains anything sensitive before deciding whether to use AI.",p:"skeptic"},
+     {text:"Use AI immediately — you do not have time to do it any other way right now.",p:"overwhelmed"},
+     {text:"Run it through AI, edit the output, and use the remaining time to prepare sharper questions.",p:"accelerator"},
+     {text:"Try AI for a first draft, but plan to rewrite most of it yourself to make sure the framing is right.",p:"purist"}
+   ]},
+  {id:4,section:"Responding to Change",
+   scene:"A newer team member who joined recently is now faster at producing polished work products than you — using AI heavily.",
+   q:"What do you feel and do?",
+   opts:[
+     {text:"Feel genuinely unsettled — and wonder what experience means when AI levels the playing field.",p:"identity"},
+     {text:"Ask privately what tools they are using and whether anyone has considered the data privacy, quality, and broader ethical implications.",p:"skeptic"},
+     {text:"Feel envious of their bandwidth, but do not have time to change your approach right now.",p:"overwhelmed"},
+     {text:"Ask them to show you what they built — if it is better, you want to learn it and improve on it.",p:"accelerator"},
+     {text:"Wonder if the output is truly strong or just fast — and start paying closer attention to quality.",p:"purist"}
+   ]},
+  {id:5,section:"Responding to Change",
+   scene:"Your team is discussing whether to use AI to generate first drafts of key documents and deliverables.",
+   q:"Your contribution to the conversation is most likely to be:",
+   opts:[
+     {text:"We should think carefully about which deliverables we are automating — our thinking is what people rely on us for.",p:"identity"},
+     {text:"Can we agree on what data goes in, who reviews outputs, and whether we have thought through who bears the risk if this goes wrong — for our team, our clients, or the people our work affects?",p:"skeptic"},
+     {text:"If it saves time, I am for it. I just need to know which tool to use and what the process is.",p:"overwhelmed"},
+     {text:"I can share a workflow I already built. It is saving me hours and the quality is genuinely strong.",p:"accelerator"},
+     {text:"I support it for structure and prep work — but the core thinking and judgment should still be ours.",p:"purist"}
+   ]},
+  {id:6,section:"Day-to-Day Decisions",
+   scene:"You are about to write a nuanced message to a senior stakeholder explaining a complex situation.",
+   q:"Your approach is:",
+   opts:[
+     {text:"Write it yourself — your read of the situation and the relationship matter too much to outsource.",p:"identity"},
+     {text:"Pause and ask whether using AI here actually aligns with your values — not just whether it is allowed, but whether it is the right thing to do in this specific situation.",p:"skeptic"},
+     {text:"Start with AI to get something on the page — you can clean it up, but getting a draft is the hardest part.",p:"overwhelmed"},
+     {text:"Use AI for a first draft and spend your energy on strategic framing, tone calibration, and final polish.",p:"accelerator"},
+     {text:"Draft it yourself, then possibly use AI to check whether your message is clear or could land poorly.",p:"purist"}
+   ]},
+  {id:7,section:"Day-to-Day Decisions",
+   scene:"You are reviewing an AI-assisted work product from a colleague and notice the conclusion feels slightly off — plausible, but not quite right.",
+   q:"You:",
+   opts:[
+     {text:"Point it out and use the moment to talk about where human judgment is still irreplaceable.",p:"identity"},
+     {text:"Flag it and ask whether there is a review step in place — this is exactly why oversight matters.",p:"skeptic"},
+     {text:"Mention it briefly but do not push it further — you do not have the bandwidth for a bigger conversation.",p:"overwhelmed"},
+     {text:"Fix it yourself and think about how to improve the prompt or process so it does not happen again.",p:"accelerator"},
+     {text:"Revise it and note it — you keep a mental log of where AI consistently falls short on nuanced work.",p:"purist"}
+   ]},
+  {id:8,section:"Learning & Growth",
+   scene:"Your organization is offering an optional AI skills session next week.",
+   q:"Your reaction is:",
+   opts:[
+     {text:"Interested, but hoping it addresses how AI affects career development and what skills will matter most.",p:"identity"},
+     {text:"Will attend — but will be paying close attention to whether it addresses the harder questions: data privacy, environmental footprint of AI infrastructure, and long-term workforce consequences.",p:"skeptic"},
+     {text:"Want to attend but already have back-to-back commitments — it will have to wait.",p:"overwhelmed"},
+     {text:"Already beyond what an intro session covers, but might go to see if anything is new or share what you know.",p:"accelerator"},
+     {text:"Will attend specifically to understand what skills still matter — and what AI actually cannot replace.",p:"purist"}
+   ]},
+  {id:9,section:"Learning & Growth",
+   scene:"You are experimenting with an AI tool for a real task. It produces an output that is about 80% there but misses something important.",
+   q:"Your honest takeaway is:",
+   opts:[
+     {text:"This confirms that the 20% it missed is exactly where my expertise matters most.",p:"identity"},
+     {text:"This is exactly why human judgment matters — and it also raises a harder question: if AI can get 80% of the way there on most tasks, what does that mean for the people whose roles are built on doing those tasks well?",p:"skeptic"},
+     {text:"Honestly, 80% is enough right now. I will clean up the rest quickly — I do not have time for perfection.",p:"overwhelmed"},
+     {text:"Interesting — now I want to figure out why it missed that and whether a better prompt would catch it.",p:"accelerator"},
+     {text:"The gap is exactly the kind of nuance I would want to protect. The output is a draft, not a conclusion.",p:"purist"}
+   ]},
+  {id:10,section:"Values & Judgment",
+   scene:"A key stakeholder mentions they value your work specifically because of the quality of human thinking and judgment behind it.",
+   q:"Your reaction to this is:",
+   opts:[
+     {text:"Validated — and a little relieved. This is exactly what I have been saying about the limits of AI.",p:"identity"},
+     {text:"Good — and it raises a harder question: if our clients value human thinking, are we being honest about how much AI is shaping what we deliver? Transparency is not just good practice. It is an ethical obligation.",p:"skeptic"},
+     {text:"Noted, but I still need ways to work faster. Expectations and workload are not going to change on their own.",p:"overwhelmed"},
+     {text:"Great signal — now let us use AI to free up our best thinking time and deliver even more of it.",p:"accelerator"},
+     {text:"Exactly right. AI should be invisible infrastructure — the human thinking should still be front and center.",p:"purist"}
+   ]},
+  {id:11,section:"Values & Judgment",
+   scene:"Work Simple — one of BTS's top priorities — means doing less, better, through smarter workflow design.",
+   q:"Your biggest obstacle to simplifying your own work is:",
+   opts:[
+     {text:"Not being sure which parts of my work are safe to simplify without losing the value I bring.",p:"identity"},
+     {text:"Not having clear enough guidance — I want to simplify thoughtfully, not just efficiently, and I want to know the full cost of the tools we are using.",p:"skeptic"},
+     {text:"Time. I know what I would simplify, but I cannot stop long enough to actually redesign anything.",p:"overwhelmed"},
+     {text:"Honestly, not much — I am already building simpler workflows. The obstacle is getting others to adopt them.",p:"accelerator"},
+     {text:"Making sure simplification does not mean superficiality. I want simpler processes that still produce excellent work.",p:"purist"}
+   ]},
+  {id:12,section:"Workplace Scenarios",
+   scene:"Your organization is piloting a new AI tool and asks you to test it on a real project and share feedback.",
+   q:"Your approach is:",
+   opts:[
+     {text:"Choose a project where I can compare AI output against my own and evaluate what gets lost.",p:"identity"},
+     {text:"Ask about data handling, security protocols, and whether the tool has been evaluated for bias, environmental impact, or broader ethical concerns before I put real work into it.",p:"skeptic"},
+     {text:"Hope I can find time in the next two weeks — I am genuinely willing but at capacity right now.",p:"overwhelmed"},
+     {text:"Dive in immediately, push the tool to its limits, and come back with detailed notes on what to improve.",p:"accelerator"},
+     {text:"Run it on a task I know well so I can evaluate the quality gap between AI and expert judgment.",p:"purist"}
+   ]},
+  {id:13,section:"Workplace Scenarios",
+   scene:"Your manager asks you to share what you have been doing with AI in your next team meeting.",
+   q:"Your honest reaction is:",
+   opts:[
+     {text:"A little uncomfortable — you are not sure your AI use reflects well on what you bring to the team.",p:"identity"},
+     {text:"Feel a quiet tension — you want to be honest, but you also have real questions about whether the way the team is using AI aligns with your values, and you are not sure this is the right moment to raise them.",p:"skeptic"},
+     {text:"Stressed — you have not done much yet and do not want to feel behind or called out in front of peers.",p:"overwhelmed"},
+     {text:"Excited — you have a lot to share and have been waiting for an opportunity to show what is possible.",p:"accelerator"},
+     {text:"Thoughtful — you want to share something that shows AI enhancing your work, not replacing your thinking.",p:"purist"}
+   ]},
+  {id:14,section:"AI & Your Future",
+   scene:"Your manager asks you to set one AI-related development goal for the next quarter.",
+   q:"You choose:",
+   opts:[
+     {text:"A goal focused on clarifying which parts of my role are uniquely human and designing AI around protecting those.",p:"identity"},
+     {text:"A goal around understanding the ethical dimensions — data privacy, environmental cost, workforce impact — so I can advocate responsibly, not just use efficiently.",p:"skeptic"},
+     {text:"Something achievable. One tool, one task. I need a win that does not require rebuilding everything at once.",p:"overwhelmed"},
+     {text:"Something measurable: a workflow improvement with documented time savings and results I can share.",p:"accelerator"},
+     {text:"A goal that raises the standard for AI-assisted work in my function — excellence, not just efficiency.",p:"purist"}
+   ]},
+  {id:15,section:"AI & Your Future",
+   scene:"You are reflecting on how AI is changing work at BTS and what you want the next year to look like for you.",
+   q:"The outcome you are most committed to is:",
+   opts:[
+     {text:"Knowing clearly what I bring that AI cannot — and making sure that gets more visible, not less.",p:"identity"},
+     {text:"Being someone who uses AI in a way I can genuinely stand behind — one that is honest with clients, considerate of broader social impact, and does not compromise the values that drew me to this work in the first place.",p:"skeptic"},
+     {text:"Finding a sustainable pace — adopting AI in a way that actually makes my work lighter, not heavier.",p:"overwhelmed"},
+     {text:"Building and sharing something that changes how the team works — not just experimenting for myself.",p:"accelerator"},
+     {text:"Producing work I am genuinely proud of — where AI accelerated the process but did not dilute the quality.",p:"purist"}
+   ]}
+];
+
+var MOCK_PARTICIPANTS = [
+  {id:1,name:"Jordan M.",anon:"Participant A",cohort:"PMO",primary:"accelerator",secondary:"purist",confidence:"high",date:"Mar 1"},
+  {id:2,name:"Sam R.",anon:"Participant B",cohort:"PMO",primary:"identity",secondary:null,confidence:"medium",date:"Mar 2"},
+  {id:3,name:"Alex T.",anon:"Participant C",cohort:"Finance",primary:"skeptic",secondary:"identity",confidence:"high",date:"Mar 3"},
+  {id:4,name:"Morgan P.",anon:"Participant D",cohort:"Help Desk",primary:"overwhelmed",secondary:"identity",confidence:"low",date:"Mar 4"},
+  {id:5,name:"Riley K.",anon:"Participant E",cohort:"Marketing",primary:"purist",secondary:"skeptic",confidence:"medium",date:"Mar 5"},
+  {id:6,name:"Casey L.",anon:"Participant F",cohort:"Digital",primary:"accelerator",secondary:null,confidence:"high",date:"Mar 6"},
+  {id:7,name:"Taylor B.",anon:"Participant G",cohort:"PMO",primary:"identity",secondary:"overwhelmed",confidence:"medium",date:"Mar 7"},
+  {id:8,name:"Drew A.",anon:"Participant H",cohort:"Finance",primary:"skeptic",secondary:"purist",confidence:"medium",date:"Mar 8"},
+  {id:9,name:"Quinn S.",anon:"Participant I",cohort:"Talent Acquisition",primary:"overwhelmed",secondary:null,confidence:"low",date:"Mar 9"},
+  {id:10,name:"Blake R.",anon:"Participant J",cohort:"Logistics",primary:"accelerator",secondary:"identity",confidence:"high",date:"Mar 9"}
+];
+
+// ================================================================
+// STATE
+// ================================================================
+var state = {
+  user: null,
+  answers: [],
+  shuffledQ: [],
+  currentQ: 0,
+  selectedPersona: null,
+  selectedConf: null,
+  result: null,
+  mgrTeam: null,
+  anonMode: true,
+  pmTeams: TEAMS.slice(),
+  showCodes: false,
+  currentPmTab: "overview",
+  pmAnonMode: false,
+  pmSelectedTeam: "all"
+};
+
+// ================================================================
+// SCREEN MANAGEMENT
+// ================================================================
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
+  var el = document.getElementById('s-'+id);
+  if(el) { el.classList.add('active'); window.scrollTo(0,0); }
+  // Nav active state
+  var isAssess = ['landing','login','assessment','scoring','results'].indexOf(id) >= 0;
+  document.getElementById('navAssess').classList.toggle('active', isAssess);
+  document.getElementById('navManager').classList.toggle('active', !isAssess);
+}
+
+// ================================================================
+// INIT
+// ================================================================
+function init() {
+  // Populate persona strip on landing
+  var strip = document.getElementById('personaStrip');
+  Object.keys(PERSONAS).forEach(function(k){
+    var p = PERSONAS[k];
+    var chip = document.createElement('span');
+    chip.className = 'persona-chip';
+    chip.style.background = p.bg;
+    chip.style.color = p.color;
+    chip.style.border = '1px solid ' + p.border;
+    chip.textContent = p.emoji + ' ' + p.name;
+    strip.appendChild(chip);
+  });
+  // Populate team dropdown
+  var sel = document.getElementById('loginTeam');
+  TEAMS.forEach(function(t){
+    var opt = document.createElement('option');
+    opt.value = t.name;
+    opt.textContent = t.name;
+    sel.appendChild(opt);
+  });
+}
+
+// ================================================================
+// LOGIN
+// ================================================================
+function startAssessment() {
+  var name = document.getElementById('loginName').value.trim();
+  var role = document.getElementById('loginRole').value;
+  var team = document.getElementById('loginTeam').value;
+  var ok = true;
+  document.getElementById('errName').textContent = '';
+  document.getElementById('errRole').textContent = '';
+  if(!name){document.getElementById('errName').textContent='Please enter your name.';ok=false;}
+  if(!role){document.getElementById('errRole').textContent='Please select your role.';ok=false;}
+  if(!ok) return;
+  state.user = {name:name, role:role, cohort:team};
+  // Shuffle questions
+  state.shuffledQ = QUESTIONS.map(function(q){
+    var shuffled = q.opts.slice().sort(function(){return Math.random()-.5;});
+    return Object.assign({}, q, {opts: shuffled});
+  });
+  state.answers = new Array(15).fill(null);
+  state.currentQ = 0;
+  state.selectedPersona = null;
+  state.selectedConf = null;
+  renderQuestion();
+  showScreen('assessment');
+}
+
+// ================================================================
+// ASSESSMENT
+// ================================================================
+function renderQuestion() {
+  var q = state.shuffledQ[state.currentQ];
+  var total = state.shuffledQ.length;
+  var pct = Math.round((state.currentQ / total) * 100);
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('qCounter').textContent = 'Question ' + (state.currentQ+1) + ' of ' + total;
+  document.getElementById('qPct').textContent = pct + '%';
+  document.getElementById('qNum').textContent = 'Q' + q.id;
+  // Section label
+  var secEl = document.getElementById('secLabel');
+  var prev = state.currentQ > 0 ? state.shuffledQ[state.currentQ-1].section : null;
+  secEl.textContent = q.section !== prev ? q.section : '';
+  // Scene
+  var sceneEl = document.getElementById('qScene');
+  sceneEl.textContent = '📍 ' + q.scene;
+  sceneEl.style.display = q.scene ? '' : 'none';
+  // Question text
+  document.getElementById('qText').textContent = q.q;
+  // Options
+  var list = document.getElementById('optionsList');
+  list.innerHTML = '';
+  var letters = ['A','B','C','D','E'];
+  q.opts.forEach(function(opt, i){
+    var btn = document.createElement('button');
+    btn.className = 'opt' + (state.selectedPersona === opt.p ? ' sel' : '');
+    btn.innerHTML = '<span class="opt-letter">' + letters[i] + '</span><span class="opt-text">' + opt.text + '</span>';
+    btn.onclick = function(){ selectOpt(opt.p); };
+    list.appendChild(btn);
+  });
+  // Confidence
+  updateConfDisplay();
+  // Nav buttons
+  document.getElementById('btnBack').disabled = state.currentQ === 0;
+  updateNextBtn();
+}
+
+function selectOpt(persona) {
+  state.selectedPersona = persona;
+  state.selectedConf = null;
+  // Update option styles
+  var q = state.shuffledQ[state.currentQ];
+  document.querySelectorAll('.opt').forEach(function(btn, i){
+    btn.classList.toggle('sel', q.opts[i].p === persona);
+  });
+  updateConfDisplay();
+  updateNextBtn();
+}
+
+function updateConfDisplay() {
+  var section = document.getElementById('confSection');
+  section.style.display = state.selectedPersona ? '' : 'none';
+  [1,2,3].forEach(function(v){
+    document.getElementById('conf'+v).classList.toggle('sel', state.selectedConf === v);
+  });
+}
+
+function selectConf(v) {
+  state.selectedConf = v;
+  [1,2,3].forEach(function(n){
+    document.getElementById('conf'+n).classList.toggle('sel', n === v);
+  });
+  updateNextBtn();
+}
+
+function updateNextBtn() {
+  var can = !!(state.selectedPersona && state.selectedConf);
+  var btn = document.getElementById('btnNext');
+  btn.disabled = !can;
+  btn.textContent = state.currentQ === state.shuffledQ.length-1 ? 'See My Results →' : 'Next →';
+}
+
+function nextQ() {
+  if(!state.selectedPersona || !state.selectedConf) return;
+  state.answers[state.currentQ] = {persona: state.selectedPersona, confidence: state.selectedConf};
+  if(state.currentQ < state.shuffledQ.length - 1) {
+    state.currentQ++;
+    var saved = state.answers[state.currentQ];
+    state.selectedPersona = saved ? saved.persona : null;
+    state.selectedConf = saved ? saved.confidence : null;
+    renderQuestion();
+  } else {
+    // Done — compute, save, and show results
+    state.result = scoreAssessment(state.answers);
+    saveResult(state.user, state.result);
+    showScreen('scoring');
+    setTimeout(function(){ renderResults(); showScreen('results'); }, 1600);
+  }
+}
+
+function prevQ() {
+  if(state.currentQ > 0) {
+    state.answers[state.currentQ] = {persona: state.selectedPersona, confidence: state.selectedConf};
+    state.currentQ--;
+    var saved = state.answers[state.currentQ];
+    state.selectedPersona = saved ? saved.persona : null;
+    state.selectedConf = saved ? saved.confidence : null;
+    renderQuestion();
+  }
+}
+
+// ================================================================
+// SCORING
+// ================================================================
+function scoreAssessment(answers) {
+  var keys = Object.keys(PERSONAS);
+  var raw = {}; var weighted = {};
+  keys.forEach(function(k){ raw[k]=0; weighted[k]=0; });
+  answers.forEach(function(a){
+    if(!a || !a.persona || !weighted.hasOwnProperty(a.persona)) return;
+    raw[a.persona]++;
+    weighted[a.persona] += (a.confidence || 2);
+  });
+  var totalW = keys.reduce(function(s,k){return s+weighted[k];},0) || 1;
+  var pct = {};
+  keys.forEach(function(k){ pct[k] = Math.round((weighted[k]/totalW)*100); });
+  var sorted = keys.map(function(k){return [k,weighted[k]];}).sort(function(a,b){return b[1]-a[1];});
+  var primary = sorted[0][0];
+  var secondary = sorted[1][1] >= 4 ? sorted[1][0] : null;
+  return {raw:raw, weighted:weighted, pct:pct, primary:primary, secondary:secondary, sorted:sorted};
+}
+
+// ================================================================
+// RESULTS RENDER
+// ================================================================
+function renderResults() {
+  var r = state.result;
+  var p = PERSONAS[r.primary];
+  var sec = r.secondary ? PERSONAS[r.secondary] : null;
+  if(!p) return;
+  var user = state.user || {};
+  var date = new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+
+  // Hero
+  var hero = document.getElementById('resultHero');
+  hero.style.borderTop = '5px solid ' + p.color;
+  hero.innerHTML = '<div class="r-label">Your AI Readiness Persona</div>'
+    + '<div class="r-persona">' + p.emoji + ' ' + p.name + '</div>'
+    + '<div class="r-tagline">' + p.tagline + '</div>'
+    + '<div class="r-summary">' + p.summary + '</div>'
+    + (sec ? '<span class="sec-pill" style="background:'+sec.bg+';color:'+sec.color+'">'+sec.emoji+' '+sec.name+' (secondary)</span>' : '')
+    + '<div class="r-meta">'
+    + '<span><strong>Name:</strong> '+(user.name||'—')+'</span>'
+    + '<span><strong>Role:</strong> '+(user.role||'—')+'</span>'
+    + (user.cohort?'<span><strong>Team:</strong> '+user.cohort+'</span>':'')
+    + '<span><strong>Date:</strong> '+date+'</span>'
+    + '</div>';
+
+  // Score bars
+  var bars = document.getElementById('scoreBars');
+  bars.innerHTML = '';
+  r.sorted.forEach(function(pair){
+    var pid = pair[0]; var pp = PERSONAS[pid]; var pc = r.pct[pid];
+    bars.innerHTML += '<div class="score-row">'
+      +'<div class="score-lbl">'+pp.emoji+' '+pp.name+'</div>'
+      +'<div class="score-track"><div class="score-fill" style="width:'+pc+'%;background:'+pp.color+'"></div></div>'
+      +'<div class="score-pct" style="color:'+pp.color+'">'+pc+'%</div>'
+      +'</div>';
+  });
+
+  // Full % breakdown grid
+  var pctEl = document.getElementById('pctBreakdown');
+  if(pctEl) {
+    var pOrder = ['identity','skeptic','purist','overwhelmed','accelerator'];
+    var pctHTML = '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--tg);margin-bottom:10px">Full Percentage Breakdown</div>'
+      + '<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px">';
+    pOrder.forEach(function(k){
+      var pp = PERSONAS[k]; var pc = r.pct[k] || 0;
+      var isTop = k === r.primary;
+      pctHTML += '<div style="text-align:center;padding:14px 6px;border-radius:10px;background:'+(isTop?pp.bg:'var(--lg)')+';border:1.5px solid '+(isTop?pp.color:'var(--mg2)')+';">'
+        + '<div style="font-size:22px;font-weight:800;color:'+pp.color+'">'+pc+'<span style="font-size:12px">%</span></div>'
+        + '<div style="font-size:10px;font-weight:600;color:var(--ch);margin-top:3px;line-height:1.3">'+pp.name+'</div>'
+        + (isTop ? '<div style="font-size:9px;color:'+pp.color+';margin-top:2px;font-weight:700">★ Primary</div>' : '')
+        + '</div>';
+    });
+    pctHTML += '</div>';
+    pctEl.innerHTML = pctHTML;
+  }
+
+  // Strengths
+  document.getElementById('strengthsCard').innerHTML = '<h3 style="color:'+p.color+'">Your Strengths in the AI Era</h3><ul>'
+    + p.strengths.map(function(s){return '<li>'+s+'</li>';}).join('') + '</ul>';
+
+  // Leadership
+  document.getElementById('leadershipCard').innerHTML = '<h3 style="color:#00A878">How You Add Value</h3><ul>'
+    + p.leadership.map(function(s){return '<li>'+s+'</li>';}).join('') + '</ul>';
+
+  // Goals
+  document.getElementById('goalTier').innerHTML =
+    '<div class="goal-box"><div class="tier-lbl" style="color:var(--tg)">Good</div><p>'+p.good+'</p></div>'
+    +'<div class="goal-box" style="border-color:#0057A8;background:#f5f8ff"><div class="tier-lbl" style="color:#0057A8">Better</div><p>'+p.better+'</p></div>'
+    +'<div class="goal-box" style="border-color:'+p.color+';background:'+p.bg+'"><div class="tier-lbl" style="color:'+p.color+'">Stretch</div><p>'+p.stretch+'</p></div>';
+
+  // Mindshift
+  document.getElementById('mindshiftBox').innerHTML = '<div class="ms-lbl">Mindset Shift</div><p>'+p.mindshift+'</p>';
+}
+
+// ================================================================
+// PDF DOWNLOAD
+// ================================================================
+function downloadPDF() {
+  var r = state.result;
+  var p = PERSONAS[r.primary];
+  if(!p) { alert('No results to download. Please complete the assessment first.'); return; }
+  var user = state.user || {};
+
+  try {
+    var jsPDF = window.jspdf.jsPDF;
+    var doc = new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+    var W=210, M=18;
+
+    function hex(h){return[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];}
+    function setColor(h){var c=hex(h);doc.setTextColor(c[0],c[1],c[2]);}
+    function setFill(h){var c=hex(h);doc.setFillColor(c[0],c[1],c[2]);}
+
+    // ── HEADER BLOCK ──
+    doc.setFillColor(45,45,45);
+    doc.rect(0,0,W,60,'F');
+
+    // Magenta accent bar
+    var pc=hex(p.color);
+    doc.setFillColor(pc[0],pc[1],pc[2]);
+    doc.rect(0,0,5,60,'F');
+
+    doc.setTextColor(255,255,255);
+    doc.setFont('helvetica','bold');
+    doc.setFontSize(8);
+    doc.text('BTS ENABLEMENT  \u00B7  AI READINESS ASSESSMENT', M, 13);
+
+    // "You align closest with the [persona] persona"
+    doc.setFontSize(11);
+    doc.setFont('helvetica','normal');
+    doc.setTextColor(180,180,180);
+    doc.text('You align closest with the', M, 24);
+    doc.setFont('helvetica','bold');
+    setColor(p.color);
+    doc.setFontSize(11);
+    doc.text(p.name + ' persona', M + doc.getTextWidth('You align closest with the '), 24);
+
+    doc.setFont('helvetica','bold');
+    doc.setFontSize(20);
+    doc.setTextColor(255,255,255);
+    doc.text(p.name, M, 37);
+
+    doc.setFont('helvetica','italic');
+    doc.setFontSize(9);
+    doc.setTextColor(190,190,190);
+    doc.text(p.tagline, M, 46);
+
+    doc.setFont('helvetica','normal');
+    doc.setFontSize(8);
+    doc.setTextColor(130,130,130);
+    var meta = (user.name||'Participant') + '   \u00B7   ' + (user.role||'') + (user.cohort ? '   \u00B7   ' + user.cohort : '') + '   \u00B7   ' + new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+    doc.text(meta, M, 56);
+
+    var y = 68;
+
+    // ── SUMMARY ──
+    doc.setFillColor(248,248,255);
+    doc.roundedRect(M, y, W-M*2, 2, 0, 0, 'F'); // thin rule
+    y += 4;
+    doc.setFont('helvetica','normal');
+    doc.setFontSize(8.5);
+    doc.setTextColor(45,45,45);
+    var sumLines = doc.splitTextToSize(p.summary, W-M*2);
+    doc.text(sumLines, M, y);
+    y += sumLines.length * 5 + 6;
+
+    // ── SCORE BARS ──
+    doc.setDrawColor(220,220,220);
+    doc.line(M, y, W-M, y); y += 5;
+    doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor(45,45,45);
+    doc.text('YOUR PERSONA PROFILE (confidence-weighted)', M, y); y += 7;
+
+    var sorted = r.sorted || [];
+    sorted.forEach(function(pair){
+      var pid=pair[0]; var pp=PERSONAS[pid]; var pc2=r.pct[pid];
+      if(!pp) return;
+      var rgb=hex(pp.color);
+      doc.setFontSize(8);
+      doc.setFont('helvetica', pid===r.primary ? 'bold' : 'normal');
+      doc.setTextColor(45,45,45);
+      doc.text(pp.name, M, y+4);
+      doc.setFillColor(230,230,230);
+      doc.roundedRect(M+52,y,110,5,1,1,'F');
+      doc.setFillColor(rgb[0],rgb[1],rgb[2]);
+      doc.roundedRect(M+52,y,110*(pc2/100),5,1,1,'F');
+      doc.setFontSize(7); doc.setTextColor(80,80,80);
+      doc.text(pc2+'%', M+164, y+4);
+      y += 10;
+    });
+    y += 4;
+
+    // ── TWO COLUMNS: STRENGTHS + VALUE ──
+    doc.setDrawColor(220,220,220);
+    doc.line(M, y, W-M, y); y += 5;
+    var cw = (W-M*2)/2 - 4;
+
+    doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor(45,45,45);
+    doc.text('YOUR STRENGTHS IN THE AI ERA', M, y);
+    doc.text('HOW YOU ADD VALUE', M+cw+8, y);
+    y += 6;
+
+    var bulletChar = '\u2022'; // proper bullet point
+    doc.setFont('helvetica','normal'); doc.setFontSize(8);
+
+    var leftLines = [];
+    p.strengths.forEach(function(s){ leftLines.push(bulletChar + ' ' + s); });
+    var rightLines = [];
+    p.leadership.forEach(function(s){ rightLines.push(bulletChar + ' ' + s); });
+
+    var maxRows = Math.max(leftLines.length, rightLines.length);
+    for(var i=0; i<maxRows; i++){
+      if(leftLines[i]){
+        doc.setTextColor(45,45,45);
+        var wrapped = doc.splitTextToSize(leftLines[i], cw-2);
+        doc.text(wrapped, M, y+i*8);
+      }
+      if(rightLines[i]){
+        doc.setTextColor(45,45,45);
+        var wrapped2 = doc.splitTextToSize(rightLines[i], cw-2);
+        doc.text(wrapped2, M+cw+8, y+i*8);
+      }
+    }
+    y += maxRows * 8 + 6;
+
+    // ── MINDSHIFT ──
+    var rgb3=hex(p.color);
+    doc.setFillColor(rgb3[0],rgb3[1],rgb3[2]);
+    doc.roundedRect(M, y, W-M*2, 14, 2, 2, 'F');
+    doc.setTextColor(255,255,255);
+    doc.setFont('helvetica','bold'); doc.setFontSize(8);
+    doc.text('MINDSET SHIFT', M+4, y+5);
+    doc.setFont('helvetica','normal');
+    var msLines = doc.splitTextToSize(p.mindshift, W-M*2-10);
+    doc.text(msLines, M+4, y+10);
+    y += 20;
+
+    // ── 30-DAY GOALS ──
+    doc.setDrawColor(220,220,220);
+    doc.line(M, y, W-M, y); y += 5;
+    doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor(45,45,45);
+    doc.text('YOUR 30-DAY AI GOAL', M, y); y += 6;
+
+    var goalData = [
+      {label:'GOOD', text:p.good, fill:[240,240,240], textColor:[45,45,45]},
+      {label:'BETTER', text:p.better, fill:[220,230,248], textColor:[0,50,100]},
+      {label:'STRETCH', text:p.stretch, fill:rgb3, textColor:[255,255,255]}
+    ];
+    var gw = (W-M*2-8)/3;
+    goalData.forEach(function(g,i){
+      var x = M + i*(gw+4);
+      doc.setFillColor(g.fill[0],g.fill[1],g.fill[2]);
+      doc.roundedRect(x, y, gw, 30, 2, 2, 'F');
+      doc.setTextColor(g.textColor[0],g.textColor[1],g.textColor[2]);
+      doc.setFont('helvetica','bold'); doc.setFontSize(7.5);
+      doc.text(g.label, x+3, y+7);
+      doc.setFont('helvetica','normal'); doc.setFontSize(6.5);
+      var gl = doc.splitTextToSize(g.text, gw-6);
+      doc.text(gl, x+3, y+12);
+    });
+    y += 36;
+
+    // ── 1:1 PROMPT ──
+    doc.setFillColor(238,249,245);
+    doc.roundedRect(M, y, W-M*2, 22, 2, 2, 'F');
+    doc.setTextColor(0,100,80);
+    doc.setFont('helvetica','bold'); doc.setFontSize(9);
+    doc.text('Bring This to Your Next 1:1', M+4, y+7);
+    doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(45,45,45);
+    doc.text('Your persona is not a performance review. It is a starting point for a curious conversation.', M+4, y+14);
+    doc.text('Your manager\'s job is not to fix the pattern — it is to understand the story underneath it.', M+4, y+19);
+    y += 28;
+
+    // ── FOOTER ──
+    doc.setDrawColor(220,220,220);
+    doc.line(M, y, W-M, y); y += 5;
+    doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(150,150,150);
+    doc.text('BTS Enablement  \u00B7  Leading AI Conversations  \u00B7  AI Readiness Assessment  \u00B7  bts.com', M, y);
+    doc.text('Movement is expected. Differentiation is in pacing \u2014 not direction.', M, y+5);
+
+    doc.save('AI-Readiness-' + (user.name||'Result').replace(/[^a-zA-Z0-9]/g,'_') + '.pdf');
+
+  } catch(err) {
+    console.error('PDF error:', err);
+    alert('PDF generation failed: ' + err.message + '\n\nPlease make sure jsPDF loaded correctly.');
+  }
+}
+
+// ================================================================
+// MANAGER LOGIN
+// ================================================================
+function mgrLogin() {
+  var code = document.getElementById('mgrCode').value.trim().toUpperCase();
+  var team = TEAMS.find(function(t){return t.code===code;});
+  if(!team){document.getElementById('mgrErr').textContent='Incorrect access code. Contact your AI Champion for your team code.';return;}
+  document.getElementById('mgrErr').textContent='';
+  state.mgrTeam = team;
+  state.anonMode = true;
+  renderMgrDashboard();
+  showScreen('mgr-dashboard');
+}
+
+function toggleAnon() {
+  state.anonMode = !state.anonMode;
+  var btn = document.getElementById('anonToggle');
+  btn.classList.toggle('on', !state.anonMode);
+  document.getElementById('anonBar').style.display = state.anonMode ? '' : 'none';
+  renderMgrTable();
+}
+
+function renderMgrDashboard() {
+  var team = state.mgrTeam;
+  document.getElementById('mgrTeamName').textContent = team.name;
+  document.getElementById('mgrDate').textContent = 'AI Readiness Overview · ' + new Date().toLocaleDateString('en-US',{month:'long',year:'numeric'});
+
+  // Merge real saved results with demo data
+  var realResults = loadAllResults();
+  var allParticipants = realResults.length > 0 ? realResults : MOCK_PARTICIPANTS;
+  var participants = allParticipants.filter(function(p){return p.cohort===team.name;});
+  var counts = {}; Object.keys(PERSONAS).forEach(function(k){counts[k]=0;});
+  participants.forEach(function(p){counts[p.primary]++;});
+  var sorted = Object.keys(counts).map(function(k){return [k,counts[k]];}).sort(function(a,b){return b[1]-a[1];});
+  var top = sorted[0] ? PERSONAS[sorted[0][0]] : null;
+  var highConf = participants.filter(function(p){return p.confidence==='high';}).length;
+  var mixed = participants.filter(function(p){return p.secondary;}).length;
+
+  // Stats
+  var stats = document.getElementById('mgrStats');
+  stats.innerHTML = ''
+    +'<div class="stat"><div class="stat-num" style="color:var(--mg)">'+participants.length+'</div><div class="stat-lbl">Completed</div></div>'
+    +'<div class="stat"><div class="stat-num" style="color:var(--em)">'+(top&&participants.length?top.emoji:'—')+'</div><div class="stat-lbl">'+(top&&participants.length?top.name:'No data yet')+'</div></div>'
+    +'<div class="stat"><div class="stat-num" style="color:var(--bl)">'+highConf+'</div><div class="stat-lbl">High-confidence</div></div>'
+    +'<div class="stat"><div class="stat-num" style="color:var(--ch)">'+Math.round((mixed/Math.max(participants.length,1))*100)+'%</div><div class="stat-lbl">Mixed personas</div></div>';
+
+  // Insight
+  var insightEl = document.getElementById('mgrInsight');
+  if(top && participants.length > 0) {
+    var insights = {
+      overwhelmed:'Your team skews toward Overwhelmed Operator. Before increasing AI expectations, consider where you can reduce workload first.',
+      accelerator:'Strong Accelerator energy. Channel this into shareable impact — make sure governance keeps pace with experimentation.',
+      identity:'Identity Defender is dominant. These team members need conversations that separate their tasks from their value.',
+      skeptic:'Responsible Skeptic is strongest. Invite these members to help define responsible use standards.',
+      purist:'Skill Purist energy is strongest. Validate the craft concern and define what AI-assisted excellence looks like.'
+    };
+    insightEl.innerHTML = '<strong>💡 Team Insight: </strong>' + (insights[top.id]||'');
+    insightEl.style.display = '';
+  } else { insightEl.style.display='none'; }
+
+  // Empty state
+  if(participants.length === 0) {
+    document.getElementById('mgrBreakdownPanel').innerHTML = '<div style="text-align:center;padding:40px"><div style="font-size:32px;margin-bottom:12px">📋</div><h3 style="margin-bottom:8px;font-family:\'DM Serif Display\',serif">No results yet for '+team.name+'</h3><p style="color:var(--tg);font-size:14px">Share your team code (<strong>'+team.code+'</strong>) with team members to get started.</p></div>';
+    document.getElementById('mgrTablePanel').style.display='none';
+    return;
+  }
+  document.getElementById('mgrTablePanel').style.display='';
+
+  // Breakdown bars
+  var max = sorted[0][1] || 1;
+  var bd = document.getElementById('mgrBreakdown');
+  bd.innerHTML = '';
+  sorted.forEach(function(pair){
+    var pp = PERSONAS[pair[0]];
+    bd.innerHTML += '<div class="breakdown-row">'
+      +'<div class="b-name">'+pp.emoji+' '+pp.name+'</div>'
+      +'<div class="b-track"><div class="b-fill" style="width:'+Math.round((pair[1]/max)*100)+'%;background:'+pp.color+'"></div></div>'
+      +'<div class="b-count">'+pair[1]+' '+(pair[1]===1?'person':'people')+'</div>'
+      +'</div>';
+  });
+
+  // Table
+  document.getElementById('mgrThead').innerHTML = '<tr><th>Participant</th><th>Primary</th><th>Secondary</th><th>Confidence</th><th>Completed</th></tr>';
+  state.mgrParticipants = participants;
+  renderMgrTable();
+}
+
+function renderMgrTable() {
+  var tbody = document.getElementById('mgrTbody');
+  if(!state.mgrParticipants) return;
+  tbody.innerHTML = '';
+  state.mgrParticipants.forEach(function(p){
+    var prim = PERSONAS[p.primary];
+    var sec = p.secondary ? PERSONAS[p.secondary] : null;
+    var confColor = p.confidence==='high'?'var(--em)':p.confidence==='medium'?'var(--bl)':'var(--tg)';
+    var confLabel = p.confidence==='high'?'● High':p.confidence==='medium'?'● Medium':'● Low';
+    tbody.innerHTML += '<tr>'
+      +'<td style="font-weight:500">'+(state.anonMode?p.anon:p.name)+'</td>'
+      +'<td><span class="pill" style="background:'+prim.bg+';color:'+prim.color+'">'+prim.emoji+' '+prim.name+'</span></td>'
+      +'<td>'+(sec?'<span class="pill" style="background:'+sec.bg+';color:'+sec.color+';opacity:.85">'+sec.emoji+' '+sec.name+'</span>':'<span style="color:var(--tg);font-size:13px">—</span>')+'</td>'
+      +'<td><span style="font-size:12px;color:'+confColor+'">'+confLabel+'</span></td>'
+      +'<td style="color:var(--tg);font-size:13px">'+p.date+'</td>'
+      +'</tr>';
+  });
+}
+
+// ================================================================
+// PM LOGIN & DASHBOARD
+// ================================================================
+function pmLogin() {
+  if(document.getElementById('pmPass').value !== PM_PASSWORD){
+    document.getElementById('pmErr').textContent='Incorrect password.';return;
+  }
+  document.getElementById('pmErr').textContent='';
+  renderPMDashboard();
+  showScreen('pm-dashboard');
+}
+
+function pmTab(tab, btn) {
+  state.currentPmTab = tab;
+  document.querySelectorAll('.tab').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  ['overview','teams','participants'].forEach(function(t){
+    document.getElementById('pm'+t.charAt(0).toUpperCase()+t.slice(1)).style.display = t===tab?'':'none';
+  });
+}
+
+function renderPMDashboard() {
+  var realCount = loadAllResults().length;
+  var dataLabel = realCount > 0 ? realCount + ' real completions' : MOCK_PARTICIPANTS.length + ' demo completions (no real data yet)';
+  document.getElementById('pmSubtitle').textContent = 'Full access · '+state.pmTeams.length+' active teams · '+dataLabel;
+
+  // Overview
+  renderPMOverview();
+  renderPMTeams();
+  renderPMParticipants();
+}
+
+function renderPMOverview() {
+  var realResults = loadAllResults();
+  var all = realResults.length > 0 ? realResults : MOCK_PARTICIPANTS;
+  var counts = {}; Object.keys(PERSONAS).forEach(function(k){counts[k]=0;});
+  all.forEach(function(p){counts[p.primary]++;});
+  var sorted = Object.keys(counts).map(function(k){return[k,counts[k]];}).sort(function(a,b){return b[1]-a[1];});
+  var max = sorted[0][1]||1;
+  var highConf = all.filter(function(p){return p.confidence==='high';}).length;
+  var mixed = all.filter(function(p){return p.secondary;}).length;
+
+  var isDemo = loadAllResults().length === 0;
+  var html = (isDemo ? '<div style="background:#FFF8EC;border:1px solid #F5A623;border-radius:10px;padding:12px 16px;font-size:13px;color:#7a4a00;margin-bottom:18px">📋 <strong>Showing demo data.</strong> Real participant completions will appear here automatically once team members complete the assessment.</div>' : '') + '<div class="stats-grid" style="margin-bottom:20px">'
+    +'<div class="stat"><div class="stat-num" style="color:var(--mg)">'+all.length+'</div><div class="stat-lbl">Total completions</div></div>'
+    +'<div class="stat"><div class="stat-num" style="color:var(--bl)">'+state.pmTeams.length+'</div><div class="stat-lbl">Active teams</div></div>'
+    +'<div class="stat"><div class="stat-num" style="color:var(--em)">'+highConf+'</div><div class="stat-lbl">High-confidence</div></div>'
+    +'<div class="stat"><div class="stat-num" style="color:var(--ch)">'+Math.round((mixed/Math.max(all.length,1))*100)+'%</div><div class="stat-lbl">Mixed personas</div></div>'
+    +'</div>';
+
+  html += '<div class="panel"><h3>Persona Distribution — All Teams</h3>';
+  sorted.forEach(function(pair){
+    var pp=PERSONAS[pair[0]];
+    html+='<div class="breakdown-row"><div class="b-name">'+pp.emoji+' '+pp.name+'</div>'
+      +'<div class="b-track"><div class="b-fill" style="width:'+Math.round((pair[1]/max)*100)+'%;background:'+pp.color+'"></div></div>'
+      +'<div class="b-count">'+pair[1]+'</div></div>';
+  });
+  html += '</div>';
+  // Add data collection instructions at top of overview
+  html = '<div style="background:#fff;border:1.5px solid var(--mg);border-radius:14px;padding:20px 24px;margin-bottom:20px">'
+    + '<h3 style="font-size:13px;font-weight:700;color:var(--mg);margin-bottom:10px">📥 How Results Come In</h3>'
+    + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">'
+    + '<div>'
+    + '<div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--tg);margin-bottom:6px">Step 1 — Participant emails you</div>'
+    + '<p style="font-size:13px;line-height:1.6;color:var(--ch)">After completing the assessment, each participant clicks <strong>"Send My Result to AI Champion."</strong> An email arrives at <strong>elya.bottiger@bts.com</strong> with their full result and a ready-to-paste CSV row.</p>'
+    + '</div>'
+    + '<div>'
+    + '<div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--tg);margin-bottom:6px">Step 2 — You paste into Box</div>'
+    + '<p style="font-size:13px;line-height:1.6;color:var(--ch)">Copy the CSV row from the email and paste it into the next empty row in your <a href="https://bts.ent.box.com/file/2161691485658" target="_blank" style="color:var(--mg);font-weight:600">Assessment Results Log in Box ↗</a>. That keeps the data private — only you can access it.</p>'
+    + '</div>'
+    + '</div>'
+    + '</div>'
+    + html;
+
+  document.getElementById('pmOverview').innerHTML = html;
+}
+
+function renderPMTeams() {
+  var codesVisible = state.showCodes;
+  var html = '<div class="warn-bar">🔑 <strong>These codes are confidential.</strong> Share each code only with the manager of that team.</div>';
+  html += '<div class="panel" style="margin-bottom:16px"><h3>Add New Team</h3>'
+    +'<div class="cohort-input-row"><input class="cohort-input" id="newTeamInput" placeholder="New team name..." onkeydown="if(event.key===\'Enter\')addPMTeam()"><button class="btn btn-green" onclick="addPMTeam()">+ Add Team</button></div></div>';
+  html += '<div class="panel"><div class="panel-hdr"><h3>All Teams &amp; Access Codes</h3>'
+    +'<button class="btn btn-ghost" style="padding:6px 14px;font-size:12px" onclick="toggleCodes(this)">'+(codesVisible?'🔒 Hide codes':'👁 Show codes')+'</button></div>'
+    +'<table class="tbl"><thead><tr><th>#</th><th>Team Name</th><th>Access Code</th><th>Completions</th><th>Action</th></tr></thead><tbody>';
+  state.pmTeams.forEach(function(t,i){
+    var realRes = loadAllResults(); var allP = realRes.length > 0 ? realRes : MOCK_PARTICIPANTS; var count = allP.filter(function(p){return p.cohort===t.name;}).length;
+    html+='<tr><td style="color:var(--tg);font-size:13px">'+(i+1)+'</td>'
+      +'<td style="font-weight:600">'+t.name+'</td>'
+      +'<td><span class="codes-table" style="'+(codesVisible?'':'filter:blur(4px);user-select:none')+'">'+t.code+'</span></td>'
+      +'<td style="color:'+(count>0?'var(--em)':'var(--tg)')+';font-weight:'+(count>0?600:400)+'">'+count+'</td>'
+      +'<td><button onclick="removePMTeam(\''+t.id+'\')" style="background:none;border:1px solid #ffcdd2;color:#c62828;padding:4px 12px;border-radius:6px;cursor:pointer;font-size:12px;font-family:\'DM Sans\',sans-serif">Remove</button></td>'
+      +'</tr>';
+  });
+  html += '</tbody></table></div>';
+  document.getElementById('pmTeams').innerHTML = html;
+}
+
+function renderPMParticipants() {
+  var participants = getAllParticipants();
+  var filtered = state.pmSelectedTeam === 'all'
+    ? participants
+    : participants.filter(function(p){ return p.cohort === state.pmSelectedTeam; });
+  var teamOpts = '<option value="all">All Teams</option>';
+  state.pmTeams.forEach(function(t){ teamOpts += '<option value="'+t.name+'"'+(state.pmSelectedTeam===t.name?' selected':'')+'>'+t.name+'</option>'; });
+  var html = '<div class="panel"><div class="panel-hdr">'
+    +'<h3>All Participants <span style="font-size:13px;font-weight:400;color:var(--tg)">('+filtered.length+' total)</span></h3>'
+    +'<div style="display:flex;gap:10px;align-items:center">'
+    +'<select class="sel-wrap" onchange="state.pmSelectedTeam=this.value;renderPMParticipants()">'+teamOpts+'</select>'
+    +'<div class="toggle-wrap"><span>Anon</span><button class="toggle'+(state.pmAnonMode?'':' on')+'" onclick="togglePMAnon()"></button><span>Named</span></div>'
+    +'</div></div>'
+    +'<div class="info-bar" style="margin-bottom:12px;font-size:12px">&#128190; Results submitted on this device are saved locally and appear here. Demo entries are marked and cannot be deleted.</div>'
+    +'<table class="tbl"><thead><tr><th>Participant</th><th>Team</th><th>Primary</th><th>Secondary</th><th>Confidence</th><th>Date</th><th>Action</th></tr></thead><tbody>';
+  filtered.forEach(function(p){
+    var prim=PERSONAS[p.primary]; var sec=p.secondary?PERSONAS[p.secondary]:null;
+    if(!prim) return;
+    var confColor=p.confidence==='high'?'var(--em)':p.confidence==='medium'?'var(--bl)':'var(--tg)';
+    var displayName = state.pmAnonMode ? (p.anon||'Anonymous') : p.name;
+    var hasId = !!p.id;
+    var safeId = hasId ? p.id : '';
+    var safeName = p.name ? p.name.replace(/\\/g,'').replace(/'/g,'') : 'this participant';
+    var safeCohort = p.cohort ? p.cohort.replace(/'/g,'') : '';
+    html+='<tr>'
+      +'<td style="font-weight:500">'+displayName+'</td>'
+      +'<td style="color:var(--tg);font-size:13px">'+(p.cohort||'&#8212;')+'</td>'
+      +'<td><span class="pill" style="background:'+prim.bg+';color:'+prim.color+'">'+prim.name+'</span></td>'
+      +'<td>'+(sec?'<span class="pill" style="background:'+sec.bg+';color:'+sec.color+';opacity:.85">'+sec.name+'</span>':'<span style="color:var(--tg);font-size:13px">&#8212;</span>')+'</td>'
+      +'<td><span style="font-size:12px;color:'+confColor+'">'+p.confidence+'</span></td>'
+      +'<td style="color:var(--tg);font-size:13px">'+(p.date||'&#8212;')+'</td>'
+      +'<td>'+(hasId
+        ? '<button onclick="confirmDelete(\''+safeId+'\',\''+safeName+'\',\''+safeCohort+'\')" style="background:none;border:1px solid #ffcdd2;color:#c62828;padding:3px 10px;border-radius:5px;cursor:pointer;font-size:11px;font-family:\'DM Sans\',sans-serif">Remove</button>'
+        : '<span style="color:var(--mg2);font-size:11px;font-style:italic">demo</span>')
+      +'</td></tr>';
+  });
+  html += '</tbody></table></div>';
+  document.getElementById('pmParticipants').innerHTML = html;
+}
+
+function confirmDelete(id, name, cohort) {
+  var existing = document.getElementById('delModal');
+  if(existing) existing.remove();
+  var modal = document.createElement('div');
+  modal.id = 'delModal';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px';
+  modal.innerHTML = '<div style="background:#fff;border-radius:16px;padding:36px;max-width:420px;width:100%;box-shadow:0 8px 40px rgba(0,0,0,.25)">'
+    +'<div style="font-size:28px;margin-bottom:10px">&#9888;&#65039;</div>'
+    +'<h3 style="font-family:\'DM Serif Display\',serif;font-size:22px;margin-bottom:8px">Remove this data?</h3>'
+    +'<p style="color:var(--tg);font-size:14px;line-height:1.65;margin-bottom:6px">Are you sure you want to remove <strong>'+name+'</strong>\'s assessment data'+(cohort?' from the <strong>'+cohort+'</strong> cohort':'')+' ?</p>'
+    +'<p style="color:#c62828;font-size:13px;margin-bottom:24px">This action cannot be undone.</p>'
+    +'<div style="display:flex;gap:10px">'
+    +'<button onclick="document.getElementById(\'delModal\').remove()" style="flex:1;padding:12px;border:1px solid var(--mg2);border-radius:8px;background:#fff;cursor:pointer;font-family:\'DM Sans\',sans-serif;font-size:14px;font-weight:500">Cancel</button>'
+    +'<button onclick="doDelete(\''+id+'\')" style="flex:1;padding:12px;border:none;border-radius:8px;background:#c62828;color:#fff;cursor:pointer;font-family:\'DM Sans\',sans-serif;font-size:14px;font-weight:700">Yes, Remove Data</button>'
+    +'</div></div>';
+  document.body.appendChild(modal);
+}
+
+function doDelete(id) {
+  deleteResult(id);
+  var modal = document.getElementById('delModal');
+  if(modal) modal.remove();
+  renderPMParticipants();
+  renderPMOverview();
+}
+
+
+function toggleCodes(btn) {
+  state.showCodes = !state.showCodes;
+  btn.textContent = state.showCodes ? '🔒 Hide codes' : '👁 Show codes';
+  document.querySelectorAll('.codes-table').forEach(function(el){
+    el.style.filter = state.showCodes ? '' : 'blur(4px)';
+    el.style.userSelect = state.showCodes ? 'all' : 'none';
+  });
+}
+
+function addPMTeam() {
+  var input = document.getElementById('newTeamInput');
+  var name = input.value.trim();
+  if(!name) return;
+  var code = 'BTS-'+name.replace(/[^a-zA-Z]/g,'').toUpperCase().slice(0,3);
+  state.pmTeams.push({id:name.toLowerCase().replace(/\s/g,'_'), name:name, code:code});
+  input.value = '';
+  renderPMTeams();
+  var realCount = loadAllResults().length;
+  var dataLabel = realCount > 0 ? realCount + ' real completions' : MOCK_PARTICIPANTS.length + ' demo completions (no real data yet)';
+  document.getElementById('pmSubtitle').textContent = 'Full access · '+state.pmTeams.length+' active teams · '+dataLabel;
+}
+
+function removePMTeam(id) {
+  state.pmTeams = state.pmTeams.filter(function(t){return t.id!==id;});
+  renderPMTeams();
+}
+
+function confirmDelete(id, name) {
+  state.pendingDeleteId = id;
+  state.pendingDeleteName = name;
+  document.getElementById('deleteModalName').textContent = name;
+  document.getElementById('deleteModal').style.display = 'flex';
+}
+
+function cancelDelete() {
+  state.pendingDeleteId = null;
+  state.pendingDeleteName = null;
+  document.getElementById('deleteModal').style.display = 'none';
+}
+
+function executeDelete() {
+  if(state.pendingDeleteId) {
+    deleteResult(state.pendingDeleteId);
+    document.getElementById('deleteModal').style.display = 'none';
+    state.pendingDeleteId = null;
+    state.pendingDeleteName = null;
+    // Refresh all PM views
+    renderPMDashboard();
+  }
+}
+
+function togglePMAnon() {
+  state.pmAnonMode = !state.pmAnonMode;
+  renderPMParticipants();
+}
+
+// ================================================================
+// EMAIL SUBMISSION — sends result privately to AI Champion only
+// ================================================================
+function submitByEmail() {
+  var r = state.result;
+  var u = state.user || {};
+  if(!r || !r.primary) {
+    alert('No result found. Please complete the assessment first.');
+    return;
+  }
+  var pct = r.pct || {};
+  var primary = PERSONAS[r.primary] ? PERSONAS[r.primary].name : r.primary;
+  var secondary = r.secondary && PERSONAS[r.secondary] ? PERSONAS[r.secondary].name : 'None';
+  var conf = scoreToConfidenceLabel(r.weighted, r.primary);
+  var date = new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+
+  var subject = 'AI Readiness Result: ' + (u.name||'Participant') + ' | ' + (u.cohort||'Team not specified') + ' | ' + primary;
+
+  var body = 'AI READINESS ASSESSMENT RESULT
+'
+    + '================================
+'
+    + 'Submitted: ' + date + '
+'
+    + 'Name: ' + (u.name||'') + '
+'
+    + 'Role: ' + (u.role||'') + '
+'
+    + 'Team / Cohort: ' + (u.cohort||'') + '
+'
+    + '
+'
+    + 'PRIMARY PERSONA: ' + primary + '
+'
+    + 'SECONDARY PERSONA: ' + secondary + '
+'
+    + 'CONFIDENCE LEVEL: ' + conf + '
+'
+    + '
+'
+    + 'FULL PERCENTAGE BREAKDOWN:
+'
+    + '  Identity Defender:    ' + (pct.identity||0) + '%
+'
+    + '  Responsible Skeptic:  ' + (pct.skeptic||0) + '%
+'
+    + '  Skill Purist:         ' + (pct.purist||0) + '%
+'
+    + '  Overwhelmed Operator: ' + (pct.overwhelmed||0) + '%
+'
+    + '  Accelerator:          ' + (pct.accelerator||0) + '%
+'
+    + '
+'
+    + '--------------------------------
+'
+    + 'CSV ROW (paste into Assessment_Results_Log.csv):
+'
+    + (state.pendingCSVRow || '') + '
+'
+    + '--------------------------------
+'
+    + 'BTS AI Readiness Assessment | Leading AI Conversations';
+
+  var mailto = 'mailto:elya.bottiger@bts.com'
+    + '?subject=' + encodeURIComponent(subject)
+    + '&body=' + encodeURIComponent(body);
+
+  window.location.href = mailto;
+
+  var confirm = document.getElementById('emailConfirm');
+  if(confirm) confirm.style.display = '';
+  setTimeout(function(){
+    if(confirm) confirm.style.display = 'none';
+  }, 8000);
+}
+
+// ================================================================
+// LOCALSTORAGE PERSISTENCE
+// ================================================================
+var STORAGE_KEY = 'bts_ai_assessment_results';
+
+function saveResult(user, result) {
+  if(!user || !result) return;
+  var all = loadAllResults();
+  var entry = {
+    id: Date.now() + '_' + Math.random().toString(36).slice(2,7),
+    name: user.name || 'Anonymous',
+    role: user.role || '',
+    cohort: user.cohort || '',
+    primary: result.primary,
+    secondary: result.secondary || null,
+    pct: result.pct,
+    confidence: calcConfidenceLevel(result),
+    date: new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}),
+    timestamp: Date.now()
+  };
+  // Replace existing entry for same name+cohort combo (retake)
+  var idx = all.findIndex(function(e){ return e.name===entry.name && e.cohort===entry.cohort; });
+  if(idx >= 0) { all[idx] = entry; } else { all.push(entry); }
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(all)); } catch(e) { console.warn('localStorage unavailable'); }
+}
+
+function loadAllResults() {
+  try {
+    var raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch(e) { return []; }
+}
+
+function deleteResult(id) {
+  var all = loadAllResults().filter(function(e){ return e.id !== id; });
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(all)); } catch(e) {}
+}
+
+function resetAllResults() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
+}
+
+function calcConfidenceLevel(result) {
+  // Determine confidence label based on score spread
+  var sorted = result.sorted || [];
+  if(!sorted.length) return 'medium';
+  var top = sorted[0][1];
+  var second = sorted.length > 1 ? sorted[1][1] : 0;
+  var gap = top - second;
+  if(gap >= 6) return 'high';
+  if(gap >= 3) return 'medium';
+  return 'low';
+}
+
+function getAllParticipants() {
+  // Combine localStorage results with mock data for demo, deduping by name
+  var real = loadAllResults();
+  var mock = MOCK_PARTICIPANTS.slice();
+  // Add real entries that aren't in mock
+  real.forEach(function(r) {
+    var exists = mock.find(function(m){ return m.name===r.name; });
+    if(!exists) mock.push(r);
+    else {
+      // Update mock with real data
+      Object.assign(exists, r);
+    }
+  });
+  return mock;
+}
+
+// ================================================================
+// BOOT
+// ================================================================
+init();
+</script>
+<!-- DELETE CONFIRMATION MODAL -->
+<div id="deleteModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;align-items:center;justify-content:center">
+  <div style="background:#fff;border-radius:16px;padding:36px;max-width:420px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,.3)">
+    <div style="font-size:28px;margin-bottom:12px">⚠️</div>
+    <h3 style="font-family:'DM Serif Display',serif;font-size:22px;margin-bottom:10px">Remove participant data?</h3>
+    <p style="font-size:14px;color:#555;line-height:1.65;margin-bottom:6px">You are about to permanently remove all assessment data for:</p>
+    <p style="font-size:16px;font-weight:700;color:var(--ch);margin-bottom:20px;padding:10px 16px;background:var(--lg);border-radius:8px" id="deleteModalName"></p>
+    <p style="font-size:13px;color:#999;margin-bottom:24px">This action cannot be undone. The participant would need to retake the assessment for their data to reappear.</p>
+    <div style="display:flex;gap:12px">
+      <button onclick="cancelDelete()" style="flex:1;padding:12px;border:1.5px solid var(--mg2);border-radius:8px;background:none;cursor:pointer;font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif;color:var(--ch)">Cancel</button>
+      <button onclick="executeDelete()" style="flex:1;padding:12px;border:none;border-radius:8px;background:#c62828;color:#fff;cursor:pointer;font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif">Yes, Remove Data</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
