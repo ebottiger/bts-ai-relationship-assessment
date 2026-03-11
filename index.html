@@ -1540,26 +1540,64 @@ function removePMTeam(id) {
   renderPMTeams();
 }
 
-function confirmDelete(id, name) {
-  state.pendingDeleteId = id;
-  state.pendingDeleteName = name;
-  document.getElementById('deleteModalName').textContent = name;
-  document.getElementById('deleteModal').style.display = 'flex';
+
+// ================================================================
+// MISSING FUNCTIONS — email submit, delete modal, PM anon toggle
+// ================================================================
+function submitByEmail() {
+  var r = state.result;
+  var u = state.user || {};
+  if(!r || !r.primary) { alert('No result found. Please complete the assessment first.'); return; }
+  var pct = r.pct || {};
+  var weighted = r.weighted || {};
+  var primary = PERSONAS[r.primary] ? PERSONAS[r.primary].name : r.primary;
+  var secondary = r.secondary && PERSONAS[r.secondary] ? PERSONAS[r.secondary].name : 'None';
+  var conf = scoreToConfidenceLabel(weighted, r.primary);
+  var date = new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+  var subject = 'AI Readiness Result: '+(u.name||'Participant')+' | '+(u.cohort||'Team not specified')+' | '+primary;
+  var body = 'AI READINESS ASSESSMENT RESULT'
+    +'\n================================'
+    +'\nSubmitted: '+date
+    +'\nName: '+(u.name||'')
+    +'\nRole: '+(u.role||'')
+    +'\nTeam / Cohort: '+(u.cohort||'')
+    +'\n'
+    +'\nPRIMARY PERSONA: '+primary
+    +'\nSECONDARY PERSONA: '+secondary
+    +'\nCONFIDENCE LEVEL: '+conf
+    +'\n'
+    +'\nFULL PERCENTAGE BREAKDOWN:'
+    +'\n  Identity Defender:    '+(pct.identity||0)+'%'
+    +'\n  Responsible Skeptic:  '+(pct.skeptic||0)+'%'
+    +'\n  Skill Purist:         '+(pct.purist||0)+'%'
+    +'\n  Overwhelmed Operator: '+(pct.overwhelmed||0)+'%'
+    +'\n  Accelerator:          '+(pct.accelerator||0)+'%'
+    +'\n'
+    +'\n--------------------------------'
+    +'\nCSV ROW (paste into Assessment_Results_Log.csv):'
+    +'\n'+(state.pendingCSVRow||'')
+    +'\n--------------------------------'
+    +'\nBTS AI Readiness Assessment | Leading AI Conversations';
+  var mailto = 'mailto:elya.bottiger@bts.com?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
+  window.location.href = mailto;
+  var confirm = document.getElementById('emailConfirm');
+  if(confirm) { confirm.style.display=''; setTimeout(function(){ confirm.style.display='none'; },8000); }
 }
 
 function cancelDelete() {
+  var modal = document.getElementById('deleteModal');
+  if(modal) modal.style.display='none';
   state.pendingDeleteId = null;
   state.pendingDeleteName = null;
-  document.getElementById('deleteModal').style.display = 'none';
 }
 
 function executeDelete() {
   if(state.pendingDeleteId) {
     deleteResult(state.pendingDeleteId);
-    document.getElementById('deleteModal').style.display = 'none';
+    var modal = document.getElementById('deleteModal');
+    if(modal) modal.style.display='none';
     state.pendingDeleteId = null;
     state.pendingDeleteName = null;
-    // Refresh all PM views
     renderPMDashboard();
   }
 }
@@ -1567,153 +1605,6 @@ function executeDelete() {
 function togglePMAnon() {
   state.pmAnonMode = !state.pmAnonMode;
   renderPMParticipants();
-}
-
-// ================================================================
-// EMAIL SUBMISSION — sends result privately to AI Champion only
-// ================================================================
-function submitByEmail() {
-  var r = state.result;
-  var u = state.user || {};
-  if(!r || !r.primary) {
-    alert('No result found. Please complete the assessment first.');
-    return;
-  }
-  var pct = r.pct || {};
-  var primary = PERSONAS[r.primary] ? PERSONAS[r.primary].name : r.primary;
-  var secondary = r.secondary && PERSONAS[r.secondary] ? PERSONAS[r.secondary].name : 'None';
-  var conf = scoreToConfidenceLabel(r.weighted, r.primary);
-  var date = new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
-
-  var subject = 'AI Readiness Result: ' + (u.name||'Participant') + ' | ' + (u.cohort||'Team not specified') + ' | ' + primary;
-
-  var body = 'AI READINESS ASSESSMENT RESULT
-'
-    + '================================
-'
-    + 'Submitted: ' + date + '
-'
-    + 'Name: ' + (u.name||'') + '
-'
-    + 'Role: ' + (u.role||'') + '
-'
-    + 'Team / Cohort: ' + (u.cohort||'') + '
-'
-    + '
-'
-    + 'PRIMARY PERSONA: ' + primary + '
-'
-    + 'SECONDARY PERSONA: ' + secondary + '
-'
-    + 'CONFIDENCE LEVEL: ' + conf + '
-'
-    + '
-'
-    + 'FULL PERCENTAGE BREAKDOWN:
-'
-    + '  Identity Defender:    ' + (pct.identity||0) + '%
-'
-    + '  Responsible Skeptic:  ' + (pct.skeptic||0) + '%
-'
-    + '  Skill Purist:         ' + (pct.purist||0) + '%
-'
-    + '  Overwhelmed Operator: ' + (pct.overwhelmed||0) + '%
-'
-    + '  Accelerator:          ' + (pct.accelerator||0) + '%
-'
-    + '
-'
-    + '--------------------------------
-'
-    + 'CSV ROW (paste into Assessment_Results_Log.csv):
-'
-    + (state.pendingCSVRow || '') + '
-'
-    + '--------------------------------
-'
-    + 'BTS AI Readiness Assessment | Leading AI Conversations';
-
-  var mailto = 'mailto:elya.bottiger@bts.com'
-    + '?subject=' + encodeURIComponent(subject)
-    + '&body=' + encodeURIComponent(body);
-
-  window.location.href = mailto;
-
-  var confirm = document.getElementById('emailConfirm');
-  if(confirm) confirm.style.display = '';
-  setTimeout(function(){
-    if(confirm) confirm.style.display = 'none';
-  }, 8000);
-}
-
-// ================================================================
-// LOCALSTORAGE PERSISTENCE
-// ================================================================
-var STORAGE_KEY = 'bts_ai_assessment_results';
-
-function saveResult(user, result) {
-  if(!user || !result) return;
-  var all = loadAllResults();
-  var entry = {
-    id: Date.now() + '_' + Math.random().toString(36).slice(2,7),
-    name: user.name || 'Anonymous',
-    role: user.role || '',
-    cohort: user.cohort || '',
-    primary: result.primary,
-    secondary: result.secondary || null,
-    pct: result.pct,
-    confidence: calcConfidenceLevel(result),
-    date: new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}),
-    timestamp: Date.now()
-  };
-  // Replace existing entry for same name+cohort combo (retake)
-  var idx = all.findIndex(function(e){ return e.name===entry.name && e.cohort===entry.cohort; });
-  if(idx >= 0) { all[idx] = entry; } else { all.push(entry); }
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(all)); } catch(e) { console.warn('localStorage unavailable'); }
-}
-
-function loadAllResults() {
-  try {
-    var raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : [];
-  } catch(e) { return []; }
-}
-
-function deleteResult(id) {
-  var all = loadAllResults().filter(function(e){ return e.id !== id; });
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(all)); } catch(e) {}
-}
-
-function resetAllResults() {
-  try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
-}
-
-function calcConfidenceLevel(result) {
-  // Determine confidence label based on score spread
-  var sorted = result.sorted || [];
-  if(!sorted.length) return 'medium';
-  var top = sorted[0][1];
-  var second = sorted.length > 1 ? sorted[1][1] : 0;
-  var gap = top - second;
-  if(gap >= 6) return 'high';
-  if(gap >= 3) return 'medium';
-  return 'low';
-}
-
-function getAllParticipants() {
-  // Combine localStorage results with mock data for demo, deduping by name
-  var real = loadAllResults();
-  var mock = MOCK_PARTICIPANTS.slice();
-  // Add real entries that aren't in mock
-  real.forEach(function(r) {
-    var exists = mock.find(function(m){ return m.name===r.name; });
-    if(!exists) mock.push(r);
-    else {
-      // Update mock with real data
-      Object.assign(exists, r);
-    }
-  });
-  return mock;
 }
 
 // ================================================================
