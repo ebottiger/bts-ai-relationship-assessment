@@ -39,8 +39,8 @@ h1.hero em{font-style:italic;color:var(--mg)}
 .card p{font-size:13px;color:var(--tg);line-height:1.55}
 .time-badge{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--tg);background:#fff;padding:7px 15px;border-radius:6px;border:1px solid var(--mg2);margin-bottom:28px}
 .cta-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-.persona-strip{display:flex;gap:8px;margin-top:48px;flex-wrap:wrap}
-.persona-chip{padding:7px 15px;border-radius:20px;font-size:12px;font-weight:600}
+.persona-strip{display:none}
+.persona-chip{display:none}
 
 /* BUTTONS */
 .btn{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;border:none}
@@ -187,6 +187,42 @@ h1.hero em{font-style:italic;color:var(--mg)}
 .tab.active{background:var(--ch);color:#fff;border-color:var(--ch)}
 .codes-table{font-family:monospace;font-size:13px;background:var(--lg);padding:3px 9px;border-radius:4px}
 
+/* PERSONA TOOLTIPS */
+.score-row{position:relative}
+.persona-tooltip{position:absolute;left:0;top:100%;margin-top:8px;background:var(--ch);color:#fff;border-radius:12px;padding:18px 20px;font-size:12px;line-height:1.65;width:420px;z-index:50;box-shadow:0 8px 32px rgba(0,0,0,.22);pointer-events:none;opacity:0;transform:translateY(-6px);transition:opacity .25s,transform .25s}
+.score-row:hover .persona-tooltip{opacity:1;transform:translateY(0)}
+.persona-tooltip .tip-name{font-weight:700;font-size:14px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.2)}
+.persona-tooltip::before{content:'';position:absolute;top:-7px;left:24px;border:7px solid transparent;border-bottom-color:var(--ch);border-top:none}
+@media(max-width:640px){.persona-tooltip{width:290px;font-size:11px}}
+
+/* ALL-PERSONAS SECTION */
+.all-personas-section{margin-bottom:20px}
+.all-personas-section h3{font-size:13px;font-weight:700;margin-bottom:4px}
+.all-personas-section .intro{font-size:13px;color:var(--tg);line-height:1.65;margin-bottom:16px}
+.persona-card-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.persona-card{border-radius:12px;padding:18px 20px;border:1.5px solid var(--mg2)}
+.persona-card .pc-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.persona-card .pc-emoji{font-size:20px}
+.persona-card .pc-name{font-size:14px;font-weight:700}
+.persona-card .pc-tag{font-size:12px;font-style:italic;margin-bottom:10px;line-height:1.5}
+.persona-card .pc-desc{font-size:13px;line-height:1.7}
+.persona-card .pc-tooltip{font-size:12px;font-weight:600;margin-top:10px;padding:8px 12px;border-radius:8px;border:1px solid currentColor;opacity:.8}
+@media(max-width:640px){.persona-card-grid{grid-template-columns:1fr}}
+.team-filter-wrap{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:0}
+.team-chip{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--mg2);background:#fff;color:var(--tg);transition:all .15s;font-family:'DM Sans',sans-serif}
+.team-chip:hover{border-color:var(--ch);color:var(--ch)}
+.team-chip.active{background:var(--ch);border-color:var(--ch);color:#fff}
+.team-chip.all-chip.active{background:var(--mg);border-color:var(--mg);color:#fff}
+.session-selector{background:#fff;border-radius:12px;padding:16px 20px;border:1px solid var(--mg2);margin-bottom:18px}
+.session-selector-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--tg);margin-bottom:10px}
+.session-chips{display:flex;flex-wrap:wrap;gap:6px}
+.session-chip{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--mg2);background:#fff;color:var(--tg);transition:all .15s;font-family:'DM Sans',sans-serif}
+.session-chip:hover{border-color:var(--ch);color:var(--ch)}
+.session-chip.active{color:#fff}
+.session-chip.locked{opacity:.45;cursor:default;pointer-events:none}
+.session-chip .dot{width:8px;height:8px;border-radius:50%;background:currentColor;flex-shrink:0}
+.session-chip .lock-icon{font-size:10px}
+
 @media(max-width:640px){
   h1.hero{font-size:34px}
   .cards{grid-template-columns:1fr}
@@ -222,16 +258,15 @@ h1.hero em{font-style:italic;color:var(--mg)}
     <div class="card"><div class="icon">🔒</div><h3>Private by default</h3><p>Your individual results are yours. Team data is only shared with managers in aggregate, unless you choose otherwise.</p></div>
     <div class="card"><div class="icon">📈</div><h3>Built to grow with you</h3><p>Retake the 5-question pulse quarterly to see how your persona shifts over time as your confidence grows.</p></div>
   </div>
-  <div style="background:#FFF8EC;border:1px solid #F5A623;border-radius:12px;padding:20px 24px;margin-bottom:36px">
-    <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#8B5E00;margin-bottom:8px">A note for leaders and managers</div>
-    <p style="font-size:14px;color:#4A3B1A;line-height:1.7">The most powerful signal you can send your team is going first. If you are a manager or leader, consider taking this assessment before your team does — and sharing your result openly. That single act of honesty creates more safety for everyone else than any policy or training ever could.</p>
-  </div>
+
   <div class="time-badge">⏱ 10–12 minutes &nbsp;·&nbsp; 15 questions &nbsp;·&nbsp; Downloadable results</div>
   <div class="cta-row">
     <button class="btn btn-primary" onclick="showScreen('login')">Begin Assessment →</button>
     <button class="btn btn-secondary" onclick="showScreen('mgr-login')">Manager View</button>
   </div>
-  <div class="persona-strip" id="personaStrip"></div>
+  <div style="margin-top:40px;padding:20px 24px;background:#fff;border-radius:12px;border:1px solid var(--mg2)">
+    <p style="font-size:15px;color:var(--tg);line-height:1.75;text-align:center">Your result will show you <strong style="color:var(--ch)">where you are</strong>, <strong style="color:var(--ch)">what you bring</strong>, and <strong style="color:var(--ch)">what one step forward looks like</strong> from exactly here.</p>
+  </div>
 </div>
 </div>
 
@@ -253,7 +288,7 @@ h1.hero em{font-style:italic;color:var(--mg)}
     </div>
     <div class="form-group">
       <label>Your Role</label>
-      <select id="loginRole">
+      <select id="loginRole" onchange="handleRoleChange(this.value)">
         <option value="">Select your role...</option>
         <option>Individual Contributor</option>
         <option>Manager / Team Lead</option>
@@ -262,11 +297,30 @@ h1.hero em{font-style:italic;color:var(--mg)}
       </select>
       <div class="err" id="errRole"></div>
     </div>
+    <div id="leaderNote" style="display:none;background:#FFF8EC;border:1px solid #F5A623;border-radius:10px;padding:16px 18px;margin-bottom:18px">
+      <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#8B5E00;margin-bottom:6px">A note for you as a leader</div>
+      <p style="font-size:13px;color:#4A3B1A;line-height:1.7">The most powerful signal you can send your team is going first. Consider sharing your result openly — that single act of honesty creates more safety for everyone else than any policy or training ever could.</p>
+    </div>
     <div class="form-group">
       <label>Team <span style="font-weight:400;color:#999">(optional)</span></label>
       <select id="loginTeam">
         <option value="">Select your team...</option>
       </select>
+    </div>
+    <div class="form-group">
+      <label>Assessment Round</label>
+      <select id="loginSession" onchange="handleSessionChange(this.value)">
+        <option value="initial">Initial Assessment (15 questions)</option>
+        <option value="q1pulse" class="pulse-opt">Q1 Pulse Check (5 questions)</option>
+        <option value="q2pulse" class="pulse-opt">Q2 Pulse Check (5 questions)</option>
+        <option value="q3pulse" class="pulse-opt">Q3 Pulse Check (5 questions)</option>
+        <option value="q4pulse" class="pulse-opt">Q4 Pulse Check (5 questions)</option>
+        <option value="q5pulse" class="pulse-opt">Q5 Pulse Check (5 questions)</option>
+        <option value="q6pulse" class="pulse-opt">Q6 Pulse Check (5 questions)</option>
+      </select>
+      <div id="pulseNote" style="display:none;background:#EEF4FF;border:1px solid #B3CFEE;border-radius:8px;padding:10px 14px;margin-top:8px;font-size:13px;color:#0057A8">
+        ⏱ This is a 5-question pulse check (~3 minutes). It tracks your movement since your Initial Assessment.
+      </div>
     </div>
     <button class="btn btn-primary" style="width:100%" onclick="startAssessment()">Start Assessment →</button>
   </div>
@@ -330,13 +384,13 @@ h1.hero em{font-style:italic;color:var(--mg)}
   <div class="manager-card">
     <h3>💬 Bring This to Your Next 1:1</h3>
     <p style="margin-bottom:12px">Your persona is not a performance review. It is a starting point for a curious conversation. Your manager's job in this 1:1 is not to fix the pattern — it is to understand the story underneath it. <strong>You get to decide how much you share and when.</strong></p>
-    <p style="font-size:13px;color:var(--tg);margin-bottom:14px">If you choose to share, here are three questions worth bringing:</p>
+    <p style="font-size:13px;color:var(--tg);margin-bottom:14px">If you choose to share, here are three questions worth bringing. You do not need to ask all three — start with the one that feels most honest about where you are. The goal of this conversation is understanding on both sides.</p>
     <div class="pq-list">
-      <div class="pq">What does this result tell you about where I should focus my AI development right now?</div>
-      <div class="pq">What support or resources can you offer me from here?</div>
-      <div class="pq">How does my persona fit with what you are seeing across the team?</div>
+      <div class="pq">I want to share what resonates in this result and what does not — because both tell you something real about where I am. The resonance shows where to build. The friction shows where to listen.</div>
+      <div class="pq">What would feel like a genuinely safe next step given where I am right now — one I could actually take this week, not one that sounds good in a conversation?</div>
+      <div class="pq">Can we define one specific thing I will try this month — and agree on how you will check in with me about it?</div>
     </div>
-    <p style="font-size:12px;color:var(--tg);margin-top:14px;font-style:italic">You do not have to share this report. But if you do, know that the goal of that conversation is understanding — not correction.</p>
+    <p style="font-size:12px;color:var(--tg);margin-top:14px;font-style:italic">You do not have to share this report. But if you do, know that the goal of that conversation is not to close a gap — it is to take one honest step from wherever you actually are.</p>
   </div>
   <div class="pulse-card">
     <h3>📊 Take the Quarterly Pulse</h3>
@@ -344,12 +398,18 @@ h1.hero em{font-style:italic;color:var(--mg)}
     <p style="font-size:13px;color:#3a5a8a">The personas in this assessment are meant to become shared language on your team — not labels, but a shorthand for conversations that might otherwise be hard to start. The more fluently your team can say <em>"I am feeling pretty Overwhelmed Operator on this one"</em> — the more honest and productive those conversations become.</p>
   </div>
 
+  <div class="all-personas-section r-card" style="background:#fff;border-radius:16px;padding:26px 30px;border:1px solid var(--mg2);margin-bottom:20px">
+    <h3 style="font-family:'DM Serif Display',serif;font-size:20px;margin-bottom:6px">All Five Personas</h3>
+    <p class="intro">No persona carries shame. Every one of them reflects something real about the human experience of change — and every one of them brings something the AI era genuinely needs. Hover over your score bars above to read more about each one. Or read all five here.</p>
+    <div class="persona-card-grid" id="allPersonasGrid"></div>
+  </div>
+
   <div id="submitEmailCard" style="background:#fff;border:1.5px solid var(--em);border-radius:14px;padding:22px 26px;margin-bottom:20px">
     <h3 style="font-size:13px;font-weight:700;color:var(--em);margin-bottom:8px">✉️ Submit Your Result to Your AI Champion</h3>
-    <p style="font-size:14px;line-height:1.65;margin-bottom:6px">Your result stays private — only your AI Champion sees the data. Click below to send your result. Your email will open with everything pre-filled. Just hit send.</p>
-    <p style="font-size:12px;color:var(--tg);margin-bottom:14px">Your individual result is never shared with your manager or team without your consent.</p>
-    <button class="btn btn-green" id="submitEmailBtn" onclick="submitByEmail()" style="font-size:14px">✉️ Send My Result to AI Champion</button>
-    <p id="emailConfirm" style="font-size:12px;color:var(--em);margin-top:10px;display:none">✓ Your email client has opened with your result pre-filled. Just click Send!</p>
+    <p style="font-size:14px;line-height:1.65;margin-bottom:6px">Your result stays private — it goes directly to your AI Champion's Microsoft Forms inbox. Click below and your result will open in a new tab, <strong>completely pre-filled</strong>. Just hit Submit — one click.</p>
+    <p style="font-size:12px;color:var(--tg);margin-bottom:14px">Your individual result is never shared with your manager or team without your consent. This goes to an internal BTS Microsoft Form — no external services.</p>
+    <button class="btn btn-green" id="submitEmailBtn" onclick="submitByEmail()" style="font-size:14px">✉️ Submit My Result</button>
+    <p id="emailConfirm" style="font-size:12px;color:var(--em);margin-top:10px;display:none">✓ Your form has opened in a new tab — everything is pre-filled. Just click Submit!</p>
   </div>
   <div class="result-actions">
     <button class="btn btn-primary" onclick="downloadPDF()">⬇ Download My Results PDF</button>
@@ -390,6 +450,7 @@ h1.hero em{font-style:italic;color:var(--mg)}
     </div>
   </div>
   <div class="info-bar" id="anonBar">🔒 Showing anonymized results. Toggle above to show participant names.</div>
+  <div id="mgrSessionSelector"></div>
   <div class="stats-grid" id="mgrStats"></div>
   <div class="insight-box" id="mgrInsight" style="display:none"></div>
   <div class="panel" id="mgrBreakdownPanel">
@@ -454,22 +515,28 @@ var PERSONAS = {
     summary:"You bring deep expertise, strong ownership, and genuine investment in quality outcomes. When AI enters the picture, your instinct is to protect what makes your work meaningful — and that instinct is worth protecting. Sometimes what looks like resistance to AI is actually grief — mourning a version of expertise that felt irreplaceable. That grief is valid. And it is also the beginning of something new. The opportunity ahead is to use AI to amplify your judgment, not bypass it.",
     strengths:["Deep craft expertise and institutional memory","High standards and quality ownership","Emotional investment in outcomes that shows","Translates AI output into real business impact","Distinguishes meaningful work from mechanical work"],
     leadership:["Protects the quality of human judgment in AI-assisted work","Elevates AI output to client-ready standards","Ensures AI enhances intelligence — not replaces it","Builds trust between human expertise and new tools"],
-    good:"Use AI to draft or summarize one recurring task this week. Reinvest the saved time into analysis, relationships, or decision framing.",
-    better:"Redesign one workflow: AI handles first draft, you provide judgment, synthesis, and final impact.",
+    good:"Use AI to draft or summarize one recurring task. Reinvest the saved time into strengthening analysis, stakeholder relationships, or decision framing.",
+    better:"Redesign one workflow: AI handles first draft, you elevate judgment, synthesis, and client impact.",
     stretch:"Track time saved over 30 days. Define one higher-level capability to build with that time.",
-    mindshift:"From protecting familiar tasks to elevating your impact with AI-accelerated capacity"
+    mindshift:"From protecting familiar tasks to elevating your impact with AI-accelerated capacity",
+    desc:"The Identity Defender has invested deeply in their work — not just their time, but their reputation, their judgment, and their sense of what makes a contribution meaningful. What they are feeling right now is not resistance. It is the completely human experience of protecting something real: the understanding that expertise, care, and ownership cannot be automated — and that those qualities matter more in an AI era, not less.",
+    what:"The Identity Defender protects the quality and meaning of work. This persona asks the most important question: what makes a human contribution genuinely irreplaceable, and how do we make sure AI serves that rather than erases it?",
+    era:"The Identity Defender is a guardian of meaningful work. This persona ensures AI enhances human intelligence rather than replaces it — and that is a contribution the AI era cannot afford to be without.",
   },
   skeptic: {
     id:"skeptic", name:"Responsible Skeptic", emoji:"🔍",
     tagline:"I need to know this is being used responsibly.",
     color:"#0057A8", bg:"#EEF4FF", border:"#B3CFEE",
-    summary:"You ask the questions others skip. Your concerns about data integrity, ethics, and reputational risk are not obstacles — they are the foundation of trustworthy AI adoption. When supported well, you become the team's governance anchor and a trusted voice with clients and stakeholders.",
+    summary:"You ask the questions others skip. Your concerns about data integrity, ethics, and reputational risk are not obstacles — they are the foundation of trustworthy AI adoption. The Responsible Skeptic is the team's governance anchor and a trusted voice with clients and stakeholders.",
     strengths:["Critical thinking and risk awareness","Governance sensitivity and long-term perspective","Courage to question what others accept","Commitment to professional standards","Client trust and reputation protection"],
     leadership:["Internal ethics translator for the team","Guardrail designer for AI use cases","Quality controller of AI outputs","Strengthens client trust through principled adoption"],
     good:"Use AI within clearly defined guardrails — internal drafts, non-sensitive data — and reflect on where it supports quality without compromising values.",
-    better:"Identify one process where AI reduces repetitive work while maintaining human oversight for judgment and ethics.",
-    stretch:"Draft a Responsible Use Checklist for your function. Pilot one workflow using it.",
-    mindshift:"From opting out until every concern is resolved to informed participation within guardrails you help define"
+    better:"Identify one process where AI reduces repetitive workload while maintaining human oversight for judgment and ethics.",
+    stretch:"Draft a Responsible Use Checklist for your function that balances efficiency and integrity. Pilot one workflow using it.",
+    mindshift:"From opting out until every concern is resolved to informed participation within guardrails you help define",
+    desc:"The Responsible Skeptic asks the questions that everyone else is too eager — or too cautious — to raise. Their hesitation is not a deficiency in their thinking. It is evidence of it — a principled commitment to ethics, accountability, and the kind of long-term perspective that keeps organizations honest when speed and enthusiasm push everyone else to move too fast.",
+    what:"The Responsible Skeptic holds the questions others skip — about ethics, data integrity, long-term consequences, and who bears the risk. Their hesitation is not fear of change. It is a commitment to doing this right.",
+    era:"The Responsible Skeptic is the team's ethics anchor. This persona asks the questions that make trustworthy AI adoption possible and ensures speed never comes at the cost of integrity.",
   },
   purist: {
     id:"purist", name:"Skill Purist", emoji:"⚙",
@@ -481,7 +548,10 @@ var PERSONAS = {
     good:"Use AI to generate multiple first-draft options — then critique, refine, and elevate them using your expertise.",
     better:"Use AI to pressure-test reasoning: ask it to challenge assumptions or present counterarguments before finalizing work.",
     stretch:"Define a personal standard for AI-assisted excellence in your function. Build a workflow where AI accelerates iteration and your judgment determines final output.",
-    mindshift:"From avoiding AI on serious tasks to using AI as a thinking partner that sharpens your reasoning"
+    mindshift:"From avoiding AI on serious tasks to using AI as a thinking partner that sharpens your reasoning",
+    desc:"The Skill Purist has spent years building something that cannot be downloaded: the kind of deep, disciplined expertise that comes from doing hard thinking, over and over, until it becomes judgment. Their concern about AI is not technophobia. It is intellectual integrity — a conviction that craft matters, that the quality of thinking behind the work matters, and that the best AI-assisted work in the world still requires a human who knows what excellent actually looks like.",
+    what:"The Skill Purist has built something that cannot be downloaded — depth of judgment, analytical rigor, and craft discipline earned through years of doing hard thinking. Their concern is not technophobia. It is intellectual integrity.",
+    era:"The Skill Purist raises the bar for what AI-assisted work can be. This persona ensures that human judgment stays at the center of every deliverable — and that excellence is never traded for efficiency.",
   },
   overwhelmed: {
     id:"overwhelmed", name:"Overwhelmed Operator", emoji:"⏳",
@@ -492,8 +562,11 @@ var PERSONAS = {
     leadership:["Models steady, sustainable AI adoption","Identifies highest-impact places to simplify first","Efficiency multiplier once capacity is freed","Makes adoption look achievable — not overwhelming"],
     good:"Use AI to draft or summarize one recurring email, report, or meeting recap this week. One task. This week.",
     better:"Replace one manual workflow step with AI and measure time saved over two weeks.",
-    stretch:"Redesign one recurring process so AI handles preparation and first draft — freeing 30 to 60 minutes per week.",
-    mindshift:"From postponing until things slow down to one small swap that creates immediate relief right now"
+    stretch:"Redesign one recurring process so AI handles preparation and first draft work — freeing 30 to 60 minutes per week.",
+    mindshift:"From postponing until things slow down to one small swap that creates immediate relief right now",
+    desc:"The Overwhelmed Operator is not avoiding AI. They are running at full capacity in a world that keeps asking for more — more output, more adaptability, more change, on top of work that was already demanding before any of this started. Their reliability, their follow-through, and their ability to keep things moving under pressure are exactly the qualities that make them someone AI should be working for — not another thing AI is asking of them.",
+    what:"The Overwhelmed Operator is not avoiding AI — they are at capacity. They are balancing real deadlines, real demands, and real change fatigue. They do not need more to do. They need one thing to get lighter.",
+    era:"The Overwhelmed Operator demonstrates what sustainable AI adoption actually looks like. This persona shows that moving at a pace that holds is not a compromise — it is the model.",
   },
   accelerator: {
     id:"accelerator", name:"Accelerator", emoji:"⚡",
@@ -502,10 +575,13 @@ var PERSONAS = {
     summary:"You see possibility everywhere and you move fast. Your energy and technical fluency are a team accelerant — when channeled well. The next frontier for you is not building faster; it is building in ways that bring others with you and demonstrate measurable impact.",
     strengths:["Speed and technical fluency","Creative experimentation and early pattern recognition","Energy that elevates team momentum","Comfort with ambiguity and iteration","Vision for what AI can unlock"],
     leadership:["Pilot designer and internal trainer","Capability multiplier for the whole team","System optimizer across workflows","Connects AI experimentation to business outcomes"],
-    good:"Document one workflow improvement and share it with the team in a brief walkthrough. Submit it via the AI in Action Smartsheet Form.",
+    good:"Document one workflow improvement and share it with the team in a brief walkthrough. If your team uses it, submit it via the AI in Action Smartsheet Form so leadership can track and scale what is working.",
     better:"Measure time saved or quality improvement over 30 days and present findings to the team.",
-    stretch:"Partner with someone earlier in the AI journey and co-design a workflow that is accessible and replicable across the team.",
-    mindshift:"From building fast in isolation to creating measurable, shareable impact that others can adopt"
+    stretch:"Partner with a colleague earlier in their AI journey and co-design a workflow that is accessible and replicable across the team.",
+    mindshift:"From building fast in isolation to creating measurable, shareable impact that others can adopt",
+    desc:"The Accelerator sees possibility where others see uncertainty, and moves toward it before anyone else has finished reading the memo. That energy is a genuine gift — to their team, their organization, and every colleague who needs someone to make the first move and prove it is possible. The next step for the Accelerator is not going faster. It is going together — channeling momentum in ways that bring the whole team forward, not just themselves.",
+    what:"The Accelerator sees possibility before others finish reading the memo — and moves toward it. Their energy and early pattern recognition are genuine assets. The question is not whether to move fast. It is how to move in a direction that brings the whole team with them.",
+    era:"The Accelerator makes the possible feel real for everyone around them. This persona turns individual momentum into team capability — and that generosity of energy is what moves organizations forward."
   }
 };
 
@@ -534,67 +610,20 @@ var TEAMS = [
 // ================================================================
 var STORAGE_KEY = "bts_ai_assessment_results";
 
-function saveResult(user, result) {
-  var existing = loadAllResults();
-  var idx = existing.length;
-  var conf = scoreToConfidenceLabel(result.weighted, result.primary);
-  var pct = result.pct || {};
-  var entry = {
-    id: Date.now().toString(),
-    timestamp: new Date().toISOString(),
-    date: new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}),
-    name: user.name || "Anonymous",
-    role: user.role || "",
-    cohort: user.cohort || "",
-    primary: result.primary,
-    secondary: result.secondary || null,
-    pct: pct,
-    weighted: result.weighted,
-    confidence: conf,
-    anon: "Participant " + String.fromCharCode(65 + (idx % 26))
-  };
-  existing.push(entry);
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(existing)); } catch(e) { console.warn("localStorage unavailable:", e); }
 
-  // Build CSV row for Box submission
-  var PERSONAS_ORDER = ['identity','skeptic','purist','overwhelmed','accelerator'];
-  var csvRow = [
-    new Date().toLocaleString(),
-    entry.name,
-    entry.role,
-    entry.cohort,
-    PERSONAS[entry.primary] ? PERSONAS[entry.primary].name : entry.primary,
-    entry.secondary && PERSONAS[entry.secondary] ? PERSONAS[entry.secondary].name : (entry.secondary || ''),
-    entry.confidence
-  ];
-  PERSONAS_ORDER.forEach(function(k){ csvRow.push((pct[k]||0)+'%'); });
-  state.pendingCSVRow = csvRow.map(function(v){
-    var s = String(v);
-    if(s.indexOf(',')>=0 || s.indexOf('"')>=0) s = '"'+s.replace(/"/g,'""')+'"';
-    return s;
-  }).join(',');
 
-  return entry;
-}
 
-function loadAllResults() {
-  try {
-    var raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : [];
-  } catch(e) { return []; }
-}
 
-function deleteResult(id) {
-  var updated = loadAllResults().filter(function(r){ return r.id !== id; });
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(updated)); } catch(e) {}
-}
 
-function scoreToConfidenceLabel(weighted, primary) {
-  var score = weighted[primary] || 0;
-  if (score >= 12) return "high";
-  if (score >= 7)  return "medium";
-  return "low";
-}
+
+
+
+
+
+
+
+
+
 
 
 var PM_PASSWORD = "ElyaBottiger";
@@ -752,22 +781,79 @@ var QUESTIONS = [
    ]}
 ];
 
-var MOCK_PARTICIPANTS = [
-  {id:1,name:"Jordan M.",anon:"Participant A",cohort:"PMO",primary:"accelerator",secondary:"purist",confidence:"high",date:"Mar 1"},
-  {id:2,name:"Sam R.",anon:"Participant B",cohort:"PMO",primary:"identity",secondary:null,confidence:"medium",date:"Mar 2"},
-  {id:3,name:"Alex T.",anon:"Participant C",cohort:"Finance",primary:"skeptic",secondary:"identity",confidence:"high",date:"Mar 3"},
-  {id:4,name:"Morgan P.",anon:"Participant D",cohort:"Help Desk",primary:"overwhelmed",secondary:"identity",confidence:"low",date:"Mar 4"},
-  {id:5,name:"Riley K.",anon:"Participant E",cohort:"Marketing",primary:"purist",secondary:"skeptic",confidence:"medium",date:"Mar 5"},
-  {id:6,name:"Casey L.",anon:"Participant F",cohort:"Digital",primary:"accelerator",secondary:null,confidence:"high",date:"Mar 6"},
-  {id:7,name:"Taylor B.",anon:"Participant G",cohort:"PMO",primary:"identity",secondary:"overwhelmed",confidence:"medium",date:"Mar 7"},
-  {id:8,name:"Drew A.",anon:"Participant H",cohort:"Finance",primary:"skeptic",secondary:"purist",confidence:"medium",date:"Mar 8"},
-  {id:9,name:"Quinn S.",anon:"Participant I",cohort:"Talent Acquisition",primary:"overwhelmed",secondary:null,confidence:"low",date:"Mar 9"},
-  {id:10,name:"Blake R.",anon:"Participant J",cohort:"Logistics",primary:"accelerator",secondary:"identity",confidence:"high",date:"Mar 9"}
+// ================================================================
+// PULSE QUESTIONS — 5 questions for quarterly pulse checks
+// These are the most discriminating questions from the full assessment
+// ================================================================
+var PULSE_QUESTIONS = [
+  {id:1,section:"Day-to-Day Behavior",
+   scene:"You have 30 minutes before an important internal meeting and need to prep a summary of a lengthy document.",
+   q:"What do you do?",
+   opts:[
+     {text:"Read through the key sections yourself — how you frame the summary is part of what you bring.",p:"identity"},
+     {text:"Think through whether the document contains anything sensitive before deciding whether to use AI.",p:"skeptic"},
+     {text:"Use AI immediately — you do not have time to do it any other way right now.",p:"overwhelmed"},
+     {text:"Run it through AI, edit the output, and use the remaining time to prepare sharper questions.",p:"accelerator"},
+     {text:"Try AI for a first draft, but plan to rewrite most of it yourself to make sure the framing is right.",p:"purist"}
+   ]},
+  {id:2,section:"Learning & Growth",
+   scene:"You are experimenting with an AI tool for a real task. It produces an output that is about 80% there but misses something important.",
+   q:"Your honest takeaway is:",
+   opts:[
+     {text:"This confirms that the 20% it missed is exactly where my expertise matters most.",p:"identity"},
+     {text:"This is exactly why human judgment matters — and it also raises a harder question: if AI can get 80% of the way there on most tasks, what does that mean for the people whose roles are built on doing those tasks well?",p:"skeptic"},
+     {text:"Honestly, 80% is enough right now. I will clean up the rest quickly — I do not have time for perfection.",p:"overwhelmed"},
+     {text:"Interesting — now I want to figure out why it missed that and whether a better prompt would catch it.",p:"accelerator"},
+     {text:"The gap is exactly the kind of nuance I would want to protect. The output is a draft, not a conclusion.",p:"purist"}
+   ]},
+  {id:3,section:"Values & Judgment",
+   scene:"Work Simple — one of BTS's top priorities — means doing less, better, through smarter workflow design.",
+   q:"Your biggest obstacle to simplifying your own work is:",
+   opts:[
+     {text:"Not being sure which parts of my work are safe to simplify without losing the value I bring.",p:"identity"},
+     {text:"Not having clear enough guidance — I want to simplify thoughtfully, not just efficiently, and I want to know the full cost of the tools we are using.",p:"skeptic"},
+     {text:"Time. I know what I would simplify, but I cannot stop long enough to actually redesign anything.",p:"overwhelmed"},
+     {text:"Honestly, not much — I am already building simpler workflows. The obstacle is getting others to adopt them.",p:"accelerator"},
+     {text:"Making sure simplification does not mean superficiality. I want simpler processes that still produce excellent work.",p:"purist"}
+   ]},
+  {id:4,section:"Workplace Confidence",
+   scene:"Your manager asks you to share what you have been doing with AI in your next team meeting.",
+   q:"Your honest reaction is:",
+   opts:[
+     {text:"A little uncomfortable — you are not sure your AI use reflects well on what you bring to the team.",p:"identity"},
+     {text:"Feel a quiet tension — you want to be honest, but you also have real questions about whether the way the team is using AI aligns with your values, and you are not sure this is the right moment to raise them.",p:"skeptic"},
+     {text:"Stressed — you have not done much yet and do not want to feel behind or called out in front of peers.",p:"overwhelmed"},
+     {text:"Excited — you have a lot to share and have been waiting for an opportunity to show what is possible.",p:"accelerator"},
+     {text:"Thoughtful — you want to share something that shows AI enhancing your work, not replacing your thinking.",p:"purist"}
+   ]},
+  {id:5,section:"Looking Ahead",
+   scene:"You are reflecting on how AI is changing work at BTS and what you want the next quarter to look like for you.",
+   q:"The outcome you are most committed to is:",
+   opts:[
+     {text:"Knowing clearly what I bring that AI cannot — and making sure that gets more visible, not less.",p:"identity"},
+     {text:"Being someone who uses AI in a way I can genuinely stand behind — one that is honest with clients, considerate of broader social impact, and does not compromise the values that drew me to this work in the first place.",p:"skeptic"},
+     {text:"Finding a sustainable pace — adopting AI in a way that actually makes my work lighter, not heavier.",p:"overwhelmed"},
+     {text:"Building and sharing something that changes how the team works — not just experimenting for myself.",p:"accelerator"},
+     {text:"Producing work I am genuinely proud of — where AI accelerated the process but did not dilute the quality.",p:"purist"}
+   ]}
 ];
+
+var MOCK_PARTICIPANTS = []
 
 // ================================================================
 // STATE
 // ================================================================
+// Assessment sessions — Initial + 6 quarterly pulses
+var SESSIONS = [
+  {id:"initial",  label:"Initial Assessment",  short:"Initial",  color:"#E8197D"},
+  {id:"q1pulse",  label:"Q1 Pulse Check",       short:"Q1 Pulse", color:"#0057A8"},
+  {id:"q2pulse",  label:"Q2 Pulse Check",       short:"Q2 Pulse", color:"#7B4FBF"},
+  {id:"q3pulse",  label:"Q3 Pulse Check",       short:"Q3 Pulse", color:"#E85B19"},
+  {id:"q4pulse",  label:"Q4 Pulse Check",       short:"Q4 Pulse", color:"#00A878"},
+  {id:"q5pulse",  label:"Q5 Pulse Check",       short:"Q5 Pulse", color:"#0057A8"},
+  {id:"q6pulse",  label:"Q6 Pulse Check",       short:"Q6 Pulse", color:"#7B4FBF"}
+];
+
 var state = {
   user: null,
   answers: [],
@@ -776,13 +862,17 @@ var state = {
   selectedPersona: null,
   selectedConf: null,
   result: null,
+  isPulse: false,
   mgrTeam: null,
   anonMode: true,
   pmTeams: TEAMS.slice(),
   showCodes: false,
   currentPmTab: "overview",
   pmAnonMode: false,
-  pmSelectedTeam: "all"
+  pmSelectedTeam: "all",
+  pmSelectedTeams: [],        // empty = All Teams
+  pmSelectedSessions: [],     // empty = All Sessions
+  mgrSelectedSessions: []     // empty = All Sessions
 };
 
 // ================================================================
@@ -802,18 +892,6 @@ function showScreen(id) {
 // INIT
 // ================================================================
 function init() {
-  // Populate persona strip on landing
-  var strip = document.getElementById('personaStrip');
-  Object.keys(PERSONAS).forEach(function(k){
-    var p = PERSONAS[k];
-    var chip = document.createElement('span');
-    chip.className = 'persona-chip';
-    chip.style.background = p.bg;
-    chip.style.color = p.color;
-    chip.style.border = '1px solid ' + p.border;
-    chip.textContent = p.emoji + ' ' + p.name;
-    strip.appendChild(chip);
-  });
   // Populate team dropdown
   var sel = document.getElementById('loginTeam');
   TEAMS.forEach(function(t){
@@ -827,6 +905,12 @@ function init() {
 // ================================================================
 // LOGIN
 // ================================================================
+
+
+
+
+
+
 function startAssessment() {
   var name = document.getElementById('loginName').value.trim();
   var role = document.getElementById('loginRole').value;
@@ -837,13 +921,17 @@ function startAssessment() {
   if(!name){document.getElementById('errName').textContent='Please enter your name.';ok=false;}
   if(!role){document.getElementById('errRole').textContent='Please select your role.';ok=false;}
   if(!ok) return;
-  state.user = {name:name, role:role, cohort:team};
-  // Shuffle questions
-  state.shuffledQ = QUESTIONS.map(function(q){
+  var session = document.getElementById('loginSession') ? document.getElementById('loginSession').value : 'initial';
+  state.user = {name:name, role:role, cohort:team, session:session};
+  // Route to pulse (5 questions) or full assessment (15 questions)
+  var isPulse = session !== 'initial';
+  var sourceQ = isPulse ? PULSE_QUESTIONS : QUESTIONS;
+  state.isPulse = isPulse;
+  state.shuffledQ = sourceQ.map(function(q){
     var shuffled = q.opts.slice().sort(function(){return Math.random()-.5;});
     return Object.assign({}, q, {opts: shuffled});
   });
-  state.answers = new Array(15).fill(null);
+  state.answers = new Array(sourceQ.length).fill(null);
   state.currentQ = 0;
   state.selectedPersona = null;
   state.selectedConf = null;
@@ -859,13 +947,21 @@ function renderQuestion() {
   var total = state.shuffledQ.length;
   var pct = Math.round((state.currentQ / total) * 100);
   document.getElementById('progressBar').style.width = pct + '%';
-  document.getElementById('qCounter').textContent = 'Question ' + (state.currentQ+1) + ' of ' + total;
+  var roundLabel = state.isPulse ? 'Pulse Check · ' : '';
+  document.getElementById('qCounter').textContent = roundLabel + 'Question ' + (state.currentQ+1) + ' of ' + total;
   document.getElementById('qPct').textContent = pct + '%';
   document.getElementById('qNum').textContent = 'Q' + q.id;
-  // Section label
+  // Section label — for pulse, show special header on Q1
   var secEl = document.getElementById('secLabel');
-  var prev = state.currentQ > 0 ? state.shuffledQ[state.currentQ-1].section : null;
-  secEl.textContent = q.section !== prev ? q.section : '';
+  if(state.isPulse && state.currentQ === 0) {
+    var sess = SESSIONS.find(function(s){ return s.id === (state.user.session||'initial'); });
+    var sessLabel = sess ? sess.label : 'Pulse Check';
+    secEl.innerHTML = '<span style="color:'+( sess?sess.color:'#0057A8')+';font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase">'+sessLabel+'</span>'
+      + '<div style="font-size:13px;color:var(--tg);font-weight:400;text-transform:none;letter-spacing:0;margin-top:4px;line-height:1.5">5 questions · ~3 minutes · Tracks your movement since the last assessment</div>';
+  } else {
+    var prev = state.currentQ > 0 ? state.shuffledQ[state.currentQ-1].section : null;
+    secEl.textContent = q.section !== prev ? q.section : '';
+  }
   // Scene
   var sceneEl = document.getElementById('qScene');
   sceneEl.textContent = '📍 ' + q.scene;
@@ -922,7 +1018,9 @@ function updateNextBtn() {
   var can = !!(state.selectedPersona && state.selectedConf);
   var btn = document.getElementById('btnNext');
   btn.disabled = !can;
-  btn.textContent = state.currentQ === state.shuffledQ.length-1 ? 'See My Results →' : 'Next →';
+  btn.textContent = state.currentQ === state.shuffledQ.length-1
+    ? (state.isPulse ? 'See My Pulse Results →' : 'See My Results →')
+    : 'Next →';
 }
 
 function nextQ() {
@@ -937,6 +1035,8 @@ function nextQ() {
   } else {
     // Done — compute, save, and show results
     state.result = scoreAssessment(state.answers);
+    state.result.session = state.user.session || 'initial';
+    state.result.isPulse = state.isPulse;
     saveResult(state.user, state.result);
     showScreen('scoring');
     setTimeout(function(){ renderResults(); showScreen('results'); }, 1600);
@@ -989,7 +1089,13 @@ function renderResults() {
   // Hero
   var hero = document.getElementById('resultHero');
   hero.style.borderTop = '5px solid ' + p.color;
-  hero.innerHTML = '<div class="r-label">Your AI Readiness Persona</div>'
+  var heroLabel = state.isPulse
+    ? (function(){
+        var sess = SESSIONS.find(function(s){ return s.id === (state.user ? state.user.session : 'initial'); });
+        return sess ? sess.label + ' · Results' : 'Pulse Check · Results';
+      })()
+    : 'Your AI Readiness Persona';
+  hero.innerHTML = '<div class="r-label">'+heroLabel+'</div>'
     + '<div class="r-persona">' + p.emoji + ' ' + p.name + '</div>'
     + '<div class="r-tagline">' + p.tagline + '</div>'
     + '<div class="r-summary">' + p.summary + '</div>'
@@ -1006,10 +1112,24 @@ function renderResults() {
   bars.innerHTML = '';
   r.sorted.forEach(function(pair){
     var pid = pair[0]; var pp = PERSONAS[pid]; var pc = r.pct[pid];
-    bars.innerHTML += '<div class="score-row">'
+    // Build tooltip from structured data — no quoting issues
+    var strengthsHtml = (pp.strengths||[]).map(function(s){
+      return '<div style="display:flex;gap:6px;margin-bottom:3px"><span style="color:'+pp.color+'">&#8212;</span><span>'+s+'</span></div>';
+    }).join('');
+    var tipHtml = '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;opacity:.7">What this persona does</div>'
+      + '<div style="margin-bottom:10px;line-height:1.6">'+(pp.what||'')+'</div>'
+      + '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;opacity:.7">Three strengths</div>'
+      + '<div style="margin-bottom:10px">'+strengthsHtml+'</div>'
+      + '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;opacity:.7">In the AI era</div>'
+      + '<div style="line-height:1.6">'+(pp.era||'')+'</div>';
+    bars.innerHTML += '<div class="score-row" style="cursor:pointer">'
       +'<div class="score-lbl">'+pp.emoji+' '+pp.name+'</div>'
       +'<div class="score-track"><div class="score-fill" style="width:'+pc+'%;background:'+pp.color+'"></div></div>'
       +'<div class="score-pct" style="color:'+pp.color+'">'+pc+'%</div>'
+      +'<div class="persona-tooltip" style="border-top:3px solid '+pp.color+'">'
+        +'<div class="tip-name" style="color:'+pp.color+'">'+pp.emoji+' '+pp.name+'</div>'
+        +tipHtml
+      +'</div>'
       +'</div>';
   });
 
@@ -1048,11 +1168,45 @@ function renderResults() {
 
   // Mindshift
   document.getElementById('mindshiftBox').innerHTML = '<div class="ms-lbl">Mindset Shift</div><p>'+p.mindshift+'</p>';
+
+  // All-personas grid
+  var grid = document.getElementById('allPersonasGrid');
+  if(grid) {
+    var pOrder = ['identity','skeptic','purist','overwhelmed','accelerator'];
+    grid.innerHTML = '';
+    pOrder.forEach(function(pid){
+      var pp = PERSONAS[pid];
+      var isTop = pid === r.primary;
+      var isSecond = r.secondary && pid === r.secondary;
+      var badge = isTop
+        ? '<span style="font-size:10px;font-weight:700;background:'+pp.color+';color:#fff;padding:2px 8px;border-radius:10px;margin-left:8px">Your Primary</span>'
+        : isSecond
+        ? '<span style="font-size:10px;font-weight:700;background:'+pp.bg+';color:'+pp.color+';border:1px solid '+pp.color+';padding:2px 8px;border-radius:10px;margin-left:8px">Your Secondary</span>'
+        : '';
+      grid.innerHTML += '<div class="persona-card" style="background:'+pp.bg+';border-color:'+(isTop||isSecond?pp.color:'var(--mg2)')+'">'
+        +'<div class="pc-header">'
+          +'<span class="pc-emoji">'+pp.emoji+'</span>'
+          +'<span class="pc-name" style="color:'+pp.color+'">'+pp.name+'</span>'
+          +badge
+        +'</div>'
+        +'<div class="pc-tag" style="color:'+pp.color+';opacity:.85;margin-bottom:12px">"'+pp.tagline+'"</div>'
+        +'<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--tg);margin-bottom:5px">What this persona does</div>'
+        +'<div class="pc-desc" style="margin-bottom:12px">'+pp.desc+'</div>'
+        +'<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--tg);margin-bottom:6px">Three strengths</div>'
+        +'<div style="margin-bottom:12px">'
+          +(pp.strengths||[]).map(function(s){ return '<div style="display:flex;gap:8px;margin-bottom:5px"><span style="color:'+pp.color+';font-size:11px;margin-top:2px">&#8212;</span><span style="font-size:12px;line-height:1.5">'+s+'</span></div>'; }).join('')
+        +'</div>'
+        +'<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--tg);margin-bottom:5px">In the AI era</div>'
+        +'<div style="font-size:13px;line-height:1.65;padding:10px 12px;border-radius:8px;background:#fff;border:1px solid '+pp.color+';color:'+pp.color+'">'+pp.era+'</div>'
+        +'</div>'
+      });
+    }
 }
 
 // ================================================================
 // PDF DOWNLOAD
 // ================================================================
+
 function downloadPDF() {
   var r = state.result;
   var p = PERSONAS[r.primary];
@@ -1061,130 +1215,129 @@ function downloadPDF() {
 
   try {
     var jsPDF = window.jspdf.jsPDF;
-    var doc = new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
-    var W=210, M=18;
+    var doc = new jsPDF({orientation:'portrait', unit:'mm', format:'a4'});
+    var W = 210, M = 16, PH = 297, BOTTOM = 272; // page height / safe bottom margin
 
-    function hex(h){return[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];}
-    function setColor(h){var c=hex(h);doc.setTextColor(c[0],c[1],c[2]);}
-    function setFill(h){var c=hex(h);doc.setFillColor(c[0],c[1],c[2]);}
+    // ── HELPERS ──
+    function hex(h){ return [parseInt(h.slice(1,3),16), parseInt(h.slice(3,5),16), parseInt(h.slice(5,7),16)]; }
+    function setFill(h){ var c=hex(h); doc.setFillColor(c[0],c[1],c[2]); }
+    function setColor(h){ var c=hex(h); doc.setTextColor(c[0],c[1],c[2]); }
+    function checkPage(y, needed) {
+      if(y + needed > BOTTOM) {
+        doc.addPage();
+        return 16; // reset y to top margin on new page
+      }
+      return y;
+    }
 
-    // ── HEADER BLOCK ──
-    doc.setFillColor(45,45,45);
-    doc.rect(0,0,W,60,'F');
+    var pc = hex(p.color);
+    var y = 0;
 
-    // Magenta accent bar
-    var pc=hex(p.color);
-    doc.setFillColor(pc[0],pc[1],pc[2]);
-    doc.rect(0,0,5,60,'F');
+    // ── HEADER ──
+    doc.setFillColor(45,45,45); doc.rect(0,0,W,72,'F');
+    doc.setFillColor(pc[0],pc[1],pc[2]); doc.rect(0,0,5,72,'F');
 
-    doc.setTextColor(255,255,255);
-    doc.setFont('helvetica','bold');
-    doc.setFontSize(8);
-    doc.text('BTS ENABLEMENT  \u00B7  AI READINESS ASSESSMENT', M, 13);
+    doc.setFont('helvetica','bold'); doc.setFontSize(7.5);
+    doc.setTextColor(160,160,160);
+    doc.text('BTS ENABLEMENT  \u00B7  AI READINESS ASSESSMENT', M, 11);
 
-    // "You align closest with the [persona] persona"
-    doc.setFontSize(11);
-    doc.setFont('helvetica','normal');
-    doc.setTextColor(180,180,180);
-    doc.text('You align closest with the', M, 24);
-    doc.setFont('helvetica','bold');
-    setColor(p.color);
-    doc.setFontSize(11);
-    doc.text(p.name + ' persona', M + doc.getTextWidth('You align closest with the '), 24);
+    doc.setFont('helvetica','normal'); doc.setFontSize(9.5); doc.setTextColor(160,160,160);
+    doc.text('You align closest with the ', M, 21);
+    var introWidth = doc.getTextWidth('You align closest with the ');
+    doc.setFont('helvetica','bold'); setColor(p.color);
+    doc.text(p.name + ' persona', M + introWidth, 21);
 
-    doc.setFont('helvetica','bold');
-    doc.setFontSize(20);
-    doc.setTextColor(255,255,255);
-    doc.text(p.name, M, 37);
+    doc.setFont('helvetica','bold'); doc.setFontSize(20); doc.setTextColor(255,255,255);
+    doc.text(p.name, M, 36);
 
-    doc.setFont('helvetica','italic');
-    doc.setFontSize(9);
-    doc.setTextColor(190,190,190);
-    doc.text(p.tagline, M, 46);
+    doc.setFont('helvetica','italic'); doc.setFontSize(8.5); doc.setTextColor(180,180,180);
+    doc.text(p.tagline, M, 45);
 
-    doc.setFont('helvetica','normal');
-    doc.setFontSize(8);
-    doc.setTextColor(130,130,130);
-    var meta = (user.name||'Participant') + '   \u00B7   ' + (user.role||'') + (user.cohort ? '   \u00B7   ' + user.cohort : '') + '   \u00B7   ' + new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
-    doc.text(meta, M, 56);
+    // Persona description — 3 Brene Brown sentences
+    if(p.desc) {
+      doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(160,160,160);
+      var descLines = doc.splitTextToSize(p.desc, W-M*2-10);
+      // If desc fits in header area, show it; otherwise it appears in summary section
+      if(descLines.length <= 3) {
+        doc.text(descLines, M, 51);
+      }
+    }
 
-    var y = 68;
+    doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(120,120,120);
+    var meta = (user.name||'Participant')
+      + (user.role ? '  \u00B7  ' + user.role : '')
+      + (user.cohort ? '  \u00B7  ' + user.cohort : '')
+      + (user.session && user.session !== 'initial' ? '  \u00B7  ' + (SESSIONS.find(function(s){return s.id===user.session;})||{label:'Pulse'}).label : '')
+      + '  \u00B7  ' + new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+    doc.text(meta, M, 53);
+
+    y = 78;
 
     // ── SUMMARY ──
-    doc.setFillColor(248,248,255);
-    doc.roundedRect(M, y, W-M*2, 2, 0, 0, 'F'); // thin rule
-    y += 4;
-    doc.setFont('helvetica','normal');
-    doc.setFontSize(8.5);
-    doc.setTextColor(45,45,45);
+    doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(45,45,45);
     var sumLines = doc.splitTextToSize(p.summary, W-M*2);
+    y = checkPage(y, sumLines.length * 4.5 + 6);
     doc.text(sumLines, M, y);
-    y += sumLines.length * 5 + 6;
+    y += sumLines.length * 4.5 + 6;
+
+    // ── DIVIDER ──
+    doc.setDrawColor(220,220,220); doc.line(M, y, W-M, y); y += 5;
 
     // ── SCORE BARS ──
-    doc.setDrawColor(220,220,220);
-    doc.line(M, y, W-M, y); y += 5;
-    doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor(45,45,45);
-    doc.text('YOUR PERSONA PROFILE (confidence-weighted)', M, y); y += 7;
+    y = checkPage(y, 8 + r.sorted.length * 9);
+    doc.setFont('helvetica','bold'); doc.setFontSize(8); doc.setTextColor(45,45,45);
+    doc.text('YOUR PERSONA PROFILE  (confidence-weighted)', M, y); y += 6;
 
-    var sorted = r.sorted || [];
-    sorted.forEach(function(pair){
-      var pid=pair[0]; var pp=PERSONAS[pid]; var pc2=r.pct[pid];
+    r.sorted.forEach(function(pair){
+      var pid = pair[0]; var pp = PERSONAS[pid]; var pc2 = r.pct[pid];
       if(!pp) return;
-      var rgb=hex(pp.color);
-      doc.setFontSize(8);
+      var rgb = hex(pp.color);
       doc.setFont('helvetica', pid===r.primary ? 'bold' : 'normal');
-      doc.setTextColor(45,45,45);
-      doc.text(pp.name, M, y+4);
-      doc.setFillColor(230,230,230);
-      doc.roundedRect(M+52,y,110,5,1,1,'F');
-      doc.setFillColor(rgb[0],rgb[1],rgb[2]);
-      doc.roundedRect(M+52,y,110*(pc2/100),5,1,1,'F');
+      doc.setFontSize(7.5); doc.setTextColor(45,45,45);
+      doc.text(pp.name, M, y+3.5);
+      doc.setFillColor(228,228,228); doc.roundedRect(M+50, y, 112, 5, 1,1,'F');
+      doc.setFillColor(rgb[0],rgb[1],rgb[2]); doc.roundedRect(M+50, y, 112*(pc2/100), 5, 1,1,'F');
       doc.setFontSize(7); doc.setTextColor(80,80,80);
-      doc.text(pc2+'%', M+164, y+4);
-      y += 10;
+      doc.text(pc2+'%', M+164, y+3.5);
+      y += 8;
     });
     y += 4;
 
-    // ── TWO COLUMNS: STRENGTHS + VALUE ──
-    doc.setDrawColor(220,220,220);
-    doc.line(M, y, W-M, y); y += 5;
-    var cw = (W-M*2)/2 - 4;
+    // ── DIVIDER ──
+    doc.setDrawColor(220,220,220); doc.line(M, y, W-M, y); y += 5;
 
-    doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor(45,45,45);
+    // ── STRENGTHS + VALUE (two columns) ──
+    var cw = (W-M*2)/2 - 4;
+    y = checkPage(y, 6 + Math.max(p.strengths.length, p.leadership.length) * 7);
+    doc.setFont('helvetica','bold'); doc.setFontSize(8); doc.setTextColor(45,45,45);
     doc.text('YOUR STRENGTHS IN THE AI ERA', M, y);
     doc.text('HOW YOU ADD VALUE', M+cw+8, y);
     y += 6;
 
-    var bulletChar = '\u2022'; // proper bullet point
-    doc.setFont('helvetica','normal'); doc.setFontSize(8);
-
-    var leftLines = [];
-    p.strengths.forEach(function(s){ leftLines.push(bulletChar + ' ' + s); });
-    var rightLines = [];
-    p.leadership.forEach(function(s){ rightLines.push(bulletChar + ' ' + s); });
-
-    var maxRows = Math.max(leftLines.length, rightLines.length);
+    doc.setFont('helvetica','normal'); doc.setFontSize(7.5);
+    var bullet = '\u2022';
+    var maxRows = Math.max(p.strengths.length, p.leadership.length);
     for(var i=0; i<maxRows; i++){
-      if(leftLines[i]){
+      if(p.strengths[i]){
         doc.setTextColor(45,45,45);
-        var wrapped = doc.splitTextToSize(leftLines[i], cw-2);
-        doc.text(wrapped, M, y+i*8);
+        var sl = doc.splitTextToSize(bullet+' '+p.strengths[i], cw-2);
+        doc.text(sl, M, y);
       }
-      if(rightLines[i]){
+      if(p.leadership[i]){
         doc.setTextColor(45,45,45);
-        var wrapped2 = doc.splitTextToSize(rightLines[i], cw-2);
-        doc.text(wrapped2, M+cw+8, y+i*8);
+        var ll = doc.splitTextToSize(bullet+' '+p.leadership[i], cw-2);
+        doc.text(ll, M+cw+8, y);
       }
+      y += 7;
     }
-    y += maxRows * 8 + 6;
+    y += 4;
 
     // ── MINDSHIFT ──
-    var rgb3=hex(p.color);
-    doc.setFillColor(rgb3[0],rgb3[1],rgb3[2]);
-    doc.roundedRect(M, y, W-M*2, 14, 2, 2, 'F');
+    y = checkPage(y, 18);
+    setFill(p.color);
+    doc.roundedRect(M, y, W-M*2, 14, 2,2,'F');
     doc.setTextColor(255,255,255);
-    doc.setFont('helvetica','bold'); doc.setFontSize(8);
+    doc.setFont('helvetica','bold'); doc.setFontSize(7.5);
     doc.text('MINDSET SHIFT', M+4, y+5);
     doc.setFont('helvetica','normal');
     var msLines = doc.splitTextToSize(p.mindshift, W-M*2-10);
@@ -1192,55 +1345,80 @@ function downloadPDF() {
     y += 20;
 
     // ── 30-DAY GOALS ──
-    doc.setDrawColor(220,220,220);
-    doc.line(M, y, W-M, y); y += 5;
-    doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor(45,45,45);
-    doc.text('YOUR 30-DAY AI GOAL', M, y); y += 6;
+    y = checkPage(y, 44);
+    doc.setDrawColor(220,220,220); doc.line(M, y, W-M, y); y += 5;
+    doc.setFont('helvetica','bold'); doc.setFontSize(8); doc.setTextColor(45,45,45);
+    doc.text('YOUR 30-DAY AI GOAL  \u2014  CHOOSE YOUR LEVEL', M, y); y += 6;
 
-    var goalData = [
-      {label:'GOOD', text:p.good, fill:[240,240,240], textColor:[45,45,45]},
-      {label:'BETTER', text:p.better, fill:[220,230,248], textColor:[0,50,100]},
-      {label:'STRETCH', text:p.stretch, fill:rgb3, textColor:[255,255,255]}
-    ];
     var gw = (W-M*2-8)/3;
-    goalData.forEach(function(g,i){
-      var x = M + i*(gw+4);
-      doc.setFillColor(g.fill[0],g.fill[1],g.fill[2]);
-      doc.roundedRect(x, y, gw, 30, 2, 2, 'F');
-      doc.setTextColor(g.textColor[0],g.textColor[1],g.textColor[2]);
-      doc.setFont('helvetica','bold'); doc.setFontSize(7.5);
-      doc.text(g.label, x+3, y+7);
-      doc.setFont('helvetica','normal'); doc.setFontSize(6.5);
-      var gl = doc.splitTextToSize(g.text, gw-6);
-      doc.text(gl, x+3, y+12);
+    var goalData = [
+      {label:'GOOD',    text:p.good,    bg:[242,242,242], tc:[45,45,45]},
+      {label:'BETTER',  text:p.better,  bg:[220,230,248], tc:[0,45,100]},
+      {label:'STRETCH', text:p.stretch, bg:pc,            tc:[255,255,255]}
+    ];
+    var goalTop = y;
+    // Calculate tallest box first
+    var maxGoalH = 0;
+    goalData.forEach(function(g){
+      var lines = doc.splitTextToSize(g.text, gw-7);
+      var h = 8 + lines.length * 4.5 + 4;
+      if(h > maxGoalH) maxGoalH = h;
     });
-    y += 36;
+    goalData.forEach(function(g, i){
+      var x = M + i*(gw+4);
+      doc.setFillColor(g.bg[0],g.bg[1],g.bg[2]);
+      doc.roundedRect(x, goalTop, gw, maxGoalH, 2,2,'F');
+      doc.setTextColor(g.tc[0],g.tc[1],g.tc[2]);
+      doc.setFont('helvetica','bold'); doc.setFontSize(7);
+      doc.text(g.label, x+4, goalTop+6);
+      doc.setFont('helvetica','normal'); doc.setFontSize(7);
+      var gl = doc.splitTextToSize(g.text, gw-7);
+      doc.text(gl, x+4, goalTop+11);
+    });
+    y = goalTop + maxGoalH + 6;
 
     // ── 1:1 PROMPT ──
-    doc.setFillColor(238,249,245);
-    doc.roundedRect(M, y, W-M*2, 22, 2, 2, 'F');
-    doc.setTextColor(0,100,80);
-    doc.setFont('helvetica','bold'); doc.setFontSize(9);
+    // Calculate height needed for the three questions
+    var q1t = doc.splitTextToSize('Q1: I want to share what resonates in this result and what does not \u2014 because both tell you something real about where I am. The resonance shows where to build. The friction shows where to listen.', W-M*2-10);
+    var q2t = doc.splitTextToSize('Q2: What would feel like a genuinely safe next step given where I am right now \u2014 one I could actually take this week, not one that sounds good in a conversation?', W-M*2-10);
+    var q3t = doc.splitTextToSize('Q3: Can we define one specific thing I will try this month \u2014 and agree on how you will check in with me about it?', W-M*2-10);
+    var lh = 4.2; // line height
+    var boxH = 10 + (q1t.length + q2t.length + q3t.length) * lh + 12;
+
+    y = checkPage(y, boxH + 4);
+    doc.setFillColor(238,249,245); doc.roundedRect(M, y, W-M*2, boxH, 2,2,'F');
+    doc.setTextColor(0,95,75); doc.setFont('helvetica','bold'); doc.setFontSize(8.5);
     doc.text('Bring This to Your Next 1:1', M+4, y+7);
-    doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(45,45,45);
-    doc.text('Your persona is not a performance review. It is a starting point for a curious conversation.', M+4, y+14);
-    doc.text('Your manager\'s job is not to fix the pattern — it is to understand the story underneath it.', M+4, y+19);
-    y += 28;
+
+    doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(45,45,45);
+    var qy = y + 13;
+    doc.text(q1t, M+4, qy); qy += q1t.length * lh + 3;
+    doc.text(q2t, M+4, qy); qy += q2t.length * lh + 3;
+    doc.text(q3t, M+4, qy);
+
+    y = y + boxH + 4;
+
+    // ── CLOSING NOTE ──
+    y = checkPage(y, 12);
+    doc.setFont('helvetica','italic'); doc.setFontSize(7); doc.setTextColor(120,120,120);
+    var closeLines = doc.splitTextToSize('You do not have to share this report. But if you do, know that the goal of that conversation is not to close a gap \u2014 it is to take one honest step from wherever you actually are.', W-M*2);
+    doc.text(closeLines, M, y); y += closeLines.length * 4 + 6;
 
     // ── FOOTER ──
-    doc.setDrawColor(220,220,220);
-    doc.line(M, y, W-M, y); y += 5;
-    doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(150,150,150);
+    y = checkPage(y, 10);
+    doc.setDrawColor(220,220,220); doc.line(M, y, W-M, y); y += 5;
+    doc.setFont('helvetica','normal'); doc.setFontSize(6.5); doc.setTextColor(150,150,150);
     doc.text('BTS Enablement  \u00B7  Leading AI Conversations  \u00B7  AI Readiness Assessment  \u00B7  bts.com', M, y);
-    doc.text('Movement is expected. Differentiation is in pacing \u2014 not direction.', M, y+5);
+    doc.text('Movement is expected. Differentiation is in pacing \u2014 not direction.', M, y+4.5);
 
     doc.save('AI-Readiness-' + (user.name||'Result').replace(/[^a-zA-Z0-9]/g,'_') + '.pdf');
 
   } catch(err) {
     console.error('PDF error:', err);
-    alert('PDF generation failed: ' + err.message + '\n\nPlease make sure jsPDF loaded correctly.');
+    alert('PDF generation failed: ' + err.message + '\n\nPlease try again or contact your AI Champion.');
   }
 }
+
 
 // ================================================================
 // MANAGER LOGIN
@@ -1252,6 +1430,7 @@ function mgrLogin() {
   document.getElementById('mgrErr').textContent='';
   state.mgrTeam = team;
   state.anonMode = true;
+  state.mgrSelectedSessions = [];
   renderMgrDashboard();
   showScreen('mgr-dashboard');
 }
@@ -1267,55 +1446,62 @@ function toggleAnon() {
 function renderMgrDashboard() {
   var team = state.mgrTeam;
   document.getElementById('mgrTeamName').textContent = team.name;
-  document.getElementById('mgrDate').textContent = 'AI Readiness Overview · ' + new Date().toLocaleDateString('en-US',{month:'long',year:'numeric'});
+  document.getElementById('mgrDate').textContent = 'AI Readiness Overview \u00B7 ' + new Date().toLocaleDateString('en-US',{month:'long',year:'numeric'});
 
-  // Merge real saved results with demo data
-  var realResults = loadAllResults();
-  var allParticipants = realResults.length > 0 ? realResults : MOCK_PARTICIPANTS;
-  var participants = allParticipants.filter(function(p){return p.cohort===team.name;});
+  var allTeamResults = loadAllResults().filter(function(p){return p.cohort===team.name;});
+  var participants = filterBySession(allTeamResults, state.mgrSelectedSessions);
+
+  // Session selector
+  var sessHtml = buildSessionSelector(state.mgrSelectedSessions, 'toggleMgrSession', allTeamResults);
+  var existingSelEl = document.getElementById('mgrSessionSelector');
+  if(!existingSelEl) {
+    var selDiv = document.createElement('div');
+    selDiv.id = 'mgrSessionSelector';
+    var statsEl = document.getElementById('mgrStats');
+    statsEl.parentNode.insertBefore(selDiv, statsEl);
+  }
+  document.getElementById('mgrSessionSelector').innerHTML = sessHtml;
+
   var counts = {}; Object.keys(PERSONAS).forEach(function(k){counts[k]=0;});
-  participants.forEach(function(p){counts[p.primary]++;});
+  participants.forEach(function(p){if(counts.hasOwnProperty(p.primary))counts[p.primary]++;});
   var sorted = Object.keys(counts).map(function(k){return [k,counts[k]];}).sort(function(a,b){return b[1]-a[1];});
   var top = sorted[0] ? PERSONAS[sorted[0][0]] : null;
   var highConf = participants.filter(function(p){return p.confidence==='high';}).length;
   var mixed = participants.filter(function(p){return p.secondary;}).length;
 
-  // Stats
   var stats = document.getElementById('mgrStats');
   stats.innerHTML = ''
     +'<div class="stat"><div class="stat-num" style="color:var(--mg)">'+participants.length+'</div><div class="stat-lbl">Completed</div></div>'
-    +'<div class="stat"><div class="stat-num" style="color:var(--em)">'+(top&&participants.length?top.emoji:'—')+'</div><div class="stat-lbl">'+(top&&participants.length?top.name:'No data yet')+'</div></div>'
+    +'<div class="stat"><div class="stat-num" style="color:var(--em)">'+(top&&participants.length?top.emoji:'\u2014')+'</div><div class="stat-lbl">'+(top&&participants.length?top.name:'No data yet')+'</div></div>'
     +'<div class="stat"><div class="stat-num" style="color:var(--bl)">'+highConf+'</div><div class="stat-lbl">High-confidence</div></div>'
     +'<div class="stat"><div class="stat-num" style="color:var(--ch)">'+Math.round((mixed/Math.max(participants.length,1))*100)+'%</div><div class="stat-lbl">Mixed personas</div></div>';
 
-  // Insight
   var insightEl = document.getElementById('mgrInsight');
   if(top && participants.length > 0) {
     var insights = {
       overwhelmed:'Your team skews toward Overwhelmed Operator. Before increasing AI expectations, consider where you can reduce workload first.',
-      accelerator:'Strong Accelerator energy. Channel this into shareable impact — make sure governance keeps pace with experimentation.',
+      accelerator:'Strong Accelerator energy. Channel this into shareable impact \u2014 make sure governance keeps pace with experimentation.',
       identity:'Identity Defender is dominant. These team members need conversations that separate their tasks from their value.',
       skeptic:'Responsible Skeptic is strongest. Invite these members to help define responsible use standards.',
       purist:'Skill Purist energy is strongest. Validate the craft concern and define what AI-assisted excellence looks like.'
     };
-    insightEl.innerHTML = '<strong>💡 Team Insight: </strong>' + (insights[top.id]||'');
+    insightEl.innerHTML = '<strong>\uD83D\uDCA1 Team Insight: </strong>' + (insights[top.id]||'');
     insightEl.style.display = '';
   } else { insightEl.style.display='none'; }
 
-  // Empty state
   if(participants.length === 0) {
-    document.getElementById('mgrBreakdownPanel').innerHTML = '<div style="text-align:center;padding:40px"><div style="font-size:32px;margin-bottom:12px">📋</div><h3 style="margin-bottom:8px;font-family:\'DM Serif Display\',serif">No results yet for '+team.name+'</h3><p style="color:var(--tg);font-size:14px">Share your team code (<strong>'+team.code+'</strong>) with team members to get started.</p></div>';
+    document.getElementById('mgrBreakdownPanel').innerHTML = '<div style="text-align:center;padding:40px"><div style="font-size:32px;margin-bottom:12px">\uD83D\uDCCB</div><h3 style="margin-bottom:8px;font-family:\'DM Serif Display\',serif">No results yet for '+team.name+'</h3><p style="color:var(--tg);font-size:14px">Share your team code (<strong>'+team.code+'</strong>) with team members to get started.</p></div>';
     document.getElementById('mgrTablePanel').style.display='none';
     return;
   }
   document.getElementById('mgrTablePanel').style.display='';
 
-  // Breakdown bars
   var max = sorted[0][1] || 1;
   var bd = document.getElementById('mgrBreakdown');
   bd.innerHTML = '';
   sorted.forEach(function(pair){
     var pp = PERSONAS[pair[0]];
+    if(!pp) return;
     bd.innerHTML += '<div class="breakdown-row">'
       +'<div class="b-name">'+pp.emoji+' '+pp.name+'</div>'
       +'<div class="b-track"><div class="b-fill" style="width:'+Math.round((pair[1]/max)*100)+'%;background:'+pp.color+'"></div></div>'
@@ -1323,8 +1509,7 @@ function renderMgrDashboard() {
       +'</div>';
   });
 
-  // Table
-  document.getElementById('mgrThead').innerHTML = '<tr><th>Participant</th><th>Primary</th><th>Secondary</th><th>Confidence</th><th>Completed</th></tr>';
+  document.getElementById('mgrThead').innerHTML = '<tr><th>Participant</th><th>Round</th><th>Primary</th><th>Secondary</th><th>Confidence</th><th>Completed</th></tr>';
   state.mgrParticipants = participants;
   renderMgrTable();
 }
@@ -1336,12 +1521,18 @@ function renderMgrTable() {
   state.mgrParticipants.forEach(function(p){
     var prim = PERSONAS[p.primary];
     var sec = p.secondary ? PERSONAS[p.secondary] : null;
+    if(!prim) return;
     var confColor = p.confidence==='high'?'var(--em)':p.confidence==='medium'?'var(--bl)':'var(--tg)';
-    var confLabel = p.confidence==='high'?'● High':p.confidence==='medium'?'● Medium':'● Low';
+    var confLabel = p.confidence==='high'?'\u25CF High':p.confidence==='medium'?'\u25CF Medium':'\u25CF Low';
+    var sid = p.session || 'initial';
+    var sess = SESSIONS.find(function(s){return s.id===sid;});
+    var sessLabel = sess ? sess.short : 'Initial';
+    var sessColor = sess ? sess.color : '#E8197D';
     tbody.innerHTML += '<tr>'
       +'<td style="font-weight:500">'+(state.anonMode?p.anon:p.name)+'</td>'
+      +'<td><span style="font-size:11px;font-weight:600;color:'+sessColor+';background:'+sessColor+'18;padding:2px 8px;border-radius:10px">'+sessLabel+'</span></td>'
       +'<td><span class="pill" style="background:'+prim.bg+';color:'+prim.color+'">'+prim.emoji+' '+prim.name+'</span></td>'
-      +'<td>'+(sec?'<span class="pill" style="background:'+sec.bg+';color:'+sec.color+';opacity:.85">'+sec.emoji+' '+sec.name+'</span>':'<span style="color:var(--tg);font-size:13px">—</span>')+'</td>'
+      +'<td>'+(sec?'<span class="pill" style="background:'+sec.bg+';color:'+sec.color+';opacity:.85">'+sec.emoji+' '+sec.name+'</span>':'<span style="color:var(--tg);font-size:13px">\u2014</span>')+'</td>'
       +'<td><span style="font-size:12px;color:'+confColor+'">'+confLabel+'</span></td>'
       +'<td style="color:var(--tg);font-size:13px">'+p.date+'</td>'
       +'</tr>';
@@ -1371,55 +1562,53 @@ function pmTab(tab, btn) {
 
 function renderPMDashboard() {
   var realCount = loadAllResults().length;
-  var dataLabel = realCount > 0 ? realCount + ' real completions' : MOCK_PARTICIPANTS.length + ' demo completions (no real data yet)';
-  document.getElementById('pmSubtitle').textContent = 'Full access · '+state.pmTeams.length+' active teams · '+dataLabel;
-
-  // Overview
+  var dataLabel = realCount + (realCount === 1 ? ' completion' : ' completions');
+  document.getElementById('pmSubtitle').textContent = 'Full access \u00B7 '+state.pmTeams.length+' active teams \u00B7 '+dataLabel;
   renderPMOverview();
   renderPMTeams();
   renderPMParticipants();
 }
 
 function renderPMOverview() {
-  var realResults = loadAllResults();
-  var all = realResults.length > 0 ? realResults : MOCK_PARTICIPANTS;
+  var allResults = loadAllResults();
+  var all = filterBySession(allResults, state.pmSelectedSessions);
   var counts = {}; Object.keys(PERSONAS).forEach(function(k){counts[k]=0;});
-  all.forEach(function(p){counts[p.primary]++;});
+  all.forEach(function(p){if(counts.hasOwnProperty(p.primary))counts[p.primary]++;});
   var sorted = Object.keys(counts).map(function(k){return[k,counts[k]];}).sort(function(a,b){return b[1]-a[1];});
   var max = sorted[0][1]||1;
   var highConf = all.filter(function(p){return p.confidence==='high';}).length;
   var mixed = all.filter(function(p){return p.secondary;}).length;
 
-  var isDemo = loadAllResults().length === 0;
-  var html = (isDemo ? '<div style="background:#FFF8EC;border:1px solid #F5A623;border-radius:10px;padding:12px 16px;font-size:13px;color:#7a4a00;margin-bottom:18px">📋 <strong>Showing demo data.</strong> Real participant completions will appear here automatically once team members complete the assessment.</div>' : '') + '<div class="stats-grid" style="margin-bottom:20px">'
+  var isEmpty = loadAllResults().length === 0;
+  var sessionSel = buildSessionSelector(state.pmSelectedSessions, 'togglePMOverviewSession', loadAllResults());
+  var html = sessionSel
+    + (isEmpty ? '<div style="background:#EEF4FF;border:1px solid #B3CFEE;border-radius:10px;padding:12px 16px;font-size:13px;color:#0057A8;margin-bottom:18px">\uD83D\uDCCB <strong>No submissions yet.</strong> Results will appear here automatically once team members complete the assessment and click Submit My Result.</div>' : '')
+    + '<div class="stats-grid" style="margin-bottom:20px">'
     +'<div class="stat"><div class="stat-num" style="color:var(--mg)">'+all.length+'</div><div class="stat-lbl">Total completions</div></div>'
     +'<div class="stat"><div class="stat-num" style="color:var(--bl)">'+state.pmTeams.length+'</div><div class="stat-lbl">Active teams</div></div>'
     +'<div class="stat"><div class="stat-num" style="color:var(--em)">'+highConf+'</div><div class="stat-lbl">High-confidence</div></div>'
     +'<div class="stat"><div class="stat-num" style="color:var(--ch)">'+Math.round((mixed/Math.max(all.length,1))*100)+'%</div><div class="stat-lbl">Mixed personas</div></div>'
     +'</div>';
 
-  html += '<div class="panel"><h3>Persona Distribution — All Teams</h3>';
+  html += '<div class="panel"><h3>Persona Distribution \u2014 All Teams</h3>';
   sorted.forEach(function(pair){
     var pp=PERSONAS[pair[0]];
+    if(!pp) return;
     html+='<div class="breakdown-row"><div class="b-name">'+pp.emoji+' '+pp.name+'</div>'
       +'<div class="b-track"><div class="b-fill" style="width:'+Math.round((pair[1]/max)*100)+'%;background:'+pp.color+'"></div></div>'
       +'<div class="b-count">'+pair[1]+'</div></div>';
   });
   html += '</div>';
-  // Add data collection instructions at top of overview
+
   html = '<div style="background:#fff;border:1.5px solid var(--mg);border-radius:14px;padding:20px 24px;margin-bottom:20px">'
-    + '<h3 style="font-size:13px;font-weight:700;color:var(--mg);margin-bottom:10px">📥 How Results Come In</h3>'
+    + '<h3 style="font-size:13px;font-weight:700;color:var(--mg);margin-bottom:10px">\uD83D\uDCE5 How Results Come In</h3>'
     + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">'
-    + '<div>'
-    + '<div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--tg);margin-bottom:6px">Step 1 — Participant emails you</div>'
-    + '<p style="font-size:13px;line-height:1.6;color:var(--ch)">After completing the assessment, each participant clicks <strong>"Send My Result to AI Champion."</strong> An email arrives at <strong>elya.bottiger@bts.com</strong> with their full result and a ready-to-paste CSV row.</p>'
+    + '<div><div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--tg);margin-bottom:6px">Step 1 \u2014 Participant submits</div>'
+    + '<p style="font-size:13px;line-height:1.6;color:var(--ch)">After completing the assessment, each participant clicks <strong>"Submit My Result."</strong> A pre-filled Microsoft Form opens in a new tab \u2014 they click Submit in one click. Their result lands privately in your <strong>Microsoft Forms response inbox</strong>.</p>'
     + '</div>'
-    + '<div>'
-    + '<div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--tg);margin-bottom:6px">Step 2 — You paste into Box</div>'
-    + '<p style="font-size:13px;line-height:1.6;color:var(--ch)">Copy the CSV row from the email and paste it into the next empty row in your <a href="https://bts.ent.box.com/file/2161691485658" target="_blank" style="color:var(--mg);font-weight:600">Assessment Results Log in Box ↗</a>. That keeps the data private — only you can access it.</p>'
-    + '</div>'
-    + '</div>'
-    + '</div>'
+    + '<div><div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--tg);margin-bottom:6px">Step 2 \u2014 You view in Forms</div>'
+    + '<p style="font-size:13px;line-height:1.6;color:var(--ch)">Go to <strong>forms.office.com</strong> \u2192 open your form \u2192 click <strong>Responses</strong> \u2192 click <strong>Open in Excel</strong>. Your private results spreadsheet on OneDrive updates automatically.</p>'
+    + '</div></div></div>'
     + html;
 
   document.getElementById('pmOverview').innerHTML = html;
@@ -1427,14 +1616,14 @@ function renderPMOverview() {
 
 function renderPMTeams() {
   var codesVisible = state.showCodes;
-  var html = '<div class="warn-bar">🔑 <strong>These codes are confidential.</strong> Share each code only with the manager of that team.</div>';
+  var html = '<div class="warn-bar">\uD83D\uDD11 <strong>These codes are confidential.</strong> Share each code only with the manager of that team.</div>';
   html += '<div class="panel" style="margin-bottom:16px"><h3>Add New Team</h3>'
     +'<div class="cohort-input-row"><input class="cohort-input" id="newTeamInput" placeholder="New team name..." onkeydown="if(event.key===\'Enter\')addPMTeam()"><button class="btn btn-green" onclick="addPMTeam()">+ Add Team</button></div></div>';
   html += '<div class="panel"><div class="panel-hdr"><h3>All Teams &amp; Access Codes</h3>'
-    +'<button class="btn btn-ghost" style="padding:6px 14px;font-size:12px" onclick="toggleCodes(this)">'+(codesVisible?'🔒 Hide codes':'👁 Show codes')+'</button></div>'
+    +'<button class="btn btn-ghost" style="padding:6px 14px;font-size:12px" onclick="toggleCodes(this)">'+(codesVisible?'\uD83D\uDD12 Hide codes':'\uD83D\uDC41 Show codes')+'</button></div>'
     +'<table class="tbl"><thead><tr><th>#</th><th>Team Name</th><th>Access Code</th><th>Completions</th><th>Action</th></tr></thead><tbody>';
   state.pmTeams.forEach(function(t,i){
-    var realRes = loadAllResults(); var allP = realRes.length > 0 ? realRes : MOCK_PARTICIPANTS; var count = allP.filter(function(p){return p.cohort===t.name;}).length;
+    var count = loadAllResults().filter(function(p){return p.cohort===t.name;}).length;
     html+='<tr><td style="color:var(--tg);font-size:13px">'+(i+1)+'</td>'
       +'<td style="font-weight:600">'+t.name+'</td>'
       +'<td><span class="codes-table" style="'+(codesVisible?'':'filter:blur(4px);user-select:none')+'">'+t.code+'</span></td>'
@@ -1447,41 +1636,66 @@ function renderPMTeams() {
 }
 
 function renderPMParticipants() {
-  var participants = getAllParticipants();
-  var filtered = state.pmSelectedTeam === 'all'
-    ? participants
-    : participants.filter(function(p){ return p.cohort === state.pmSelectedTeam; });
-  var teamOpts = '<option value="all">All Teams</option>';
-  state.pmTeams.forEach(function(t){ teamOpts += '<option value="'+t.name+'"'+(state.pmSelectedTeam===t.name?' selected':'')+'>'+t.name+'</option>'; });
-  var html = '<div class="panel"><div class="panel-hdr">'
-    +'<h3>All Participants <span style="font-size:13px;font-weight:400;color:var(--tg)">('+filtered.length+' total)</span></h3>'
-    +'<div style="display:flex;gap:10px;align-items:center">'
-    +'<select class="sel-wrap" onchange="state.pmSelectedTeam=this.value;renderPMParticipants()">'+teamOpts+'</select>'
-    +'<div class="toggle-wrap"><span>Anon</span><button class="toggle'+(state.pmAnonMode?'':' on')+'" onclick="togglePMAnon()"></button><span>Named</span></div>'
-    +'</div></div>'
-    +'<div class="info-bar" style="margin-bottom:12px;font-size:12px">&#128190; Results submitted on this device are saved locally and appear here. Demo entries are marked and cannot be deleted.</div>'
-    +'<table class="tbl"><thead><tr><th>Participant</th><th>Team</th><th>Primary</th><th>Secondary</th><th>Confidence</th><th>Date</th><th>Action</th></tr></thead><tbody>';
-  filtered.forEach(function(p){
-    var prim=PERSONAS[p.primary]; var sec=p.secondary?PERSONAS[p.secondary]:null;
-    if(!prim) return;
-    var confColor=p.confidence==='high'?'var(--em)':p.confidence==='medium'?'var(--bl)':'var(--tg)';
-    var displayName = state.pmAnonMode ? (p.anon||'Anonymous') : p.name;
-    var hasId = !!p.id;
-    var safeId = hasId ? p.id : '';
-    var safeName = p.name ? p.name.replace(/\\/g,'').replace(/'/g,'') : 'this participant';
-    var safeCohort = p.cohort ? p.cohort.replace(/'/g,'') : '';
-    html+='<tr>'
-      +'<td style="font-weight:500">'+displayName+'</td>'
-      +'<td style="color:var(--tg);font-size:13px">'+(p.cohort||'&#8212;')+'</td>'
-      +'<td><span class="pill" style="background:'+prim.bg+';color:'+prim.color+'">'+prim.name+'</span></td>'
-      +'<td>'+(sec?'<span class="pill" style="background:'+sec.bg+';color:'+sec.color+';opacity:.85">'+sec.name+'</span>':'<span style="color:var(--tg);font-size:13px">&#8212;</span>')+'</td>'
-      +'<td><span style="font-size:12px;color:'+confColor+'">'+p.confidence+'</span></td>'
-      +'<td style="color:var(--tg);font-size:13px">'+(p.date||'&#8212;')+'</td>'
-      +'<td>'+(hasId
-        ? '<button onclick="confirmDelete(\''+safeId+'\',\''+safeName+'\',\''+safeCohort+'\')" style="background:none;border:1px solid #ffcdd2;color:#c62828;padding:3px 10px;border-radius:5px;cursor:pointer;font-size:11px;font-family:\'DM Sans\',sans-serif">Remove</button>'
-        : '<span style="color:var(--mg2);font-size:11px;font-style:italic">demo</span>')
-      +'</td></tr>';
+  var allResults = getAllParticipants();
+  var sessionFiltered = filterBySession(allResults, state.pmSelectedSessions);
+  var filtered = state.pmSelectedTeams.length === 0
+    ? sessionFiltered
+    : sessionFiltered.filter(function(p){ return state.pmSelectedTeams.indexOf(p.cohort) >= 0; });
+
+  var sessionHtml = buildSessionSelector(state.pmSelectedSessions, 'togglePMSession', allResults);
+
+  var chipBar = '<div class="team-filter-wrap">'
+    + '<button class="team-chip all-chip'+(state.pmSelectedTeams.length===0?' active':'')+'" onclick="toggleTeamFilter(null)">All Teams</button>';
+  state.pmTeams.forEach(function(t){
+    var isActive = state.pmSelectedTeams.indexOf(t.name) >= 0;
+    chipBar += '<button class="team-chip'+(isActive?' active':'')+'" onclick="toggleTeamFilter(\''+t.name+'\')">'+t.name+'</button>';
   });
+  chipBar += '</div>';
+
+  var countLabel = filtered.length + ' shown';
+  if(state.pmSelectedSessions.length > 0) countLabel += ' \u00B7 ' + state.pmSelectedSessions.length + ' round'+(state.pmSelectedSessions.length>1?'s':'');
+  if(state.pmSelectedTeams.length > 0) countLabel += ' \u00B7 ' + state.pmSelectedTeams.length + ' team'+(state.pmSelectedTeams.length>1?'s':'');
+  countLabel += ' \u00B7 ' + allResults.length + ' total';
+
+  var html = '<div class="panel"><div class="panel-hdr">'
+    +'<h3>All Participants <span style="font-size:13px;font-weight:400;color:var(--tg)">('+countLabel+')</span></h3>'
+    +'<div class="toggle-wrap"><span>Anon</span><button class="toggle'+(state.pmAnonMode?'':' on')+'" onclick="togglePMAnon()"></button><span>Named</span></div>'
+    +'</div>'
+    + sessionHtml
+    +'<div style="margin-bottom:14px">'+chipBar+'</div>'
+    +'<div class="info-bar" style="margin-bottom:12px;font-size:12px">&#128190; Results submitted on this device are saved locally. Complete the assessment to see data appear here.</div>'
+    +'<table class="tbl"><thead><tr><th>Participant</th><th>Round</th><th>Team</th><th>Primary</th><th>Secondary</th><th>Confidence</th><th>Date</th><th>Action</th></tr></thead><tbody>';
+
+  if(filtered.length === 0) {
+    html += '<tr><td colspan="8" style="text-align:center;padding:32px;color:var(--tg);font-size:14px">No results for the selected filters yet.</td></tr>';
+  } else {
+    filtered.forEach(function(p){
+      var prim=PERSONAS[p.primary]; var sec=p.secondary?PERSONAS[p.secondary]:null;
+      if(!prim) return;
+      var confColor=p.confidence==='high'?'var(--em)':p.confidence==='medium'?'var(--bl)':'var(--tg)';
+      var displayName = state.pmAnonMode ? (p.anon||'Anonymous') : p.name;
+      var hasId = !!p.id && typeof p.id === 'string' && p.id.length > 3;
+      var safeId = hasId ? p.id.replace(/'/g,'') : '';
+      var safeName = (p.name||'this participant').replace(/'/g,'');
+      var safeCohort = (p.cohort||'').replace(/'/g,'');
+      var sid = p.session || 'initial';
+      var sess = SESSIONS.find(function(s){return s.id===sid;});
+      var sessLabel = sess ? sess.short : 'Initial';
+      var sessColor = sess ? sess.color : '#E8197D';
+      html+='<tr>'
+        +'<td style="font-weight:500">'+displayName+'</td>'
+        +'<td><span style="font-size:11px;font-weight:600;color:'+sessColor+';background:'+sessColor+'18;padding:2px 8px;border-radius:10px">'+sessLabel+'</span></td>'
+        +'<td style="color:var(--tg);font-size:13px">'+(p.cohort||'\u2014')+'</td>'
+        +'<td><span class="pill" style="background:'+prim.bg+';color:'+prim.color+'">'+prim.name+'</span></td>'
+        +'<td>'+(sec?'<span class="pill" style="background:'+sec.bg+';color:'+sec.color+';opacity:.85">'+sec.name+'</span>':'<span style="color:var(--tg);font-size:13px">\u2014</span>')+'</td>'
+        +'<td><span style="font-size:12px;color:'+confColor+'">'+p.confidence+'</span></td>'
+        +'<td style="color:var(--tg);font-size:13px">'+(p.date||'\u2014')+'</td>'
+        +'<td>'+(hasId
+          ? '<button onclick="confirmDelete(\''+safeId+'\',\''+safeName+'\',\''+safeCohort+'\')" style="background:none;border:1px solid #ffcdd2;color:#c62828;padding:3px 10px;border-radius:5px;cursor:pointer;font-size:11px;font-family:\'DM Sans\',sans-serif">Remove</button>'
+          : '<span style="color:var(--mg2);font-size:11px;font-style:italic">\u2014</span>')
+        +'</td></tr>';
+    });
+  }
   html += '</tbody></table></div>';
   document.getElementById('pmParticipants').innerHTML = html;
 }
@@ -1512,10 +1726,40 @@ function doDelete(id) {
   renderPMOverview();
 }
 
+function togglePMOverviewSession(sessionId) {
+  if(sessionId === null) { state.pmSelectedSessions = []; }
+  else {
+    var idx = state.pmSelectedSessions.indexOf(sessionId);
+    if(idx >= 0) { state.pmSelectedSessions.splice(idx,1); }
+    else { state.pmSelectedSessions.push(sessionId); }
+  }
+  renderPMOverview();
+  renderPMParticipants();
+}
+
+function toggleTeamFilter(teamName) {
+  if(teamName === null) { state.pmSelectedTeams = []; }
+  else {
+    var idx = state.pmSelectedTeams.indexOf(teamName);
+    if(idx >= 0) { state.pmSelectedTeams.splice(idx,1); }
+    else { state.pmSelectedTeams.push(teamName); }
+  }
+  renderPMParticipants();
+}
+
+function toggleMgrSession(sessionId) {
+  if(sessionId === null) { state.mgrSelectedSessions = []; }
+  else {
+    var idx = state.mgrSelectedSessions.indexOf(sessionId);
+    if(idx >= 0) { state.mgrSelectedSessions.splice(idx,1); }
+    else { state.mgrSelectedSessions.push(sessionId); }
+  }
+  renderMgrDashboard();
+}
 
 function toggleCodes(btn) {
   state.showCodes = !state.showCodes;
-  btn.textContent = state.showCodes ? '🔒 Hide codes' : '👁 Show codes';
+  btn.textContent = state.showCodes ? '\uD83D\uDD12 Hide codes' : '\uD83D\uDC41 Show codes';
   document.querySelectorAll('.codes-table').forEach(function(el){
     el.style.filter = state.showCodes ? '' : 'blur(4px)';
     el.style.userSelect = state.showCodes ? 'all' : 'none';
@@ -1530,9 +1774,7 @@ function addPMTeam() {
   state.pmTeams.push({id:name.toLowerCase().replace(/\s/g,'_'), name:name, code:code});
   input.value = '';
   renderPMTeams();
-  var realCount = loadAllResults().length;
-  var dataLabel = realCount > 0 ? realCount + ' real completions' : MOCK_PARTICIPANTS.length + ' demo completions (no real data yet)';
-  document.getElementById('pmSubtitle').textContent = 'Full access · '+state.pmTeams.length+' active teams · '+dataLabel;
+  document.getElementById('pmSubtitle').textContent = 'Full access \u00B7 '+state.pmTeams.length+' active teams \u00B7 '+loadAllResults().length+' completions';
 }
 
 function removePMTeam(id) {
@@ -1540,9 +1782,71 @@ function removePMTeam(id) {
   renderPMTeams();
 }
 
+function togglePMAnon() {
+  state.pmAnonMode = !state.pmAnonMode;
+  renderPMParticipants();
+}
+
+function togglePMSession(sessionId) {
+  if(sessionId === null) { state.pmSelectedSessions = []; }
+  else {
+    var idx = state.pmSelectedSessions.indexOf(sessionId);
+    if(idx >= 0) { state.pmSelectedSessions.splice(idx,1); }
+    else { state.pmSelectedSessions.push(sessionId); }
+  }
+  renderPMParticipants();
+}
 
 // ================================================================
-// MISSING FUNCTIONS — email submit, delete modal, PM anon toggle
+// SESSION SELECTOR
+// ================================================================
+function buildSessionSelector(selectedSessions, toggleFn, allResults) {
+  var sessionCounts = {};
+  SESSIONS.forEach(function(s){ sessionCounts[s.id] = 0; });
+  allResults.forEach(function(r){
+    var sid = r.session || 'initial';
+    if(sessionCounts.hasOwnProperty(sid)) sessionCounts[sid]++;
+  });
+  var hasAny = selectedSessions.length === 0;
+  var html = '<div class="session-selector">'
+    + '<div class="session-selector-label">Assessment Round</div>'
+    + '<div class="session-chips">'
+    + '<button class="session-chip all-chip'+(hasAny?' active':'')+'" '
+    + 'style="'+(hasAny?'background:var(--ch);border-color:var(--ch);color:#fff;':'')+'" '
+    + 'onclick="'+toggleFn+'(null)">All Rounds</button>';
+  SESSIONS.forEach(function(s){
+    var isActive = selectedSessions.indexOf(s.id) >= 0;
+    var count = sessionCounts[s.id] || 0;
+    var isInitial = s.id === 'initial';
+    var locked = !isInitial && !count;
+    html += '<button class="session-chip'+(isActive?' active':'')+(locked?' locked':'')+'" '
+      + 'style="'+(isActive?'background:'+s.color+';border-color:'+s.color+';color:#fff;':(!locked?'border-color:'+s.color+';color:'+s.color+';':''))+'" '
+      + (locked ? '' : 'onclick="'+toggleFn+'(\''+s.id+'\')"')+'>'
+      + s.short
+      + (count ? ' <span style="opacity:.7;font-size:10px">('+count+')</span>' : '')
+      + (locked ? ' <span class="lock-icon">\uD83D\uDD12</span>' : '')
+      + '</button>';
+  });
+  html += '</div>';
+  if(!sessionCounts.initial) {
+    html += '<p style="font-size:12px;color:var(--tg);margin-top:8px">Complete the Initial Assessment to unlock this view.</p>';
+  } else {
+    var lockedCount = SESSIONS.filter(function(s){return s.id!=='initial'&&!sessionCounts[s.id];}).length;
+    if(lockedCount) html += '<p style="font-size:11px;color:var(--tg);margin-top:8px">\uD83D\uDD12 '+lockedCount+' pulse round'+(lockedCount>1?'s':'')+' will unlock once submissions are received.</p>';
+  }
+  html += '</div>';
+  return html;
+}
+
+function filterBySession(results, selectedSessions) {
+  if(selectedSessions.length === 0) return results;
+  return results.filter(function(r){
+    return selectedSessions.indexOf(r.session || 'initial') >= 0;
+  });
+}
+
+// ================================================================
+// EMAIL SUBMISSION
 // ================================================================
 function submitByEmail() {
   var r = state.result;
@@ -1553,42 +1857,45 @@ function submitByEmail() {
   var primary = PERSONAS[r.primary] ? PERSONAS[r.primary].name : r.primary;
   var secondary = r.secondary && PERSONAS[r.secondary] ? PERSONAS[r.secondary].name : 'None';
   var conf = scoreToConfidenceLabel(weighted, r.primary);
-  var date = new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
-  var subject = 'AI Readiness Result: '+(u.name||'Participant')+' | '+(u.cohort||'Team not specified')+' | '+primary;
-  var body = 'AI READINESS ASSESSMENT RESULT'
-    +'\n================================'
-    +'\nSubmitted: '+date
-    +'\nName: '+(u.name||'')
-    +'\nRole: '+(u.role||'')
-    +'\nTeam / Cohort: '+(u.cohort||'')
-    +'\n'
-    +'\nPRIMARY PERSONA: '+primary
-    +'\nSECONDARY PERSONA: '+secondary
-    +'\nCONFIDENCE LEVEL: '+conf
-    +'\n'
-    +'\nFULL PERCENTAGE BREAKDOWN:'
-    +'\n  Identity Defender:    '+(pct.identity||0)+'%'
-    +'\n  Responsible Skeptic:  '+(pct.skeptic||0)+'%'
-    +'\n  Skill Purist:         '+(pct.purist||0)+'%'
-    +'\n  Overwhelmed Operator: '+(pct.overwhelmed||0)+'%'
-    +'\n  Accelerator:          '+(pct.accelerator||0)+'%'
-    +'\n'
-    +'\n--------------------------------'
-    +'\nCSV ROW (paste into Assessment_Results_Log.csv):'
-    +'\n'+(state.pendingCSVRow||'')
-    +'\n--------------------------------'
-    +'\nBTS AI Readiness Assessment | Leading AI Conversations';
-  var mailto = 'mailto:elya.bottiger@bts.com?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
-  window.location.href = mailto;
+  var dateStr = new Date().toISOString().slice(0,10);
+  var sessId = r.session || u.session || 'initial';
+  var sessObj = SESSIONS.find(function(s){return s.id===sessId;});
+  var sessionLabel = sessObj ? sessObj.label : 'Initial Assessment';
+
+  var BASE = 'https://forms.office.com/Pages/ResponsePage.aspx?id=PC5gf2AP7UKpzd-ZB6CwwJy4wPiWZQRHk_YT5v6z3aRUOVFTRURaTkIzOTBOWlNCM1haU0o3NVlZWC4u';
+  var params = [
+    'r16eea6ca9c81415f806c7955371c058b='+encodeURIComponent(u.name||''),
+    'r928a640ba7e64b4dbf1309443c2f2d5b='+encodeURIComponent(u.cohort||''),
+    'r1998cc3933ff4a0aaf4061a3c099133c='+encodeURIComponent(primary),
+    'r24735af29972496b8e39d73f56535ed7='+encodeURIComponent(secondary),
+    'rd4000f2a06dc415798e28d64d3cd95a7='+encodeURIComponent(conf),
+    'rfc840102c5124ad8ba7870596f37065b='+encodeURIComponent(dateStr),
+    'r75e1d741bb7d4cf3bec2656ea0e8b527='+encodeURIComponent(u.role||''),
+    'rfbc8dbfe581f4c44a132303a547ae5d5='+encodeURIComponent(pct.identity||0),
+    'r8c63c27c33db404d9258ad8c3f86257b='+encodeURIComponent(pct.skeptic||0),
+    'r32280a3e6e394c2e9cbd681f11cdb23a='+encodeURIComponent(pct.purist||0),
+    'rcffbe0af281f4431ae43f2da5e0a72e4='+encodeURIComponent(pct.overwhelmed||0),
+    'r664878265db842d4a98966c5e85b9c61='+encodeURIComponent(pct.accelerator||0),
+    'r29decd65f68441d29f6d5b8e24ffc97e='+encodeURIComponent(sessionLabel)
+  ];
+  window.open(BASE+'&'+params.join('&'), '_blank');
+  var btn = document.getElementById('submitEmailBtn');
   var confirm = document.getElementById('emailConfirm');
-  if(confirm) { confirm.style.display=''; setTimeout(function(){ confirm.style.display='none'; },8000); }
+  if(btn) btn.textContent = '\u2713 Form opened!';
+  if(confirm) confirm.style.display='';
+  setTimeout(function(){
+    if(btn) btn.textContent = '\u2709\uFE0F Submit My Result';
+    if(confirm) confirm.style.display='none';
+  }, 6000);
 }
 
+// ================================================================
+// DELETE MODAL HANDLERS
+// ================================================================
 function cancelDelete() {
   var modal = document.getElementById('deleteModal');
   if(modal) modal.style.display='none';
   state.pendingDeleteId = null;
-  state.pendingDeleteName = null;
 }
 
 function executeDelete() {
@@ -1597,14 +1904,98 @@ function executeDelete() {
     var modal = document.getElementById('deleteModal');
     if(modal) modal.style.display='none';
     state.pendingDeleteId = null;
-    state.pendingDeleteName = null;
     renderPMDashboard();
   }
 }
 
-function togglePMAnon() {
-  state.pmAnonMode = !state.pmAnonMode;
-  renderPMParticipants();
+// ================================================================
+// LOCALSTORAGE PERSISTENCE
+// ================================================================
+var STORAGE_KEY = 'bts_ai_assessment_results';
+
+function saveResult(user, result) {
+  var existing = loadAllResults();
+  var idx = existing.length;
+  var conf = scoreToConfidenceLabel(result.weighted||{}, result.primary);
+  var pct = result.pct || {};
+  var PERSONAS_ORDER = ['identity','skeptic','purist','overwhelmed','accelerator'];
+  var entry = {
+    id: Date.now().toString() + '_' + Math.random().toString(36).slice(2,6),
+    timestamp: new Date().toISOString(),
+    date: new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}),
+    name: user.name || 'Anonymous',
+    role: user.role || '',
+    cohort: user.cohort || '',
+    session: user.session || 'initial',
+    primary: result.primary,
+    secondary: result.secondary || null,
+    pct: pct,
+    weighted: result.weighted || {},
+    confidence: conf,
+    anon: 'Participant ' + String.fromCharCode(65 + (idx % 26))
+  };
+  existing.push(entry);
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(existing)); } catch(e) {}
+
+  var csvRow = [
+    new Date().toLocaleString(), entry.name, entry.role, entry.cohort,
+    PERSONAS[entry.primary]?PERSONAS[entry.primary].name:entry.primary,
+    entry.secondary&&PERSONAS[entry.secondary]?PERSONAS[entry.secondary].name:(entry.secondary||''),
+    entry.confidence
+  ];
+  PERSONAS_ORDER.forEach(function(k){ csvRow.push((pct[k]||0)+'%'); });
+  state.pendingCSVRow = csvRow.map(function(v){
+    var s = String(v);
+    if(s.indexOf(',')>=0||s.indexOf('"')>=0) s='"'+s.replace(/"/g,'""')+'"';
+    return s;
+  }).join(',');
+  return entry;
+}
+
+function loadAllResults() {
+  try {
+    var raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch(e) { return []; }
+}
+
+function deleteResult(id) {
+  var all = loadAllResults().filter(function(e){return e.id!==id;});
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(all)); } catch(e) {}
+}
+
+function getAllParticipants() {
+  return loadAllResults();
+}
+
+function scoreToConfidenceLabel(weighted, primary) {
+  var score = (weighted && primary) ? (weighted[primary]||0) : 0;
+  if(score >= 12) return 'high';
+  if(score >= 7)  return 'medium';
+  return 'low';
+}
+
+function calcConfidenceLevel(result) {
+  var sorted = result.sorted || [];
+  if(!sorted.length) return 'medium';
+  var gap = sorted[0][1] - (sorted.length>1?sorted[1][1]:0);
+  if(gap >= 6) return 'high';
+  if(gap >= 3) return 'medium';
+  return 'low';
+}
+
+// ================================================================
+// HANDLE ROLE / SESSION CHANGE
+// ================================================================
+function handleRoleChange(val) {
+  var note = document.getElementById('leaderNote');
+  if(!note) return;
+  note.style.display = (val && val !== 'Individual Contributor' && val !== '') ? '' : 'none';
+}
+
+function handleSessionChange(val) {
+  var note = document.getElementById('pulseNote');
+  if(note) note.style.display = (val && val !== 'initial') ? '' : 'none';
 }
 
 // ================================================================
@@ -1612,14 +2003,14 @@ function togglePMAnon() {
 // ================================================================
 init();
 </script>
+
 <!-- DELETE CONFIRMATION MODAL -->
 <div id="deleteModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;align-items:center;justify-content:center">
   <div style="background:#fff;border-radius:16px;padding:36px;max-width:420px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,.3)">
-    <div style="font-size:28px;margin-bottom:12px">⚠️</div>
+    <div style="font-size:28px;margin-bottom:12px">&#9888;&#65039;</div>
     <h3 style="font-family:'DM Serif Display',serif;font-size:22px;margin-bottom:10px">Remove participant data?</h3>
-    <p style="font-size:14px;color:#555;line-height:1.65;margin-bottom:6px">You are about to permanently remove all assessment data for:</p>
-    <p style="font-size:16px;font-weight:700;color:var(--ch);margin-bottom:20px;padding:10px 16px;background:var(--lg);border-radius:8px" id="deleteModalName"></p>
-    <p style="font-size:13px;color:#999;margin-bottom:24px">This action cannot be undone. The participant would need to retake the assessment for their data to reappear.</p>
+    <p style="font-size:14px;color:#555;line-height:1.65;margin-bottom:6px">You are about to permanently remove this participant's assessment data.</p>
+    <p style="font-size:13px;color:#999;margin-bottom:24px">This action cannot be undone.</p>
     <div style="display:flex;gap:12px">
       <button onclick="cancelDelete()" style="flex:1;padding:12px;border:1.5px solid var(--mg2);border-radius:8px;background:none;cursor:pointer;font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif;color:var(--ch)">Cancel</button>
       <button onclick="executeDelete()" style="flex:1;padding:12px;border:none;border-radius:8px;background:#c62828;color:#fff;cursor:pointer;font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif">Yes, Remove Data</button>
