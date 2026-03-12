@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    // Meta in footer (see footer section)<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -381,43 +381,29 @@ h1.hero em{font-style:italic;color:var(--mg)}
     <div class="goal-tier" id="goalTier"></div>
     <div class="mindshift-box" id="mindshiftBox"></div>
   </div>
-  <div class="manager-card">
-    <h3>💬 Bring This to Your Next 1:1</h3>
-    <p style="margin-bottom:12px">Your persona is not a performance review. It is a starting point for a curious conversation. Your manager's job in this 1:1 is not to fix the pattern — it is to understand the story underneath it. <strong>You get to decide how much you share and when.</strong></p>
-    <p style="font-size:13px;color:var(--tg);margin-bottom:14px">If you choose to share, here are three questions worth bringing. You do not need to ask all three — start with the one that feels most honest about where you are. The goal of this conversation is understanding on both sides.</p>
-    <div class="pq-list">
-      <div class="pq">I want to share what resonates in this result and what does not — because both tell you something real about where I am. The resonance shows where to build. The friction shows where to listen.</div>
-      <div class="pq">What would feel like a genuinely safe next step given where I am right now — one I could actually take this week, not one that sounds good in a conversation?</div>
-      <div class="pq">Can we define one specific thing I will try this month — and agree on how you will check in with me about it?</div>
+  <div class="result-actions" style="display:flex;gap:12px;flex-wrap:wrap">
+    <button class="btn btn-primary" onclick="downloadPDF()" style="flex:1;min-width:200px">⬇ Download My PDF Report</button>
+    <button class="btn" onclick="showSubmitPrivacyModal()" style="flex:1;min-width:200px;background:var(--em);color:#fff;border:none;border-radius:8px;padding:13px 24px;font-size:15px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s">📤 Submit My Result</button>
+  </div>
+  <div class="manager-card" style="background:#EEF9F5;border:1px solid #A8E6D5">
+    <p style="font-size:13px;color:var(--tg);font-style:italic">You do not have to share this report. But if you do, know that the goal of that conversation is not to close a gap — it is to take one honest step from wherever you actually are.</p>
+  </div>
+  <div class="all-personas-section r-card" style="background:#fff;border-radius:16px;padding:26px 30px;border:1px solid var(--mg2);margin-bottom:20px">
+    <h3 style="font-family:'DM Serif Display',serif;font-size:20px;margin-bottom:6px">Want to learn more about All Five Personas?</h3>
+    <p class="intro">No persona carries shame. Every one of them reflects something real about the human experience of change — and every one of them brings something the AI era genuinely needs. Hover over your score bars above to read more about each one. Or read all five here.</p>
+    <div class="persona-card-grid" id="allPersonasGrid"></div>
+  </div>
+  <div id="submitEmailCard" style="display:none">
+    <div id="emailConfirm" style="background:#EEF9F5;border:1px solid #A8E6D5;border-radius:10px;padding:12px 16px;font-size:13px;color:#00A878;text-align:center;margin-bottom:12px">
+      ✓ Form opened in a new tab — thank you for submitting your result.
     </div>
-    <p style="font-size:12px;color:var(--tg);margin-top:14px;font-style:italic">You do not have to share this report. But if you do, know that the goal of that conversation is not to close a gap — it is to take one honest step from wherever you actually are.</p>
   </div>
   <div class="pulse-card">
     <h3>📊 Take the Quarterly Pulse</h3>
     <p style="margin-bottom:10px">In 90 days, retake this assessment to see how your persona has shifted. Personas change as confidence, capacity, and context evolve — and watching that movement over time is often more valuable than any single result.</p>
     <p style="font-size:13px;color:#3a5a8a">The personas in this assessment are meant to become shared language on your team — not labels, but a shorthand for conversations that might otherwise be hard to start. The more fluently your team can say <em>"I am feeling pretty Overwhelmed Operator on this one"</em> — the more honest and productive those conversations become.</p>
   </div>
-
-  <div class="all-personas-section r-card" style="background:#fff;border-radius:16px;padding:26px 30px;border:1px solid var(--mg2);margin-bottom:20px">
-    <h3 style="font-family:'DM Serif Display',serif;font-size:20px;margin-bottom:6px">All Five Personas</h3>
-    <p class="intro">No persona carries shame. Every one of them reflects something real about the human experience of change — and every one of them brings something the AI era genuinely needs. Hover over your score bars above to read more about each one. Or read all five here.</p>
-    <div class="persona-card-grid" id="allPersonasGrid"></div>
-  </div>
-
-  <div id="submitEmailCard" style="background:#fff;border:1.5px solid var(--em);border-radius:14px;padding:22px 26px;margin-bottom:20px">
-    <h3 style="font-size:13px;font-weight:700;color:var(--em);margin-bottom:8px">✉️ Submit Your Result to Your AI Champion</h3>
-    <p style="font-size:14px;line-height:1.65;margin-bottom:6px">Your result stays private — it goes directly to your AI Champion's Microsoft Forms inbox. Click below and your result will open in a new tab, <strong>completely pre-filled</strong>. Just hit Submit — one click.</p>
-    <p style="font-size:12px;color:var(--tg);margin-bottom:14px">Your individual result is never shared with your manager or team without your consent. This goes to an internal BTS Microsoft Form — no external services.</p>
-    <button class="btn btn-green" id="submitEmailBtn" onclick="submitByEmail()" style="font-size:14px">✉️ Submit My Result</button>
-    <p id="emailConfirm" style="font-size:12px;color:var(--em);margin-top:10px;display:none">✓ Your form has opened in a new tab — everything is pre-filled. Just click Submit!</p>
-  </div>
-  <div class="result-actions">
-    <button class="btn btn-primary" onclick="downloadPDF()">⬇ Download My Results PDF</button>
-    <button class="btn btn-ghost" onclick="showScreen('landing')">Retake Assessment</button>
-  </div>
 </div>
-</div>
-
 <div id="s-mgr-login" class="screen">
 <div class="wrap-narrow">
   <div class="login-card">
@@ -1060,19 +1046,35 @@ function prevQ() {
 function scoreAssessment(answers) {
   var keys = Object.keys(PERSONAS);
   var raw = {}; var weighted = {};
-  keys.forEach(function(k){ raw[k]=0; weighted[k]=0; });
+  var confWeightSum = {}; var confCount = {};
+  keys.forEach(function(k){ raw[k]=0; weighted[k]=0; confWeightSum[k]=0; confCount[k]=0; });
+
+  // Confidence weight map: 3=Very me (100%), 2=Partially true (66%), 1=More or less (33%)
+  var confWeights = {3: 100, 2: 66, 1: 33};
+
   answers.forEach(function(a){
     if(!a || !a.persona || !weighted.hasOwnProperty(a.persona)) return;
     raw[a.persona]++;
     weighted[a.persona] += (a.confidence || 2);
+    // Track per-persona confidence
+    var cw = confWeights[a.confidence] !== undefined ? confWeights[a.confidence] : 66;
+    confWeightSum[a.persona] += cw;
+    confCount[a.persona]++;
   });
+
   var totalW = keys.reduce(function(s,k){return s+weighted[k];},0) || 1;
   var pct = {};
-  keys.forEach(function(k){ pct[k] = Math.round((weighted[k]/totalW)*100); });
+  // Per-persona confidence score (0-100)
+  var personaConf = {};
+  keys.forEach(function(k){
+    pct[k] = Math.round((weighted[k]/totalW)*100);
+    personaConf[k] = confCount[k] > 0 ? Math.round(confWeightSum[k]/confCount[k]) : 0;
+  });
   var sorted = keys.map(function(k){return [k,weighted[k]];}).sort(function(a,b){return b[1]-a[1];});
   var primary = sorted[0][0];
   var secondary = sorted[1][1] >= 4 ? sorted[1][0] : null;
-  return {raw:raw, weighted:weighted, pct:pct, primary:primary, secondary:secondary, sorted:sorted};
+  return {raw:raw, weighted:weighted, pct:pct, personaConf:personaConf,
+          confCount:confCount, primary:primary, secondary:secondary, sorted:sorted};
 }
 
 // ================================================================
@@ -1109,10 +1111,38 @@ function renderResults() {
 
   // Score bars
   var bars = document.getElementById('scoreBars');
-  bars.innerHTML = '';
+  bars.innerHTML = '<div style="font-size:12px;color:var(--tg);line-height:1.7;margin-bottom:16px;padding:12px 16px;background:#F5F5F5;border-radius:8px;border-left:3px solid var(--mg2)">'
+    + '<strong style="color:var(--ch);font-size:13px">How to read your confidence score</strong><br>'
+    + 'The number beneath each bar shows how strongly your answers aligned with that persona — based on the confidence you marked per choice. '
+    + '<strong style="color:var(--ch)">Very me = 100&nbsp;&nbsp;·&nbsp;&nbsp;Partially true = 66&nbsp;&nbsp;·&nbsp;&nbsp;More or less = 33.</strong> '
+    + 'A higher confidence score means your responses in that direction felt clear and deliberate. '
+    + 'A lower score often signals a moment of genuine transition — which is just as meaningful as a high one.'
+    + '</div>';
+  // Confidence label helper
+  function confLabel(score) {
+    if(score >= 85) return {text:'Very high confidence',color:'#00A878'};
+    if(score >= 65) return {text:'High confidence',    color:'#00A878'};
+    if(score >= 45) return {text:'Moderate confidence',color:'#0057A8'};
+    return                {text:'Lower confidence',   color:'#888888'};
+  }
+
   r.sorted.forEach(function(pair){
     var pid = pair[0]; var pp = PERSONAS[pid]; var pc = r.pct[pid];
-    // Build tooltip from structured data — no quoting issues
+    var conf = (r.personaConf && r.personaConf[pid]) ? r.personaConf[pid] : 0;
+    var count = (r.confCount && r.confCount[pid]) ? r.confCount[pid] : 0;
+    var confHtml = '';
+    if (count === 0) {
+      // Never selected
+      confHtml = '<div style="font-size:11px;color:#AAAAAA;margin-top:3px;font-style:italic">Persona not selected</div>';
+    } else if (count === 1 && conf < 50) {
+      // Selected once with very low confidence — not enough to be meaningful
+      confHtml = '<div style="font-size:11px;color:#AAAAAA;margin-top:3px;font-style:italic">Not enough data</div>';
+    } else {
+      var cl = confLabel(conf);
+      confHtml = '<div style="font-size:11px;color:'+cl.color+';margin-top:3px;font-weight:500">'
+        + cl.text + ' &nbsp;·&nbsp; <span style="font-weight:700">'+conf+'%</span>'
+        + '</div>';
+    }
     var strengthsHtml = (pp.strengths||[]).map(function(s){
       return '<div style="display:flex;gap:6px;margin-bottom:3px"><span style="color:'+pp.color+'">&#8212;</span><span>'+s+'</span></div>';
     }).join('');
@@ -1124,8 +1154,13 @@ function renderResults() {
       + '<div style="line-height:1.6">'+(pp.era||'')+'</div>';
     bars.innerHTML += '<div class="score-row" style="cursor:pointer">'
       +'<div class="score-lbl">'+pp.emoji+' '+pp.name+'</div>'
-      +'<div class="score-track"><div class="score-fill" style="width:'+pc+'%;background:'+pp.color+'"></div></div>'
-      +'<div class="score-pct" style="color:'+pp.color+'">'+pc+'%</div>'
+      +'<div class="score-track" style="position:relative">'
+        +'<div class="score-fill" style="width:'+pc+'%;background:'+pp.color+'"></div>'
+      +'</div>'
+      +'<div style="text-align:right">'
+        +'<div class="score-pct" style="color:'+pp.color+'">'+pc+'%</div>'
+        +confHtml
+      +'</div>'
       +'<div class="persona-tooltip" style="border-top:3px solid '+pp.color+'">'
         +'<div class="tip-name" style="color:'+pp.color+'">'+pp.emoji+' '+pp.name+'</div>'
         +tipHtml
@@ -1234,8 +1269,8 @@ function downloadPDF() {
     var y = 0;
 
     // ── HEADER ──
-    doc.setFillColor(45,45,45); doc.rect(0,0,W,72,'F');
-    doc.setFillColor(pc[0],pc[1],pc[2]); doc.rect(0,0,5,72,'F');
+    doc.setFillColor(45,45,45); doc.rect(0,0,W,58,'F');
+    doc.setFillColor(pc[0],pc[1],pc[2]); doc.rect(0,0,5,58,'F');
 
     doc.setFont('helvetica','bold'); doc.setFontSize(7.5);
     doc.setTextColor(160,160,160);
@@ -1263,15 +1298,9 @@ function downloadPDF() {
       }
     }
 
-    doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(120,120,120);
-    var meta = (user.name||'Participant')
-      + (user.role ? '  \u00B7  ' + user.role : '')
-      + (user.cohort ? '  \u00B7  ' + user.cohort : '')
-      + (user.session && user.session !== 'initial' ? '  \u00B7  ' + (SESSIONS.find(function(s){return s.id===user.session;})||{label:'Pulse'}).label : '')
-      + '  \u00B7  ' + new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
-    doc.text(meta, M, 53);
+        // Meta moved to PDF footer
 
-    y = 78;
+    y = 66;
 
     // ── SUMMARY ──
     doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(45,45,45);
@@ -1292,16 +1321,47 @@ function downloadPDF() {
       var pid = pair[0]; var pp = PERSONAS[pid]; var pc2 = r.pct[pid];
       if(!pp) return;
       var rgb = hex(pp.color);
+      var conf = (r.personaConf && r.personaConf[pid]) ? r.personaConf[pid] : 0;
       doc.setFont('helvetica', pid===r.primary ? 'bold' : 'normal');
       doc.setFontSize(7.5); doc.setTextColor(45,45,45);
       doc.text(pp.name, M, y+3.5);
       doc.setFillColor(228,228,228); doc.roundedRect(M+50, y, 112, 5, 1,1,'F');
       doc.setFillColor(rgb[0],rgb[1],rgb[2]); doc.roundedRect(M+50, y, 112*(pc2/100), 5, 1,1,'F');
-      doc.setFontSize(7); doc.setTextColor(80,80,80);
+      doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.setTextColor(80,80,80);
       doc.text(pc2+'%', M+164, y+3.5);
-      y += 8;
+      // Confidence beneath percentage — three states
+      var confCount2 = (r.confCount && r.confCount[pid]) ? r.confCount[pid] : 0;
+      doc.setFont('helvetica','normal'); doc.setFontSize(6);
+      if (confCount2 === 0) {
+        doc.setTextColor(180,180,180);
+        doc.setFont('helvetica','italic');
+        doc.text('Persona not selected', M+164, y+7.5, {align:'right'});
+        y += 10;
+      } else if (confCount2 === 1 && conf < 50) {
+        doc.setTextColor(180,180,180);
+        doc.setFont('helvetica','italic');
+        doc.text('Not enough data', M+164, y+7.5, {align:'right'});
+        y += 10;
+      } else {
+        var confColor = conf >= 65 ? [0,140,100] : conf >= 45 ? [0,70,160] : [120,120,120];
+        doc.setTextColor(confColor[0],confColor[1],confColor[2]);
+        doc.text(conf+'% confidence', M+164, y+7.5, {align:'right'});
+        y += 10;
+      }
     });
     y += 4;
+
+    // ── CONFIDENCE EXPLANATION ──
+    y = checkPage(y, 16);
+    doc.setFillColor(245,245,245); doc.roundedRect(M, y, W-M*2, 14, 2,2,'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.setTextColor(45,45,45);
+    doc.text('How to read your confidence score', M+4, y+5);
+    doc.setFont('helvetica','normal'); doc.setFontSize(6.5); doc.setTextColor(90,90,90);
+    var confExplain = 'Each bar shows how strongly your answers aligned with that persona, weighted by your confidence: Very me = 100  ·  Partially true = 66  ·  More or less = 33. '
+      + 'Higher confidence = clear and deliberate. Lower confidence can signal genuine transition — equally meaningful.';
+    var confLines = doc.splitTextToSize(confExplain, W-M*2-10);
+    doc.text(confLines, M+4, y+9);
+    y += 16 + confLines.length * 3.5;
 
     // ── DIVIDER ──
     doc.setDrawColor(220,220,220); doc.line(M, y, W-M, y); y += 5;
@@ -1377,27 +1437,6 @@ function downloadPDF() {
     });
     y = goalTop + maxGoalH + 6;
 
-    // ── 1:1 PROMPT ──
-    // Calculate height needed for the three questions
-    var q1t = doc.splitTextToSize('Q1: I want to share what resonates in this result and what does not \u2014 because both tell you something real about where I am. The resonance shows where to build. The friction shows where to listen.', W-M*2-10);
-    var q2t = doc.splitTextToSize('Q2: What would feel like a genuinely safe next step given where I am right now \u2014 one I could actually take this week, not one that sounds good in a conversation?', W-M*2-10);
-    var q3t = doc.splitTextToSize('Q3: Can we define one specific thing I will try this month \u2014 and agree on how you will check in with me about it?', W-M*2-10);
-    var lh = 4.2; // line height
-    var boxH = 10 + (q1t.length + q2t.length + q3t.length) * lh + 12;
-
-    y = checkPage(y, boxH + 4);
-    doc.setFillColor(238,249,245); doc.roundedRect(M, y, W-M*2, boxH, 2,2,'F');
-    doc.setTextColor(0,95,75); doc.setFont('helvetica','bold'); doc.setFontSize(8.5);
-    doc.text('Bring This to Your Next 1:1', M+4, y+7);
-
-    doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(45,45,45);
-    var qy = y + 13;
-    doc.text(q1t, M+4, qy); qy += q1t.length * lh + 3;
-    doc.text(q2t, M+4, qy); qy += q2t.length * lh + 3;
-    doc.text(q3t, M+4, qy);
-
-    y = y + boxH + 4;
-
     // ── CLOSING NOTE ──
     y = checkPage(y, 12);
     doc.setFont('helvetica','italic'); doc.setFontSize(7); doc.setTextColor(120,120,120);
@@ -1408,10 +1447,17 @@ function downloadPDF() {
     y = checkPage(y, 10);
     doc.setDrawColor(220,220,220); doc.line(M, y, W-M, y); y += 5;
     doc.setFont('helvetica','normal'); doc.setFontSize(6.5); doc.setTextColor(150,150,150);
-    doc.text('BTS Enablement  \u00B7  Leading AI Conversations  \u00B7  AI Readiness Assessment  \u00B7  bts.com', M, y);
+    doc.text('BTS Enablement  \u00B7  AI Readiness Assessment  \u00B7  bts.com', M, y);
     doc.text('Movement is expected. Differentiation is in pacing \u2014 not direction.', M, y+4.5);
+    // Meta in footer
+    var metaStr = (user.name||'Participant')
+      + (user.role ? '  \u00B7  ' + user.role : '')
+      + (user.cohort ? '  \u00B7  ' + user.cohort : '')
+      + '  \u00B7  ' + new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+    doc.setTextColor(180,180,180);
+    doc.text(metaStr, W-M, y, {align:'right'});
 
-    doc.save('AI-Readiness-' + (user.name||'Result').replace(/[^a-zA-Z0-9]/g,'_') + '.pdf');
+    doc.save(((user.name||'').replace(/[^a-zA-Z0-9]/g,'_') ? (user.name||'').replace(/[^a-zA-Z0-9]/g,'_')+'_' : '') + 'My_AI_Readiness_Persona.pdf');
 
   } catch(err) {
     console.error('PDF error:', err);
@@ -1892,14 +1938,15 @@ function submitByEmail() {
     'r29decd65f68441d29f6d5b8e24ffc97e='+encodeURIComponent(sessionLabel)
   ];
   window.open(BASE+'&'+params.join('&'), '_blank');
-  var btn = document.getElementById('submitEmailBtn');
+  // Show submit card and confirmation
+  var submitCard = document.getElementById('submitEmailCard');
   var confirm = document.getElementById('emailConfirm');
-  if(btn) btn.textContent = '\u2713 Form opened!';
+  if(submitCard) submitCard.style.display='';
   if(confirm) confirm.style.display='';
   setTimeout(function(){
-    if(btn) btn.textContent = '\u2709\uFE0F Submit My Result';
+    if(submitCard) submitCard.style.display='none';
     if(confirm) confirm.style.display='none';
-  }, 6000);
+  }, 8000);
 }
 
 // ================================================================
@@ -2006,6 +2053,17 @@ function handleRoleChange(val) {
   note.style.display = (val && val !== 'Individual Contributor' && val !== '') ? '' : 'none';
 }
 
+function showSubmitPrivacyModal() {
+  var modal = document.getElementById('privacyModal');
+  if(modal) { modal.style.display='flex'; }
+}
+
+function confirmAndSubmit() {
+  var modal = document.getElementById('privacyModal');
+  if(modal) modal.style.display='none';
+  submitByEmail();
+}
+
 function handleSessionChange(val) {
   var note = document.getElementById('pulseNote');
   if(note) note.style.display = (val && val !== 'initial') ? '' : 'none';
@@ -2032,6 +2090,22 @@ init();
     <div style="display:flex;gap:12px">
       <button onclick="cancelDelete()" style="flex:1;padding:12px;border:1.5px solid var(--mg2);border-radius:8px;background:none;cursor:pointer;font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif;color:var(--ch)">Cancel</button>
       <button onclick="executeDelete()" style="flex:1;padding:12px;border:none;border-radius:8px;background:#c62828;color:#fff;cursor:pointer;font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif">Yes, Remove Data</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- PRIVACY MODAL — shown before MS Forms opens -->
+<div id="privacyModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;display:none;align-items:center;justify-content:center;padding:20px">
+  <div style="background:#fff;border-radius:16px;padding:36px;max-width:480px;width:100%;box-shadow:0 8px 40px rgba(0,0,0,.25)">
+    <div style="font-size:28px;margin-bottom:12px">🔒</div>
+    <h3 style="font-family:'DM Serif Display',serif;font-size:22px;margin-bottom:14px;color:#2D2D2D">Before you submit</h3>
+    <p style="font-size:14px;line-height:1.75;color:#2D2D2D;margin-bottom:12px">Your results belong to you. They will be used to help shape future learning and development content — not to evaluate you or report to your manager.</p>
+    <p style="font-size:14px;line-height:1.75;color:#2D2D2D;margin-bottom:12px">If you would prefer not to attach your name to your submission, enter <strong>"Anonymous"</strong> in the name field on the next form. Your persona result will still be counted — your identity does not have to be.</p>
+    <p style="font-size:14px;line-height:1.75;color:#2D2D2D;margin-bottom:24px">Your manager will only see your results if <em>you</em> choose to share your PDF report with them directly.</p>
+    <div style="display:flex;gap:10px">
+      <button onclick="document.getElementById('privacyModal').style.display='none'" style="flex:1;padding:12px;border:1.5px solid #E0E0E0;border-radius:8px;background:#fff;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:#2D2D2D">Not yet</button>
+      <button onclick="confirmAndSubmit()" style="flex:2;padding:12px;border:none;border-radius:8px;background:#00A878;color:#fff;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700">I understand — open the form</button>
     </div>
   </div>
 </div>
