@@ -70,7 +70,7 @@ h1.hero em{font-style:italic;color:var(--mg)}
 .sec-label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--mg);margin-bottom:10px}
 .q-card{background:#fff;border-radius:16px;padding:32px;border:1px solid var(--mg2);box-shadow:0 2px 16px rgba(0,0,0,.04);margin-bottom:18px}
 .q-num{font-size:12px;color:var(--tg);margin-bottom:12px;font-weight:500}
-.q-scene{background:#FFF8EC;border-left:3px solid #F5A623;padding:11px 15px;border-radius:0 8px 8px 0;font-size:13px;color:#4A3B1A;line-height:1.6;margin-bottom:16px;font-style:italic}
+.q-scene{background:#FFF0F7;border-left:4px solid var(--mg);padding:16px 20px;border-radius:0 10px 10px 0;font-size:16px;color:var(--ch);line-height:1.6;margin-bottom:20px;font-weight:500;font-style:normal}
 .q-text{font-size:18px;font-weight:600;line-height:1.45;margin-bottom:20px;letter-spacing:-.3px}
 .options{display:flex;flex-direction:column;gap:8px}
 .opt{display:flex;align-items:flex-start;gap:12px;padding:13px 16px;border:1.5px solid var(--mg2);border-radius:10px;background:#fff;cursor:pointer;text-align:left;transition:all .15s;width:100%;font-family:'DM Sans',sans-serif}
@@ -870,7 +870,8 @@ var state = {
   currentPmTab: "overview",
   pmAnonMode: false,
   pmSelectedTeam: "all",
-  pmSelectedTeams: [],        // empty = All Teams
+  pmSelectedTeams: [],
+  pmSelectedSection: null,        // empty = All Teams
   pmSelectedSessions: [],     // empty = All Sessions
   mgrSelectedSessions: []     // empty = All Sessions
 };
@@ -959,8 +960,7 @@ function renderQuestion() {
     secEl.innerHTML = '<span style="color:'+( sess?sess.color:'#0057A8')+';font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase">'+sessLabel+'</span>'
       + '<div style="font-size:13px;color:var(--tg);font-weight:400;text-transform:none;letter-spacing:0;margin-top:4px;line-height:1.5">5 questions · ~3 minutes · Tracks your movement since the last assessment</div>';
   } else {
-    var prev = state.currentQ > 0 ? state.shuffledQ[state.currentQ-1].section : null;
-    secEl.textContent = q.section !== prev ? q.section : '';
+    secEl.textContent = ''; // Sections not shown to participants
   }
   // Scene
   var sceneEl = document.getElementById('qScene');
@@ -1638,11 +1638,23 @@ function renderPMTeams() {
 function renderPMParticipants() {
   var allResults = getAllParticipants();
   var sessionFiltered = filterBySession(allResults, state.pmSelectedSessions);
-  var filtered = state.pmSelectedTeams.length === 0
+  var teamFiltered = state.pmSelectedTeams.length === 0
     ? sessionFiltered
     : sessionFiltered.filter(function(p){ return state.pmSelectedTeams.indexOf(p.cohort) >= 0; });
+  // Section filter — note: section is stored on submissions going forward
+  // For now filter is a UI-only label indicator (future: tag submissions with section)
+  var filtered = teamFiltered;
 
   var sessionHtml = buildSessionSelector(state.pmSelectedSessions, 'togglePMSession', allResults);
+
+  // Section filter dropdown — PM dashboard only, not shown to participants
+  var sectionNames = ['How You Work Today','Responding to Change','Day-to-Day Decisions','Learning & Growth','Values & Judgment','Workplace Scenarios','AI & Your Future'];
+  var sectionSelectHtml = '<div style="margin-bottom:14px;display:flex;align-items:center;gap:12px">'
+    + '<label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--tg);white-space:nowrap">Section</label>'
+    + '<select id="pmSectionFilter" onchange="filterPMBySection(this.value)" style="font-size:13px;padding:6px 12px;border:1.5px solid var(--mg2);border-radius:8px;font-family:\'DM Sans\',sans-serif;background:#fff;color:var(--ch);cursor:pointer">'
+    + '<option value="">All Sections</option>';
+  sectionNames.forEach(function(s){ sectionSelectHtml += '<option value="'+s+'">'+s+'</option>'; });
+  sectionSelectHtml += '</select></div>';
 
   var chipBar = '<div class="team-filter-wrap">'
     + '<button class="team-chip all-chip'+(state.pmSelectedTeams.length===0?' active':'')+'" onclick="toggleTeamFilter(null)">All Teams</button>';
@@ -1662,6 +1674,7 @@ function renderPMParticipants() {
     +'<div class="toggle-wrap"><span>Anon</span><button class="toggle'+(state.pmAnonMode?'':' on')+'" onclick="togglePMAnon()"></button><span>Named</span></div>'
     +'</div>'
     + sessionHtml
+    + sectionSelectHtml
     +'<div style="margin-bottom:14px">'+chipBar+'</div>'
     +'<div class="info-bar" style="margin-bottom:12px;font-size:12px">&#128190; Results submitted on this device are saved locally. Complete the assessment to see data appear here.</div>'
     +'<table class="tbl"><thead><tr><th>Participant</th><th>Round</th><th>Team</th><th>Primary</th><th>Secondary</th><th>Confidence</th><th>Date</th><th>Action</th></tr></thead><tbody>';
@@ -1996,6 +2009,11 @@ function handleRoleChange(val) {
 function handleSessionChange(val) {
   var note = document.getElementById('pulseNote');
   if(note) note.style.display = (val && val !== 'initial') ? '' : 'none';
+}
+
+function filterPMBySection(sectionName) {
+  state.pmSelectedSection = sectionName || null;
+  renderPMParticipants();
 }
 
 // ================================================================
