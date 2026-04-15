@@ -45,6 +45,7 @@ h1.hero em{font-style:italic;color:var(--mg)}
 /* BUTTONS */
 .btn{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;border:none}
 .btn-primary{background:transparent;color:#B8860B;border:2.5px solid #D4A017;box-shadow:0 0 0 1px #F5D060,0 4px 18px rgba(212,160,23,.25);font-weight:700;letter-spacing:.5px;transition:all .22s;padding:18px 56px;font-size:18px;border-radius:12px}.btn-primary:hover{background:#FFF8E7;color:#8B6400;border-color:#B8860B;box-shadow:0 0 0 2px #F5D060,0 8px 28px rgba(180,130,0,.4);transform:translateY(-3px)}
+.btn-magenta{background:var(--mg);color:#fff;border:none;padding:13px 28px;font-size:14px;font-weight:700;border-radius:8px;transition:all .2s}.btn-magenta:hover{background:#c9136a;transform:translateY(-1px);box-shadow:0 4px 14px rgba(232,25,125,.35)}
 .btn-download{background:var(--mg);color:#fff;border:none;padding:16px 32px;font-size:16px;font-weight:700;border-radius:10px;transition:all .2s}.btn-download:hover{background:#c9136a;transform:translateY(-2px);box-shadow:0 4px 16px rgba(232,25,125,.35)}
 .btn-secondary{background:none;color:var(--ch);border:1px solid var(--ch)}.btn-secondary:hover{border-color:var(--mg);color:var(--mg)}
 .btn-ghost{background:none;border:1px solid var(--mg2);color:var(--tg);padding:11px 22px}.btn-ghost:hover{border-color:var(--ch);color:var(--ch)}
@@ -501,7 +502,7 @@ select option{font-size:13px;font-family:system-ui,sans-serif;padding:4px 0}
         ⏱ This is a 5-question pulse check (~3 minutes). It tracks your movement since your Initial Assessment.
       </div>
     </div>
-    <button class="btn btn-primary" style="width:100%" onclick="startAssessment()">Start Assessment →</button>
+    <button class="btn btn-magenta" style="width:100%" onclick="startAssessment()">Start Assessment →</button>
   </div>
 </div>
 </div>
@@ -628,7 +629,7 @@ select option{font-size:13px;font-family:system-ui,sans-serif;padding:4px 0}
       <label>Smartsheet API Token <span style="font-weight:400;color:#999">(provided by your AI Champion)</span></label>
       <input type="password" id="mgrToken" placeholder="Paste your token here" onkeydown="if(event.key==='Enter')mgrLogin()">
     </div>
-    <button class="btn btn-primary" style="width:100%;margin-bottom:14px" onclick="mgrLogin()">Access My Team Dashboard →</button>
+    <button class="btn btn-magenta" style="width:100%;margin-bottom:14px" onclick="mgrLogin()">Access My Team Dashboard →</button>
     <div style="text-align:center;font-size:13px;color:var(--tg)">PM / Admin access? <button onclick="showScreen('pm-login')" style="background:none;border:none;color:var(--bl);cursor:pointer;font-size:13px;text-decoration:underline">Sign in here</button></div>
   </div>
 </div>
@@ -688,13 +689,17 @@ select option{font-size:13px;font-family:system-ui,sans-serif;padding:4px 0}
 <div id="s-pm-login" class="screen">
 <div class="wrap-narrow">
   <div class="login-card">
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px"><span style="font-size:28px">🔑</span><div><h2 style="margin-bottom:2px">PM Admin View</h2><p class="sub" style="margin:0">Full access · All teams · Code management</p></div></div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px"><span style="font-size:28px">🔑</span><div><h2 style="margin-bottom:2px">PM Admin View</h2><p class="sub" style="margin:0">Full access · All teams · Live Smartsheet data</p></div></div>
     <div class="form-group">
       <label>PM Password</label>
-      <input type="password" id="pmPass" placeholder="Enter PM password" onkeydown="if(event.key==='Enter')pmLogin()">
+      <input type="password" id="pmPass" placeholder="Enter PM password" onkeydown="if(event.key==='Enter')document.getElementById('pmApiToken').focus()">
       <div class="err" id="pmErr"></div>
     </div>
-    <button class="btn btn-primary" style="width:100%;margin-bottom:12px" onclick="pmLogin()">Access PM Dashboard →</button>
+    <div class="form-group">
+      <label>Smartsheet API Token</label>
+      <input type="password" id="pmApiToken" placeholder="Paste your API token here" onkeydown="if(event.key==='Enter')pmLogin()">
+    </div>
+    <button class="btn btn-magenta" style="width:100%;margin-bottom:12px" onclick="pmLogin()">Access PM Dashboard →</button>
     <div style="text-align:center"><button onclick="showScreen('mgr-login')" style="background:none;border:none;color:var(--tg);cursor:pointer;font-size:13px">← Back to team login</button></div>
   </div>
 </div>
@@ -715,6 +720,7 @@ select option{font-size:13px;font-family:system-ui,sans-serif;padding:4px 0}
     <button class="tab" onclick="pmTab('teams',this)">🔑 Teams &amp; Codes</button>
     <button class="tab" onclick="pmTab('participants',this)">👥 All Participants</button>
   </div>
+  <div id="pmLoadingMsg" style="text-align:center;padding:40px;color:var(--tg);font-size:14px;display:none">Loading results from Smartsheet...</div>
   <div id="pmOverview"></div>
   <div id="pmTeams" style="display:none"></div>
   <div id="pmParticipants" style="display:none"></div>
@@ -1091,6 +1097,8 @@ var state = {
   mgrTeam: null,
   mgrToken: null,
   mgrSmartsheetRows: [],
+  pmToken: null,
+  pmSmartsheetRows: [],
   anonMode: true,
   pmTeams: TEAMS.slice(),
   showCodes: false,
@@ -2018,41 +2026,51 @@ function refreshLeaderData() {
 
 function fetchLeaderData() {
   document.getElementById('mgrLoadingBar').style.display = '';
-  var url = 'https://api.smartsheet.com/2.0/sheets/5010084212985732';
-  fetch(url, {
-    headers: {
-      'Authorization': 'Bearer ' + state.mgrToken,
-    }
-  })
+  var apiUrl = 'https://api.smartsheet.com/2.0/sheets/5010084212985732';
+  var authHeader = { 'Authorization': 'Bearer ' + state.mgrToken };
+  // Try direct fetch first (works on localhost); fall back to CORS proxy for GitHub Pages
+  fetch(apiUrl, { headers: authHeader })
   .then(function(r) {
-    if(!r.ok) throw new Error('HTTP ' + r.status + ' — check your API token.');
+    if(!r.ok) throw new Error('HTTP ' + r.status);
     return r.json();
   })
-  .then(function(data) {
-    // Build column map
-    var colMap = {};
-    (data.columns || []).forEach(function(c) { colMap[c.id] = c.title; });
-    // Parse ALL rows, filter to this team
-    var allRows = (data.rows || []).map(function(row) {
-      var obj = {};
-      (row.cells || []).forEach(function(cell) {
-        var col = colMap[cell.columnId];
-        if(col) obj[col] = cell.displayValue || cell.value || '';
-      });
-      return obj;
+  .then(function(data) { processLeaderData(data); })
+  .catch(function() {
+    // corsproxy.io correctly forwards Authorization headers unlike allorigins
+    fetch('https://corsproxy.io/?' + encodeURIComponent(apiUrl), { headers: authHeader })
+    .then(function(r) {
+      if(!r.ok) throw new Error('HTTP ' + r.status + ' — check your API token.');
+      return r.json();
+    })
+    .then(function(data) {
+      if(data.errorCode) throw new Error(data.message || 'Smartsheet error — check your token.');
+      processLeaderData(data);
+    })
+    .catch(function(err) {
+      document.getElementById('mgrLoadingBar').textContent = '\u26A0 Error: ' + err.message;
+      document.getElementById('mgrDashContent').style.opacity = '1';
     });
-    // Filter to this team only
-    state.mgrSmartsheetRows = allRows.filter(function(r) {
-      return r['Team'] === state.mgrTeam.name;
-    });
-    document.getElementById('mgrLoadingBar').style.display = 'none';
-    document.getElementById('mgrDashContent').style.opacity = '1';
-    buildLeaderSessionSelector();
-    renderMgrDashboard();
-  })
-  .catch(function(err) {
-    document.getElementById('mgrLoadingBar').textContent = '⚠ Error: ' + err.message;
   });
+}
+
+function processLeaderData(data) {
+  var colMap = {};
+  (data.columns || []).forEach(function(col) { colMap[col.id] = col.title; });
+  var allRows = (data.rows || []).map(function(row) {
+    var obj = {};
+    (row.cells || []).forEach(function(cell) {
+      var col = colMap[cell.columnId];
+      if(col) obj[col] = cell.displayValue || cell.value || '';
+    });
+    return obj;
+  });
+  state.mgrSmartsheetRows = allRows.filter(function(r) {
+    return r['Team'] === state.mgrTeam.name;
+  });
+  document.getElementById('mgrLoadingBar').style.display = 'none';
+  document.getElementById('mgrDashContent').style.opacity = '1';
+  buildLeaderSessionSelector();
+  renderMgrDashboard();
 }
 
 function buildLeaderSessionSelector() {
@@ -2266,9 +2284,14 @@ function pmLogin() {
   if(document.getElementById('pmPass').value !== PM_PASSWORD){
     document.getElementById('pmErr').textContent='Incorrect password.';return;
   }
+  var token = (document.getElementById('pmApiToken') || {}).value || '';
+  token = token.trim();
+  if(!token){ document.getElementById('pmErr').textContent='Please enter your Smartsheet API token.';return; }
   document.getElementById('pmErr').textContent='';
-  renderPMDashboard();
+  state.pmToken = token;
+  state.pmSmartsheetRows = [];
   showScreen('pm-dashboard');
+  fetchPMSmartsheetData();
 }
 
 function pmTab(tab, btn) {
@@ -2280,58 +2303,146 @@ function pmTab(tab, btn) {
   });
 }
 
+function fetchPMSmartsheetData() {
+  var loadEl = document.getElementById('pmLoadingMsg');
+  if(loadEl) { loadEl.textContent = 'Loading results from Smartsheet...'; loadEl.style.display = ''; }
+  var apiUrl = 'https://api.smartsheet.com/2.0/sheets/5010084212985732';
+  var authHeader = { 'Authorization': 'Bearer ' + state.pmToken };
+  fetch(apiUrl, { headers: authHeader })
+  .then(function(r) { if(!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+  .then(function(data) { processPMData(data); })
+  .catch(function() {
+    fetch('https://corsproxy.io/?' + encodeURIComponent(apiUrl), { headers: authHeader })
+    .then(function(r) {
+      if(!r.ok) throw new Error('HTTP ' + r.status + ' — check your API token.');
+      return r.json();
+    })
+    .then(function(data) {
+      if(data.errorCode) throw new Error(data.message || 'Smartsheet error');
+      processPMData(data);
+    })
+    .catch(function(err) {
+      var loadEl = document.getElementById('pmLoadingMsg');
+      if(loadEl) { loadEl.textContent = '\u26A0 Error: ' + err.message; loadEl.style.display = ''; }
+    });
+  });
+}
+
+function processPMData(data) {
+  var colMap = {};
+  (data.columns || []).forEach(function(col) { colMap[col.id] = col.title; });
+  state.pmSmartsheetRows = (data.rows || []).map(function(row) {
+    var obj = {};
+    (row.cells || []).forEach(function(cell) {
+      var col = colMap[cell.columnId];
+      if(col) obj[col] = cell.displayValue || cell.value || '';
+    });
+    return obj;
+  });
+  var loadEl = document.getElementById('pmLoadingMsg');
+  if(loadEl) loadEl.style.display = 'none';
+  renderPMDashboard();
+}
+
 function renderPMDashboard() {
-  var realCount = loadAllResults().length;
-  var dataLabel = realCount + (realCount === 1 ? ' completion' : ' completions');
-  document.getElementById('pmSubtitle').textContent = 'Full access \u00B7 '+state.pmTeams.length+' active teams \u00B7 '+dataLabel;
+  var rows = state.pmSmartsheetRows || [];
+  document.getElementById('pmSubtitle').textContent =
+    'Full access \u00B7 ' + rows.length + ' submission' + (rows.length !== 1 ? 's' : '') +
+    ' \u00B7 ' + TEAMS.length + ' active teams';
   renderPMOverview();
   renderPMTeams();
   renderPMParticipants();
 }
 
 function renderPMOverview() {
-  var allResults = loadAllResults();
-  var all = filterBySession(allResults, state.pmSelectedSessions);
-  var counts = {}; Object.keys(PERSONAS).forEach(function(k){counts[k]=0;});
-  all.forEach(function(p){if(counts.hasOwnProperty(p.primary))counts[p.primary]++;});
-  var sorted = Object.keys(counts).map(function(k){return[k,counts[k]];}).sort(function(a,b){return b[1]-a[1];});
-  var max = sorted[0][1]||1;
-  var highConf = all.filter(function(p){return p.confidence==='high';}).length;
-  var mixed = all.filter(function(p){return p.secondary;}).length;
+  var rows = state.pmSmartsheetRows || [];
+  var filtered = state.pmSelectedSessions.length > 0
+    ? rows.filter(function(r) {
+        var label = r['Assessment Round'] || 'Initial Assessment';
+        var found = SESSIONS.find(function(s) { return s.label === label; });
+        return state.pmSelectedSessions.indexOf(found ? found.id : 'initial') >= 0;
+      })
+    : rows;
 
-  var isEmpty = loadAllResults().length === 0;
-  var sessionSel = buildSessionSelector(state.pmSelectedSessions, 'togglePMOverviewSession', loadAllResults());
-  var html = sessionSel
-    + (isEmpty ? '<div style="background:#EEF4FF;border:1px solid #B3CFEE;border-radius:10px;padding:12px 16px;font-size:13px;color:#0057A8;margin-bottom:18px">\uD83D\uDCCB <strong>No submissions yet.</strong> Results will appear here automatically once team members complete the assessment and click Submit My Result.</div>' : '')
+  var counts = {};
+  Object.keys(PERSONAS).forEach(function(k) { counts[k] = 0; });
+  filtered.forEach(function(r) {
+    var pid = Object.keys(PERSONAS).find(function(k) { return PERSONAS[k].name === r['Primary Persona']; });
+    if(pid) counts[pid]++;
+  });
+  var sorted = Object.keys(counts).map(function(k) { return [k, counts[k]]; }).sort(function(a,b) { return b[1]-a[1]; });
+  var max = Math.max(1, sorted.length ? sorted[0][1] : 1);
+  var highConf = filtered.filter(function(r) { return r['Overall Confidence Level'] === 'High'; }).length;
+  var mixed    = filtered.filter(function(r) { return r['Secondary Persona'] && r['Secondary Persona'] !== 'None'; }).length;
+
+  var sessionCounts = {};
+  SESSIONS.forEach(function(s) { sessionCounts[s.id] = 0; });
+  rows.forEach(function(r) {
+    var found = SESSIONS.find(function(s) { return s.label === (r['Assessment Round'] || 'Initial Assessment'); });
+    if(found) sessionCounts[found.id]++;
+  });
+  var hasAny = state.pmSelectedSessions.length === 0;
+  var sessHtml = '<div class="session-selector"><div class="session-selector-label">Assessment Round</div><div class="session-chips">';
+  sessHtml += '<button class="session-chip all-chip' + (hasAny ? ' active' : '') + '" style="' + (hasAny ? 'background:var(--ch);border-color:var(--ch);color:#fff;' : '') + '" onclick="togglePMOverviewSession(null)">All Rounds</button>';
+  SESSIONS.forEach(function(s) {
+    var isActive = state.pmSelectedSessions.indexOf(s.id) >= 0;
+    var count = sessionCounts[s.id] || 0;
+    var locked = s.id !== 'initial' && !count;
+    sessHtml += '<button class="session-chip' + (isActive ? ' active' : '') + (locked ? ' locked' : '') + '" '
+      + 'style="' + (isActive ? 'background:' + s.color + ';border-color:' + s.color + ';color:#fff;' : (!locked ? 'border-color:' + s.color + ';color:' + s.color + ';' : '')) + '" '
+      + (locked ? '' : 'onclick="togglePMOverviewSession(\'' + s.id + '\')"') + '>'
+      + s.short
+      + (count ? ' <span style="opacity:.7;font-size:10px">(' + count + ')</span>' : '')
+      + (locked ? ' <span class="lock-icon">\uD83D\uDD12</span>' : '')
+      + '</button>';
+  });
+  sessHtml += '</div></div>';
+
+  var html = sessHtml
     + '<div class="stats-grid" style="margin-bottom:20px">'
-    +'<div class="stat"><div class="stat-num" style="color:var(--mg)">'+all.length+'</div><div class="stat-lbl">Total completions</div></div>'
-    +'<div class="stat"><div class="stat-num" style="color:var(--bl)">'+state.pmTeams.length+'</div><div class="stat-lbl">Active teams</div></div>'
-    +'<div class="stat"><div class="stat-num" style="color:var(--em)">'+highConf+'</div><div class="stat-lbl">High-confidence</div></div>'
-    +'<div class="stat"><div class="stat-num" style="color:var(--ch)">'+Math.round((mixed/Math.max(all.length,1))*100)+'%</div><div class="stat-lbl">Mixed personas</div></div>'
-    +'</div>';
+    + '<div class="stat"><div class="stat-num" style="color:var(--mg)">' + filtered.length + '</div><div class="stat-lbl">Total submissions</div></div>'
+    + '<div class="stat"><div class="stat-num" style="color:var(--bl)">' + TEAMS.length + '</div><div class="stat-lbl">Active teams</div></div>'
+    + '<div class="stat"><div class="stat-num" style="color:var(--em)">' + highConf + '</div><div class="stat-lbl">High confidence</div></div>'
+    + '<div class="stat"><div class="stat-num" style="color:var(--ch)">' + Math.round((mixed / Math.max(filtered.length, 1)) * 100) + '%</div><div class="stat-lbl">Secondary persona</div></div>'
+    + '</div>';
 
-  html += '<div class="panel"><h3>Persona Distribution \u2014 All Teams</h3>';
-  sorted.forEach(function(pair){
-    var pp=PERSONAS[pair[0]];
-    if(!pp) return;
-    html+='<div class="breakdown-row"><div class="b-name">'+pp.emoji+' '+pp.name+'</div>'
-      +'<div class="b-track"><div class="b-fill" style="width:'+Math.round((pair[1]/max)*100)+'%;background:'+pp.color+'"></div></div>'
-      +'<div class="b-count">'+pair[1]+'</div></div>';
+  html += '<div class="panel"><h3>Persona Distribution &#8212; All Teams</h3>';
+  sorted.forEach(function(pair) {
+    var pp = PERSONAS[pair[0]]; if(!pp) return;
+    html += '<div class="breakdown-row"><div class="b-name">' + pp.emoji + ' ' + pp.name + '</div>'
+      + '<div class="b-track"><div class="b-fill" style="width:' + Math.round((pair[1]/max)*100) + '%;background:' + pp.color + '"></div></div>'
+      + '<div class="b-count">' + pair[1] + '</div></div>';
   });
   html += '</div>';
 
-  html = '<div style="background:#fff;border:1.5px solid var(--mg);border-radius:14px;padding:20px 24px;margin-bottom:20px">'
-    + '<h3 style="font-size:13px;font-weight:700;color:var(--mg);margin-bottom:10px">\uD83D\uDCE5 How Results Come In</h3>'
+  var teamCounts = {};
+  filtered.forEach(function(r) { var t = r['Team'] || 'Other'; teamCounts[t] = (teamCounts[t]||0)+1; });
+  var tSorted = Object.keys(teamCounts).sort(function(a,b) { return teamCounts[b]-teamCounts[a]; });
+  if(tSorted.length) {
+    var maxT = teamCounts[tSorted[0]] || 1;
+    html += '<div class="panel"><h3>Submissions by Team</h3>';
+    tSorted.forEach(function(t) {
+      var count = teamCounts[t];
+      html += '<div class="breakdown-row"><div class="b-name">' + t + '</div>'
+        + '<div class="b-track"><div class="b-fill" style="width:' + Math.round((count/maxT)*100) + '%;background:var(--mg)"></div></div>'
+        + '<div class="b-count">' + count + '</div></div>';
+    });
+    html += '</div>';
+  }
+
+  html = '<div style="background:#fff;border:1.5px solid var(--em);border-radius:14px;padding:20px 24px;margin-bottom:20px">'
+    + '<h3 style="font-size:13px;font-weight:700;color:var(--em);margin-bottom:10px">&#128202; How Results Come In</h3>'
     + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">'
-    + '<div><div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--tg);margin-bottom:6px">Step 1 \u2014 Participant submits</div>'
-    + '<p style="font-size:13px;line-height:1.6;color:var(--ch)">After completing the assessment, each participant clicks <strong>"Submit My Result."</strong> A pre-filled Microsoft Form opens in a new tab \u2014 they click Submit in one click. Their result lands privately in your <strong>Microsoft Forms response inbox</strong>.</p>'
+    + '<div><div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--tg);margin-bottom:6px">Participant submits</div>'
+    + '<p style="font-size:13px;line-height:1.6;color:var(--ch)">Participants click <strong>Submit with My Name</strong> or <strong>Submit Anonymously</strong>. A pre-filled Smartsheet form opens &#8212; one click and the row lands in the sheet instantly.</p>'
     + '</div>'
-    + '<div><div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--tg);margin-bottom:6px">Step 2 \u2014 You view in Forms</div>'
-    + '<p style="font-size:13px;line-height:1.6;color:var(--ch)">Go to <strong>forms.office.com</strong> \u2192 open your form \u2192 click <strong>Responses</strong> \u2192 click <strong>Open in Excel</strong>. Your private results spreadsheet on OneDrive updates automatically.</p>'
+    + '<div><div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--tg);margin-bottom:6px">View in Smartsheet</div>'
+    + '<p style="font-size:13px;line-height:1.6;color:var(--ch)">All data lives in <strong>AI Relationship Assessment Results</strong> in your Elya\'s Projects workspace. <a href="https://app.smartsheet.com/sheets/7FQMQCH3Qpq8H9F82gHxCPCqMMMHw8wFfqQc5mw1" target="_blank" style="color:var(--mg)">Open sheet &#8599;</a></p>'
     + '</div></div></div>'
     + html;
 
-  document.getElementById('pmOverview').innerHTML = html;
+  var el = document.getElementById('pmOverview');
+  if(el) el.innerHTML = html;
 }
 
 function renderPMTeams() {
