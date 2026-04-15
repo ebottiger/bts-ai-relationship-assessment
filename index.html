@@ -578,7 +578,7 @@ select option{font-size:13px;font-family:system-ui,sans-serif;padding:4px 0}
   <!-- STEP 2 -->
   <div id="ssSubmitCard" style="margin-top:22px;background:#EEF9F5;border:1.5px solid #A8E6D5;border-radius:14px;padding:22px 28px">
     <div style="font-size:13px;font-weight:700;color:#00664a;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Step 2 — Share if it feels right</div>
-    <p style="font-size:14px;color:var(--ch);line-height:1.7;margin-bottom:16px">Sharing is entirely your choice. If you do, it helps us build learning experiences that actually fit where people are — not where we assume they should be. One click. Anonymous or with your name. Your call.</p>
+    <p style="font-size:14px;color:var(--ch);line-height:1.7;margin-bottom:8px">Sharing is entirely your choice. If you do, it helps us build learning experiences that actually fit where people are — not where we assume they should be. One click. Anonymous or with your name. Your call.</p><p style="font-size:13px;color:var(--tg);line-height:1.65;margin-bottom:16px">You can also share your broader AI experience and perspective with the team via the <a href="https://app.smartsheet.com/b/form/53fc168f1a8943a0aadbd9de79caf67b" target="_blank" style="color:var(--mg);font-weight:600;text-decoration:underline">Enablement AI Project Smartsheet Form</a>.</p>
     <div style="font-size:14px;font-weight:700;color:#00A878;margin-bottom:12px">📤 Share Your Results</div>
     <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px">
       <button onclick="submitToSmartsheet(false)" style="flex:1;min-width:140px;padding:12px 20px;background:#00A878;color:#fff;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer">Submit with My Name</button>
@@ -803,7 +803,7 @@ var PERSONAS = {
     summary:"You see possibility everywhere and you move fast. Your energy and technical fluency are a team accelerant — when channeled well. The next frontier for you is not building faster; it is building in ways that bring others with you and demonstrate measurable impact.",
     strengths:["Speed and technical fluency","Creative experimentation and early pattern recognition","Energy that elevates team momentum","Comfort with ambiguity and iteration","Vision for what AI can unlock"],
     leadership:["Pilot designer and internal trainer","Capability multiplier for the whole team","System optimizer across workflows","Connects AI experimentation to business outcomes"],
-    good:"Document one workflow improvement and share it with the team in a brief walkthrough. If your team uses it, submit it via the AI in Action Smartsheet Form so leadership can track and scale what is working.",
+    good:"Document one workflow improvement and share it with the team in a brief walkthrough. If your team uses it, submit it via the <a href=\'https://app.smartsheet.com/b/form/d320b44292eb4e42a20d0e1024dfeebb\' target=\'_blank\' style=\'color:var(--em);font-weight:700;text-decoration:underline\'>AI in Action Smartsheet Form</a> so leadership can track and scale what is working.",
     better:"Measure time saved or quality improvement over 30 days and present findings to the team.",
     stretch:"Partner with a colleague earlier in their AI journey and co-design a workflow that is accessible and replicable across the team.",
     mindshift:"From moving at the speed of your own curiosity to moving at the speed the team can follow, learn from, and build on.",
@@ -2710,31 +2710,29 @@ function submitToSmartsheet(anonymous) {
   var displayName = anonymous ? 'Anonymous' : (u.name || 'Anonymous');
   var submitType  = anonymous ? 'Anonymous' : 'Named';
 
-  // Build Smartsheet form URL with all fields pre-filled as URL parameters
+  // Build Smartsheet form URL — parameters must use column TITLES, not IDs
   var BASE = 'https://app.smartsheet.com/b/form/019d8e062fd27723b1327c9a450e5202';
 
-  // Column IDs as field names in Smartsheet form URL parameters
   var fields = [
-    ['4131041620299652',        dateStr],
-    ['8634641247670148',        submitType],
-    ['471866923061124',        displayName],
-    ['4975466550431620',        u.role || ''],
-    ['2723666736746372',        u.cohort || ''],
-    ['7227266364116868',       roundLabel],
-    ['1597766829903748',     primary],
-    ['6101366457274244',   secondary],
-    ['3849566643588996',    pct.identity    || 0],
-    ['8353166270959492',     pct.skeptic     || 0],
-    ['1034816876482436', pct.overwhelmed || 0],
-    ['5538416503852932', pct.accelerator || 0],
-    ['3286616690167684',      pct.purist      || 0],
-    ['7790216317538180',  confLabel],
-    // Per-persona confidence scores
-    ['2966335442423684',  (r.personaConf && r.personaConf.identity    ? r.personaConf.identity    : 0)],
-    ['7469935069794180',  (r.personaConf && r.personaConf.skeptic     ? r.personaConf.skeptic     : 0)],
-    ['1840435535581060',  (r.personaConf && r.personaConf.overwhelmed ? r.personaConf.overwhelmed : 0)],
-    ['6344035162951556',  (r.personaConf && r.personaConf.accelerator ? r.personaConf.accelerator : 0)],
-    ['4092235349266308',  (r.personaConf && r.personaConf.purist      ? r.personaConf.purist      : 0)],
+    ['Submission Date',                    dateStr],
+    ['Submission Type',                    submitType],
+    ['Participant Name',                   displayName],
+    ['Role',                               u.role || ''],
+    ['Team',                               u.cohort || ''],
+    ['Assessment Round',                   roundLabel],
+    ['Primary Persona',                    primary],
+    ['Secondary Persona',                  secondary],
+    ['Identity Defender %',                pct.identity    || 0],
+    ['Responsible Skeptic %',              pct.skeptic     || 0],
+    ['Overwhelmed Operator %',             pct.overwhelmed || 0],
+    ['Accelerator %',                      pct.accelerator || 0],
+    ['Skill Purist %',                     pct.purist      || 0],
+    ['Overall Confidence Level',           confLabel],
+    ['Identity Defender Confidence %',     (r.personaConf && r.personaConf.identity    ? r.personaConf.identity    : 0)],
+    ['Responsible Skeptic Confidence %',   (r.personaConf && r.personaConf.skeptic     ? r.personaConf.skeptic     : 0)],
+    ['Overwhelmed Operator Confidence %',  (r.personaConf && r.personaConf.overwhelmed ? r.personaConf.overwhelmed : 0)],
+    ['Accelerator Confidence %',           (r.personaConf && r.personaConf.accelerator ? r.personaConf.accelerator : 0)],
+    ['Skill Purist Confidence %',          (r.personaConf && r.personaConf.purist      ? r.personaConf.purist      : 0)],
   ];
 
   var params = fields.map(function(f){
