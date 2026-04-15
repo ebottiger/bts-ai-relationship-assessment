@@ -2728,6 +2728,7 @@ function submitToSmartsheet(anonymous) {
     ['Accelerator %',                      pct.accelerator || 0],
     ['Skill Purist %',                     pct.purist      || 0],
     ['Overall Confidence Level',           confLabel],
+    // Email (optional) removed — not collected via this assessment
     ['Identity Defender Confidence %',     (r.personaConf && r.personaConf.identity    ? r.personaConf.identity    : 0)],
     ['Responsible Skeptic Confidence %',   (r.personaConf && r.personaConf.skeptic     ? r.personaConf.skeptic     : 0)],
     ['Overwhelmed Operator Confidence %',  (r.personaConf && r.personaConf.overwhelmed ? r.personaConf.overwhelmed : 0)],
