@@ -529,6 +529,10 @@ select option{font-size:13px;font-family:system-ui,sans-serif;padding:4px 0}
           oninput="selectConf(parseInt(this.value))" />
       </div>
     </div>
+    <div id="noteSection" style="margin-top:12px">
+      <label style="font-size:12px;font-weight:600;color:var(--tg);display:block;margin-bottom:5px">&#128221; Any immediate thoughts? <span style="font-weight:400">(optional &mdash; private, flows into your PDF)</span></label>
+      <textarea id="qNoteInput" rows="2" placeholder="Jot a reaction, a question, or something this brought up for you..." style="width:100%;padding:10px 12px;border:1.5px solid var(--mg2);border-radius:8px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--ch);resize:vertical;outline:none;transition:border-color .2s;line-height:1.5" onfocus="this.style.borderColor='var(--mg)'" onblur="this.style.borderColor='var(--mg2)'"></textarea>
+    </div>
   </div>
   <div class="q-nav">
     <button class="btn btn-ghost" id="btnBack" onclick="prevQ()">← Back</button>
@@ -1092,6 +1096,7 @@ var state = {
   currentQ: 0,
   selectedPersona: null,
   selectedConf: null,
+  qNotes: [],
   result: null,
   isPulse: false,
   mgrTeam: null,
@@ -1220,6 +1225,9 @@ function renderQuestion() {
     btn.onclick = function(){ selectOpt(opt.p); };
     list.appendChild(btn);
   });
+  // Clear note textarea — will be restored if going Back
+  var noteEl = document.getElementById('qNoteInput');
+  if(noteEl) noteEl.value = state.qNotes[state.currentQ] || '';
   // Confidence
   updateConfDisplay();
   // Nav buttons
@@ -1244,6 +1252,8 @@ function selectOpt(persona) {
 function updateConfDisplay() {
   var section = document.getElementById('confSection');
   section.style.display = state.selectedPersona ? '' : 'none';
+  var noteSection = document.getElementById('noteSection');
+  if(noteSection) noteSection.style.display = state.selectedPersona ? '' : 'none';
   var slider = document.getElementById('confSlider');
   if(slider) {
     var val = (state.selectedConf !== null && state.selectedConf !== undefined) ? state.selectedConf : 50;
@@ -1288,7 +1298,10 @@ function updateNextBtn() {
 
 function nextQ() {
   if(!state.selectedPersona || !state.selectedConf) return;
+  var noteEl = document.getElementById('qNoteInput');
+  var noteVal = noteEl ? noteEl.value.trim() : '';
   state.answers[state.currentQ] = {persona: state.selectedPersona, confidence: state.selectedConf};
+  state.qNotes[state.currentQ] = noteVal;
   if(state.currentQ < state.shuffledQ.length - 1) {
     state.currentQ++;
     var saved = state.answers[state.currentQ];
@@ -1308,12 +1321,17 @@ function nextQ() {
 
 function prevQ() {
   if(state.currentQ > 0) {
-    state.answers[state.currentQ] = {persona: state.selectedPersona, confidence: state.selectedConf};
+    var noteEl = document.getElementById('qNoteInput');
+  var noteVal = noteEl ? noteEl.value.trim() : '';
+  state.answers[state.currentQ] = {persona: state.selectedPersona, confidence: state.selectedConf};
+  state.qNotes[state.currentQ] = noteVal;
     state.currentQ--;
     var saved = state.answers[state.currentQ];
     state.selectedPersona = saved ? saved.persona : null;
     state.selectedConf = saved ? saved.confidence : null;
     renderQuestion();
+    var noteEl = document.getElementById('qNoteInput');
+    if(noteEl) noteEl.value = state.qNotes[state.currentQ] || '';
   }
 }
 
@@ -1851,20 +1869,73 @@ function downloadPDF() {
     );
     doc.text(closeLines, M, y); y += closeLines.length * 5.5 + 8;
 
-    // ── MY THOUGHTS — notes box ───────────────────────────────
+    // ── MY THOUGHTS — notes from assessment, or blank lined box ──
     rule(y); y += 7;
     doc.setFont('helvetica','bold'); doc.setFontSize(MIN_FS); doc.setTextColor(45,45,45);
     doc.text('MY THOUGHTS', M, y); y += 6;
-    doc.setFont('helvetica','normal'); doc.setFontSize(MIN_FS); doc.setTextColor(140,140,140);
-    var promptLines = doc.splitTextToSize('Use this space to capture what resonated, questions for your next 1:1, or one action you will take.', PW);
-    doc.text(promptLines, M, y); y += promptLines.length * 5.5 + 4;
 
-    var notesH = 278 - y;
-    if(notesH < 28) notesH = 28;
-    doc.setDrawColor(200,200,200); doc.setFillColor(252,252,252);
-    doc.roundedRect(M, y, PW, notesH, 2,2,'FD');
-    doc.setDrawColor(230,230,230);
-    for(var ln=y+9; ln<y+notesH-4; ln+=9){ doc.line(M+5, ln, M+PW-5, ln); }
+    // Collect notes from assessment — filter blanks, prefix with Q number
+    var qNotes = (state.qNotes || []);
+    var noteLines = [];
+    var shuffledQ = state.shuffledQ || [];
+    qNotes.forEach(function(note, i) {
+      if(note && note.trim()) {
+        var qNum = shuffledQ[i] ? shuffledQ[i].id : (i+1);
+        var prefix = 'Q' + qNum + ': ';
+        doc.setFont('helvetica','normal'); doc.setFontSize(MIN_FS);
+        var wrapped = doc.splitTextToSize(prefix + note.trim(), PW);
+        noteLines = noteLines.concat(wrapped);
+        noteLines.push(''); // blank line between notes
+      }
+    });
+
+    var PAGE2_BOTTOM = 283;
+    var hasNotes = noteLines.length > 0;
+
+    if(hasNotes) {
+      // Draw actual notes — measure how much space they need
+      doc.setFont('helvetica','normal'); doc.setFontSize(MIN_FS); doc.setTextColor(45,45,45);
+      var LINE_H = 5.8;
+      var notesNeeded = noteLines.length * LINE_H + 6;
+      var spaceLeft = PAGE2_BOTTOM - y;
+
+      if(notesNeeded <= spaceLeft) {
+        // Everything fits on page 2
+        doc.text(noteLines, M, y);
+      } else {
+        // Draw what fits on page 2, overflow to new page before personas
+        var linesPerPage = Math.floor(spaceLeft / LINE_H);
+        var page2Lines = noteLines.slice(0, linesPerPage);
+        var overflowLines = noteLines.slice(linesPerPage);
+        doc.text(page2Lines, M, y);
+
+        // Overflow page (between page 2 and persona page)
+        doc.addPage();
+        doc.setFillColor(pc[0],pc[1],pc[2]); doc.rect(0,0,W,3,'F');
+        doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(160,160,160);
+        doc.text(p.name + '  ·  AI Relationship Assessment', M, 11);
+        var oy = 19;
+        doc.setFont('helvetica','bold'); doc.setFontSize(MIN_FS); doc.setTextColor(45,45,45);
+        doc.text('MY THOUGHTS (continued)', M, oy); oy += 7;
+        doc.setFont('helvetica','normal'); doc.setFontSize(MIN_FS); doc.setTextColor(45,45,45);
+        doc.text(overflowLines, M, oy);
+        // Footer for overflow page
+        rule(285);
+        doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(160,160,160);
+        doc.text('BTS Enablement  ·  AI Relationship Assessment  ·  bts.com', M, 290);
+      }
+    } else {
+      // No notes — draw blank lined box as before
+      doc.setFont('helvetica','normal'); doc.setFontSize(MIN_FS); doc.setTextColor(140,140,140);
+      var promptLines = doc.splitTextToSize('Use this space to capture what resonated, questions for your next 1:1, or one action you will take.', PW);
+      doc.text(promptLines, M, y); y += promptLines.length * 5.5 + 4;
+      var notesH = PAGE2_BOTTOM - y;
+      if(notesH < 28) notesH = 28;
+      doc.setDrawColor(200,200,200); doc.setFillColor(252,252,252);
+      doc.roundedRect(M, y, PW, notesH, 2,2,'FD');
+      doc.setDrawColor(230,230,230);
+      for(var ln=y+9; ln<y+notesH-4; ln+=9){ doc.line(M+5, ln, M+PW-5, ln); }
+    }
 
     // Footer page 2
     rule(285);
@@ -2907,6 +2978,7 @@ function dismissPreModal() {
     return Object.assign({}, q, {opts: shuffled});
   });
   state.answers = new Array(sourceQ.length).fill(null);
+  state.qNotes  = new Array(sourceQ.length).fill('');
   state.currentQ = 0;
   state.selectedPersona = null;
   state.selectedConf = null;
